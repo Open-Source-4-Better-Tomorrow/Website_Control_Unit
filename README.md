@@ -1,4 +1,4 @@
-# vWebsite_Mechanism
+# vWebsite Mechanism [v1.0]
 vNext mechanism powering vWebsite 1.0 Design Concept's DHTML MVP PV internals !
 
 ![vWebsite Mechanism Logo](/vNext_Mechanism_Logo.png)
