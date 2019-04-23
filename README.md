@@ -8,3 +8,6 @@ vNext mechanism powering vWebsite 1.0 Design Concept's DHTML MVP PV internals !
 #
 ## Developer : Łukasz Dąbrowski
 ### Title     : Software Engineer 
+#
+#
+#### GA Release : 2020-01-15 &nbsp;&nbsp;:pushpin:
