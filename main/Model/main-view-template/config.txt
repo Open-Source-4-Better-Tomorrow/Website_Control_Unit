@@ -1,0 +1,4 @@
+{
+    "isFile" : true,
+    "storageLocation" : "/clever_code/main/M/data/dynamic_data/news_storage.txt"
+}

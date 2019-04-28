@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="utf-8" />
+  <meta name="description" content="Abstract View Container. This conceptually acts as a container where module different views are loaded into." />
+  <title>View Container</title>
+  <style>
+    /* here come CSS rules for Above-The-Fold-View */
+    body {
+        font-size: 2em;
+        font-family: cursive;
+
+        margin-top: 10em;
+
+        text-align: center;
+    }
+
+    .inline {
+      display: inline-block;
+    }
+
+    .progress_1, .progress_2, .progress_3 {
+      border: 1px solid #C10C06;
+
+      height: 0.11em;
+
+      width: 110px;
+    }
+  </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://www.google-analytics.com" crossorigin />  
+  <link rel="icon" href="/favicon.ico" />
+ </head>
+ <body>
+    <div class="inline progress_1"></div>
+    <div class="inline progress_2"></div>
+    <div class="inline progress_3"></div>
+    <script>
+      // RAL embedded into View
+      !function(e){var r={Loader:{_createdInstances:[],loadAsync:function(e,t,s){return function(e,t,s){var a={_internals_:{_resourceIdPrefix:"_ral_",_static_resource_js:"js",_static_resource_css:"css",_resourceArray:e,_resourceType:t,_onLoadNotifyCallback:s,_resourcesTrackerTable:[],_DOMs_HEAD_nodesTrackerTable:{}},loadResources:function(){function e(e){a._internals_._resourceType===a._internals_._static_resource_js?function(){var r=document.getElementsByTagName("head")[0].querySelectorAll("script"),t=r.length;if(e){for(var s=0;s<t;s++)r[s].src&&(a._internals_._DOMs_HEAD_nodesTrackerTable[r[s].src]=s+1);a._internals_._DOMs_HEAD_nodesTrackerTable[e]=0}else for(s=0;s<t;s++)r[s].src&&(a._internals_._DOMs_HEAD_nodesTrackerTable[r[s].src]=s)}():a._internals_._resourceType===a._internals_._static_resource_css&&function(){for(var r=document.getElementsByTagName("head")[0].querySelectorAll("link"),t=r.length,s=0;s<t;s++)r[s].href&&(a._internals_._DOMs_HEAD_nodesTrackerTable[r[s].href]=s);e&&(a._internals_._DOMs_HEAD_nodesTrackerTable[e]=t)}()}function r(r,t){var a,_;(a=document.createElement("script")).setAttribute("type","text/javascript"),a.setAttribute("src",r),a.setAttribute("defer",!0),a.setAttribute("data-tracker-table-index",t),a.setAttribute("data-resource-file",r),a.onload=s,a.onerror=n,e(a.src),(_=document.getElementsByTagName("script")[0]||document.getElementsByTagName("style")[0]||document.getElementsByTagName("link")[0])?_.parentNode.insertBefore(a,_):(_=document.getElementsByTagName("head")[0]).appendChild(a,_)}function t(r,t){var a,_;(a=document.createElement("link")).setAttribute("type","text/css"),a.setAttribute("rel","stylesheet"),a.setAttribute("href",r),a.setAttribute("data-tracker-table-index",t),a.setAttribute("data-resource-file",r),a.onload=s,a.onerror=n,e(a.href),(_=document.getElementsByTagName("head")[0]).appendChild(a,_)}function s(e){delete a._internals_._resourcesTrackerTable[e.currentTarget.dataset.trackerTableIndex],function(){for(var e=0,r=0;r<a._internals_._resourcesTrackerTable.length;r++)a._internals_._resourcesTrackerTable[r]||e++;a._internals_._resourcesTrackerTable.length===e&&(a._internals_._resourcesTrackerTable=[],a._internals_._onLoadNotifyCallback())}()}function n(e){var s=a._internals_._DOMs_HEAD_nodesTrackerTable[e.currentTarget.dataset.resourceFile];a._internals_._resourceType===a._internals_._static_resource_js?(brokenNode=document.getElementsByTagName("script")[s],brokenNode.parentNode.removeChild(brokenNode),r(e.currentTarget.dataset.resourceFile,e.currentTarget.dataset.trackerTableIndex)):a._internals_._resourceType===a._internals_._static_resource_css&&(brokenNode=document.getElementsByTagName("link")[s],brokenNode.parentNode.removeChild(brokenNode),t(e.currentTarget.dataset.resourceFile,e.currentTarget.dataset.trackerTableIndex))}for(var _=this._internals_._resourceArray.length,c=0;c<_;c++)!function(e){a._internals_._resourcesTrackerTable.push(a._internals_._resourceIdPrefix+e)}(c);if(e(null),this._internals_._resourceType===this._internals_._static_resource_js)for(c=0;c<_;c++)r(this._internals_._resourceArray[c],c);else if(this._internals_._resourceType===this._internals_._static_resource_css)for(c=0;c<_;c++)t(this._internals_._resourceArray[c],c)}};r.Loader._createdInstances.push(a),a.loadResources()}(e,t,s)}}};self.GET_RAL_OBJECT=r,e.ral=e.ral||self}(window);
+    </script>
+    <script>
+        // View's core loader
+        document.addEventListener("DOMContentLoaded", function() {
+          ral.GET_RAL_OBJECT.Loader.loadAsync(
+            [
+                'view-core/vw-custom-progress-bar.js', // load up progress bar in the first place to boost UX
+                'view-core/vw-custom-polyfills.js', // load up custom polyfills to ensure cross-browser feature compatibility
+                'view-core/vw-flat-file-loader.js', // load up core library that will handle loading of flat files
+                'Index.mep.js' // Module Entry Point, a.k.a Entry Point to the mechanism
+            ],
+            'js',
+            /** 
+             * Modules returned by ral.GET_RAL_OBJECT.Loader.loadAsync are executed in the order provided above.
+             * They're available globally via window object, therefore you can skip them in the function's arguments.
+            */
+            function () {
+              // trigger further action when all core libraries were just loaded
+              mep.__init__('Index.mep.resources.txt');
+            }
+          );
+        });
+    </script>
+ </body>
+</html>
