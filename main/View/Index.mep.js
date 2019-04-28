@@ -103,6 +103,10 @@
         staticEvents: {
             loadYourOwnResources: {
                 eventName: 'LoadYourOwnResources'
+            },
+
+            getNextView: {
+                eventName: 'GetNextView'
             }
         },
 
@@ -177,7 +181,8 @@
 
                 // act appropriately
                 if(allEventsCompleted) {
-                    _DISPATCHER_OBJECT.dispatchEvent(_EVENTS_OBJECT.staticEvents.loadYourOwnResources.eventName);
+                    // call on PresenterManager to dispatch orders to prepare the next view (separate flow of logic managed by ModelPresenter and ViewPresenter)
+                    _DISPATCHER_OBJECT.dispatchEvent(_EVENTS_OBJECT.staticEvents.getNextView.eventName);
                 }
             }
         },
