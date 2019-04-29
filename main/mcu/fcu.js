@@ -1,7 +1,7 @@
 /* eslint-disable no-empty */
 
 /**
- * Module Entry Point controls loading of the critical resources
+ * Flow Control Unit manages the mainstream flow of the module's logic
  *
  *
  * Author: Łukasz Dąbrowski
@@ -12,42 +12,44 @@
  * License: MIT (http://www.opensource.org/licenses/mit-license.php)
 */
 
-(function (window) {
-
+(function () {
 
     var _CORE_OBJECT = {
-        __init__: function (mep_resources_path) {
+        __init__: function () {
             // setup event flow
-            this.Functions.bindListenersToEvents([_EVENTS_OBJECT.initEvents, _EVENTS_OBJECT.dynamicEvents]);
-
-            // kick off the load process
-            this.Functions.run(mep_resources_path);
+            this.Functions.bindListenersToEvents([_EVENTS_OBJECT.initEvents, _EVENTS_OBJECT.statefulEvents]);
         },
 
         Variables: {
+            resource_path: '../mcu/fcu.resources.txt',  // path relative to View/Index.html
+
             resource_type: 'js',
+
             resource_separator: ',',
+
+            resource_isJSONFormat: false,
 
             resilient_attempt_time_interval: 50
         },
 
         Functions: {
-            run: function (path_to_resources) {
-                return run_I_1L(path_to_resources);
+            run: function () {
+                return run_I_1L();
 
 
 
                 /**
                  * Local helper functions
                 */
-                function run_I_1L(path_to_resources) {
+                function run_I_1L() {
                     flatFileAPI.Factory.LoadObject.createNew(
                                                             _CORE_OBJECT.Variables.resource_type,
                                                             _CORE_OBJECT.Variables.resource_separator,
-                                                            _EVENTS_OBJECT.initEvents.onMepReady.eventName,
+                                                            _EVENTS_OBJECT.initEvents.onFlowControlUnitReady.eventName,
+                                                            _CORE_OBJECT.Variables.resource_isJSONFormat,
                                                             _CORE_OBJECT.Variables.resilient_attempt_time_interval
                                                             )
-                                                            .Functions.loadFlatFile(path_to_resources);
+                                                            .Functions.loadFlatFile(_CORE_OBJECT.Variables.resource_path);
                 }
             },
 
@@ -82,8 +84,27 @@
 
     var _EVENTS_OBJECT = {
         initEvents: {
-            onMepReady: {
-                eventName: 'OnMepReady',
+            initFlowControlUnit: {
+                eventName: 'InitFlowControlUnit',
+
+                eventListener: function() {
+                    return loadYourOwnResources_I_1L();
+
+
+
+                    /**
+                     * Local helper functions
+                    */
+                    function loadYourOwnResources_I_1L() {
+                        // kick off the load of core resources
+                        _CORE_OBJECT.Functions.run();
+                    }
+                }
+            },
+
+            onFlowControlUnitReady: {
+                eventName: 'OnFlowControlUnitReady',
+
                 eventListener: function() {
                     return dispatchLoadOrders_I_1L();
 
@@ -94,28 +115,28 @@
                     */
                     function dispatchLoadOrders_I_1L() {
                         // call on Presenter and Model to load their own resources
-                        _DISPATCHER_OBJECT.dispatchEvent(_EVENTS_OBJECT.staticEvents.loadYourOwnResources.eventName);
+                        _DISPATCHER_OBJECT.dispatchEvent(_EVENTS_OBJECT.statelessEvents.loadYourOwnResources.eventName);
                     }
                 }
-            },
+            }
         },
 
-        staticEvents: {
+        statelessEvents: {
             loadYourOwnResources: {
                 eventName: 'LoadYourOwnResources'
             },
 
-            getNextView: {
-                eventName: 'GetNextView'
+            onGetNextView: {
+                eventName: 'OnGetNextView'
             }
         },
 
-        dynamicEvents: {
+        statefulEvents: {
             onPresenterReady: {
                 eventName: 'OnPresenterReady',
 
                 eventListener: function() {
-                    return onPresenterReady_I_1L(this);
+                    return onPresenterReady_I_1L(_EVENTS_OBJECT.statefulEvents.onPresenterReady);
 
 
 
@@ -123,11 +144,12 @@
                      * Local helper functions
                     */
                     function onPresenterReady_I_1L(self) {
+console.log("Presenter is ready !");
                         // update event completion state
                         self.hasCompleted = true;
 
                         // check if all events completed by this time
-                        _EVENTS_OBJECT.checkEventsCompletion(_EVENTS_OBJECT.dynamicEvents);
+                        _EVENTS_OBJECT.checkEventsCompletion(_EVENTS_OBJECT.statefulEvents);
                     }
                 },
 
@@ -138,7 +160,7 @@
                 eventName: 'OnModelReady',
 
                 eventListener: function() {
-                    return onModelReady_I_1L(this);
+                    return onModelReady_I_1L(_EVENTS_OBJECT.statefulEvents.onModelReady);
 
 
 
@@ -146,11 +168,12 @@
                      * Local helper functions
                     */
                     function onModelReady_I_1L(self) {
+console.log("Model is ready !");
                         // update event completion state
                         self.hasCompleted = true;
 
                         // check if all events completed by this time
-                        _EVENTS_OBJECT.checkEventsCompletion(_EVENTS_OBJECT.dynamicEvents);
+                        _EVENTS_OBJECT.checkEventsCompletion(_EVENTS_OBJECT.statefulEvents);
                     }
                 },
 
@@ -182,7 +205,7 @@
                 // act appropriately
                 if(allEventsCompleted) {
                     // call on PresenterManager to dispatch orders to prepare the next view (separate flow of logic managed by ModelPresenter and ViewPresenter)
-                    _DISPATCHER_OBJECT.dispatchEvent(_EVENTS_OBJECT.staticEvents.getNextView.eventName);
+                    _DISPATCHER_OBJECT.dispatchEvent(_EVENTS_OBJECT.statelessEvents.onGetNextView.eventName);
                 }
             }
         },
@@ -224,7 +247,7 @@
     };
 
 
+    // kick of self-init
+    _CORE_OBJECT.__init__();
 
-    // Expose module API to the outside world
-    window.mep = window.mep || _CORE_OBJECT;
-})(window);
+})();

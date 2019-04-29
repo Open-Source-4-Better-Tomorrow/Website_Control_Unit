@@ -1,0 +1,15 @@
+{
+    "fast_initial_view" : {
+        "isRequired" : false,
+        "relativePath" : "/Model/fast-initial-view-template/",
+        "modelName" : "",
+        "modelConfig" : "config.txt"
+    },
+
+    "main_view" : {
+        "isRequired" : true,
+        "relativePath" : "/Model/main-view-template/",
+        "modelName" : "Model.js",
+        "modelConfig" : "config.txt"
+    }
+}
