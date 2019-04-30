@@ -13,10 +13,6 @@
 */
 
 (function (window) {
-    var self = this;
-
-
-    /* private variables */
 
     var _CUSTOM_FLAT_FILE_LOAD_OBJECT_FACTORY = {
         Factory: {
@@ -191,10 +187,8 @@
         }
     };
 
-    /* ~ private variables */
-
-
 
     // Expose module API to the outside world
     window.flatFileAPI = window.flatFileAPI || _CUSTOM_FLAT_FILE_LOAD_OBJECT_FACTORY;
+
 })(window);

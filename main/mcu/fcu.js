@@ -144,7 +144,6 @@
                      * Local helper functions
                     */
                     function onPresenterReady_I_1L(self) {
-console.log("Presenter is ready !");
                         // update event completion state
                         self.hasCompleted = true;
 
@@ -168,7 +167,6 @@ console.log("Presenter is ready !");
                      * Local helper functions
                     */
                     function onModelReady_I_1L(self) {
-console.log("Model is ready !");
                         // update event completion state
                         self.hasCompleted = true;
 

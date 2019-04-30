@@ -122,6 +122,14 @@
         statelessEvents: {
             onPresenterReady: {
                 eventName: 'OnPresenterReady'
+            },
+
+            loadNextViewResources: {
+                eventName: 'LoadNextViewResources'
+            },
+
+            bindNextViewResourcesTogether: {
+                eventName: 'BindNextViewResourcesTogether'
             }
         },
 
@@ -186,11 +194,59 @@
                      * Local helper functions
                     */
                     function onGetNextView_I_1L() {
-                        console.log("Presenter took control from FCU (Flow Control Unit), and will start yielding \"the next view on demand\"...");
+_debugger.check(true);
+_debugger.count("PresenterManager received order to fetch next view... attempt #");
+                        _DISPATCHER_OBJECT.dispatchEvent(_EVENTS_OBJECT.statelessEvents.loadNextViewResources.eventName, _EVENTS_OBJECT.nextViewEvents.onGetNextView);
                     }
                 },
 
-                hasCompleted: false
+                viewHasBeenLoaded: false,
+                modelHasBeenLoaded: false,
+
+                viewTemplate: null,
+                viewModel: null,
+
+                resetToDefault: function() {
+                    this.viewHasBeenLoaded = this.modelHasBeenLoaded = false;
+                    this.viewTemplate = this.viewModel = null;
+                }
+            },
+
+            onGotNextViewResources: {
+                eventName: 'OnGotNextViewResources',
+
+                eventListener: function(event) {
+                    return onGotNextViewResources_I_1L(event);
+
+
+
+                    /**
+                     * Local helper functions
+                    */
+                    function onGotNextViewResources_I_1L(event) {
+                        // check this view's resources load status
+                        var isNextViewReady = event.detail.viewHasBeenLoaded && event.detail.modelHasBeenLoaded;
+
+                        // if view's resources and model's resources were successfully loaded up, notify FCU, i.e. dispatch work to a MCU's binder
+                        if(isNextViewReady) {
+                            // copy html template and model
+                            var viewTemplate = event.detail.viewTemplate;
+                            var viewModel = event.detail.viewModel;
+
+                            // reset onGetNextView object to default values
+                            _EVENTS_OBJECT.nextViewEvents.onGetNextView.resetToDefault();
+
+                            // dispatch event to MCU's binder
+                            _DISPATCHER_OBJECT.dispatchEvent(
+                                                                _EVENTS_OBJECT.statelessEvents.bindNextViewResourcesTogether.eventName,
+                                                                {
+                                                                    view: viewTemplate,
+                                                                    model: viewModel
+                                                                }
+                                                            );
+                        }
+                    }
+                },
             }
         },
 
