@@ -25,4 +25,4 @@ var _debugger = {
             _counter++;
         }
     }
-}
+};
