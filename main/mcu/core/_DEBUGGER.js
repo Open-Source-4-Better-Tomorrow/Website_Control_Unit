@@ -19,7 +19,7 @@ var _debugger = {
 
     check : function(flag) {
         if(flag && _counter == 10)
-            throw Error("This was examplary usage of current state of \"Hamburger Mechanism\"");
+            throw Error("This was examplary usage of current state of \"vWebsite Mechanism,, a.k.a Hamburger Project\"");
         else {
             console.log("-----------------------------------------------------------------------------------------------------------------------");
             _counter++;
