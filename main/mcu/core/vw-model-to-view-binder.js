@@ -1,7 +1,7 @@
-/* eslint-disable no-empty */
+/* eslint-disable no-undef */
 
 /**
- * ViewPresenter manages loading of all View-related resources on demand
+ * Model-to-View Binder Factory
  *
  *
  * Author: Łukasz Dąbrowski
@@ -13,6 +13,46 @@
 */
 
 (function () {
+
+    var _CUSTOM_MODEL_TO_VIEW_BINDER_OBJECT_FACTORY = {
+        Factory: {
+            BinderObject: {
+                createNew: function () {
+                    return createNew_I_1L();
+
+
+
+                    /**
+                     * Local helper functions
+                    */
+                    function createNew_I_1L() {
+                        // create brand new instance of custom flat file load object
+                        var _CUSTOM_MODEL_TO_VIEW_BINDER_OBJECT = {
+
+                            Functions: {
+                                bindModelWithView : function (htmlTemplate, modelData) {
+                                    return bindModelWithView_I_1L(htmlTemplate, modelData);
+
+
+
+                                    /**
+                                     * Local helper functions
+                                    */
+                                    function bindModelWithView_I_1L(htmlTemplate, modelData) {
+_debugger.count("Binding model with html template... attempt # ");
+_debugger.count("Binding model with html template... completed ! attempt # ");
+                                    }
+                                }
+                            }
+                        };
+
+                        // return fresh instance
+                        return _CUSTOM_MODEL_TO_VIEW_BINDER_OBJECT;
+                    }
+                }
+            }
+        }
+    };
 
     var _CORE_OBJECT = {
         __init__: function () {
@@ -50,41 +90,43 @@
         }
     };
 
+
     var _EVENTS_OBJECT = {
         statelessEvents: {
-            onGotNextViewResources: {
-                eventName: 'OnGotNextViewResources'
+            onGetNextView: {
+                eventName: 'OnGetNextView'
             }
         },
 
         statefulEvents: {
-            loadNextViewResources: {
-                eventName: 'LoadNextViewResources',
+            bindNextViewResourcesTogether: {
+                eventName: 'BindNextViewResourcesTogether',
 
                 eventListener: function(event) {
-                    return onLoadNextViewResources_I_1L(event);
+                    return onBindNextViewResourcesTogether_I_1L(event);
 
 
 
                     /**
                      * Local helper functions
                     */
-                    function onLoadNextViewResources_I_1L(event) {
-                        // reference the source event
-                        var getNextViewEventObject = event.detail;
+                    function onBindNextViewResourcesTogether_I_1L(event) {
+                        // reference html template
+                        var viewTemplate = event.detail.view;
 
-                        /**
-                         * Prepare the next HTML template... (some calculations take place here)
-                        */
-                        getNextViewEventObject.viewTemplate = {template: "<h1></h1>"};
+                        // reference model data
+                        var viewModelData = event.detail.model;
 
-                        // update event object
-                        getNextViewEventObject.viewHasBeenLoaded = true;
-_debugger.count("ViewPresenter prepared html template... attempt #");
-                        // return control to PresenterManager with passing updated event object
-                        _DISPATCHER_OBJECT.dispatchEvent(_EVENTS_OBJECT.statelessEvents.onGotNextViewResources.eventName, getNextViewEventObject);
+                        // create instance of the binder object
+                        _CUSTOM_MODEL_TO_VIEW_BINDER_OBJECT_FACTORY.Factory.BinderObject.createNew()
+                                                                                        .Functions.bindModelWithView(viewTemplate, viewModelData);
+
+                        // at this point we are sure that successful binding took place, hence return control to PresenterManager
+                        _DISPATCHER_OBJECT.dispatchEvent(_EVENTS_OBJECT.statelessEvents.onGetNextView.eventName);
                     }
-                }
+                },
+
+                hasCompleted: false
             }
         },
 
