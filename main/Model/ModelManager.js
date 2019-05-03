@@ -20,7 +20,7 @@
             this.Variables.__init__();
 
             // setup event flow
-            this.Functions.bindListenersToEvents([_EVENTS_OBJECT.initEvents, _EVENTS_OBJECT.statefulEvents]);
+            this.Functions.bindListenersWithEvents([_EVENTS_OBJECT.initEvents, _EVENTS_OBJECT.statefulEvents]);
         },
 
         Variables: {
@@ -83,7 +83,7 @@
                 }
             },
 
-            bindListenersToEvents: function(arrayOfEventObjectCollection) {
+            bindListenersWithEvents: function(arrayOfEventObjectCollection) {
                 return bindListenersToEvents_I_1L(arrayOfEventObjectCollection);
 
 
@@ -104,8 +104,17 @@
 
                             // if current event object has appropriate structure, bind its listener to its event
                             if(customEventObject.eventListener)
-                                _EVENTS_OBJECT.addEventListener(customEventObject.eventName, customEventObject.eventListener);
+                                addEventListener_I_2L(customEventObject.eventName, customEventObject.eventListener);
                         }
+                    }
+
+
+
+                    /**
+                     * Local helper functions
+                    */
+                    function addEventListener_I_2L(eventName, eventListener) {
+                        document.addEventListener(eventName, eventListener);
                     }
                 }
             }
@@ -114,8 +123,8 @@
 
     var _EVENTS_OBJECT = {
         initEvents: {
-            loadYourOwnResources: {
-                eventName: 'LoadYourOwnResources',
+            onLoadYourOwnResources: {
+                eventName: 'OnLoadYourOwnResources',
 
                 eventListener: function() {
                     return loadYourOwnResources_I_1L();
@@ -155,8 +164,11 @@
                         // update event completion state
                         self.hasCompleted = true;
 
-                        // check if all events completed by this time
-                        _EVENTS_OBJECT.checkEventsCompletion(_EVENTS_OBJECT.statefulEvents);
+                        // check if all stateful events completed successfully by this time
+                        if(_EVENTS_OBJECT.statefulEvents.onModelMetadataReady.hasCompleted) {
+                            // return control to FCU
+                            _DISPATCHER_OBJECT.dispatchEvent(_EVENTS_OBJECT.statelessEvents.onModelReady.eventName);
+                        }
                     }
                 },
 
@@ -181,54 +193,15 @@
                         // update event completion state
                         self.hasCompleted = true;
 
-                        // check if all events completed by this time
-                        _EVENTS_OBJECT.checkEventsCompletion(_EVENTS_OBJECT.statefulEvents);
+                        // check if all stateful events completed successfully by this time
+                        if(_EVENTS_OBJECT.statefulEvents.onModelCoreReady.hasCompleted) {
+                            // return control to FCU
+                            _DISPATCHER_OBJECT.dispatchEvent(_EVENTS_OBJECT.statelessEvents.onModelReady.eventName);
+                        }
                     }
                 },
 
                 hasCompleted: false
-            }
-        },
-
-        checkEventsCompletion : function(eventObjectCollection) {
-            return checkEventsCompletion_I_1L(eventObjectCollection);
-
-
-
-            /**
-             * Local helper functions
-            */
-            function checkEventsCompletion_I_1L(eventObjectCollection) {
-                // assume all events have completed successfully
-                var allEventsCompleted = true;
-
-                // iterate over all event objects to assess the completion status
-                for(var eventObjectKey in eventObjectCollection) {
-                    // on first event that haven't completed yet, abort the assessment
-                    if(!eventObjectCollection[eventObjectKey].hasCompleted) {
-                        allEventsCompleted = false;
-                        break;
-                    }
-                }
-
-                // act appropriately
-                if(allEventsCompleted) {
-                    // return control to FCU
-                    _DISPATCHER_OBJECT.dispatchEvent(_EVENTS_OBJECT.statelessEvents.onModelReady.eventName);
-                }
-            }
-        },
-
-        addEventListener : function(eventName, eventListener) {
-            return addEventListener_I_1L(eventName, eventListener);
-
-
-
-            /**
-             * Local helper functions
-            */
-            function addEventListener_I_1L(eventName, eventListener) {
-                document.addEventListener(eventName, eventListener);
             }
         }
     };

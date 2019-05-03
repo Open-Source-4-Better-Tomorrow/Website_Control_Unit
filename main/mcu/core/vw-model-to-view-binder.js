@@ -39,8 +39,8 @@
                                      * Local helper functions
                                     */
                                     function bindModelWithView_I_1L(htmlTemplate, modelData) {
-_debugger.count("Binding model with html template... attempt # ");
-_debugger.count("Binding model with html template... completed ! attempt # ");
+                                        _debugger.count("Binding model with html template... attempt # ");
+                                        _debugger.count("Binding model with html template... completed ! attempt # ");
                                     }
                                 }
                             }
@@ -57,11 +57,11 @@ _debugger.count("Binding model with html template... completed ! attempt # ");
     var _CORE_OBJECT = {
         __init__: function () {
             // setup event flow
-            this.Functions.bindListenersToEvents([_EVENTS_OBJECT.statefulEvents]);
+            this.Functions.bindListenersWithEvents([_EVENTS_OBJECT.statefulEvents]);
         },
 
         Functions: {
-            bindListenersToEvents: function(arrayOfEventObjectCollection) {
+            bindListenersWithEvents: function(arrayOfEventObjectCollection) {
                 return bindListenersToEvents_I_1L(arrayOfEventObjectCollection);
 
 
@@ -82,8 +82,17 @@ _debugger.count("Binding model with html template... completed ! attempt # ");
 
                             // if current event object has appropriate structure, bind its listener to its event
                             if(customEventObject.eventListener)
-                                _EVENTS_OBJECT.addEventListener(customEventObject.eventName, customEventObject.eventListener);
+                                addEventListener_I_2L(customEventObject.eventName, customEventObject.eventListener);
                         }
+                    }
+
+
+
+                    /**
+                     * Local helper functions
+                    */
+                    function addEventListener_I_2L(eventName, eventListener) {
+                        document.addEventListener(eventName, eventListener);
                     }
                 }
             }
@@ -99,8 +108,8 @@ _debugger.count("Binding model with html template... completed ! attempt # ");
         },
 
         statefulEvents: {
-            bindNextViewResourcesTogether: {
-                eventName: 'BindNextViewResourcesTogether',
+            onBindNextViewResourcesTogether: {
+                eventName: 'OnBindNextViewResourcesTogether',
 
                 eventListener: function(event) {
                     return onBindNextViewResourcesTogether_I_1L(event);
@@ -127,19 +136,6 @@ _debugger.count("Binding model with html template... completed ! attempt # ");
                 },
 
                 hasCompleted: false
-            }
-        },
-
-        addEventListener : function(eventName, eventListener) {
-            return addEventListener_I_1L(eventName, eventListener);
-
-
-
-            /**
-             * Local helper functions
-            */
-            function addEventListener_I_1L(eventName, eventListener) {
-                document.addEventListener(eventName, eventListener);
             }
         }
     };

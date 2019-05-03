@@ -21,7 +21,7 @@
             this.Variables.__init__();
 
             // setup event flow
-            this.Functions.bindListenersToEvents([_EVENTS_OBJECT.initEvents, _EVENTS_OBJECT.statefulEvents, _EVENTS_OBJECT.nextViewEvents]);
+            this.Functions.bindListenersWithEvents([_EVENTS_OBJECT.initEvents, _EVENTS_OBJECT.statefulEvents, _EVENTS_OBJECT.nextViewEvents]);
         },
 
         Variables: {
@@ -69,7 +69,7 @@
                 }
             },
 
-            bindListenersToEvents: function(arrayOfEventObjectCollection) {
+            bindListenersWithEvents: function(arrayOfEventObjectCollection) {
                 return bindListenersToEvents_I_1L(arrayOfEventObjectCollection);
 
 
@@ -90,8 +90,17 @@
 
                             // if current event object has appropriate structure, bind its listener to its event
                             if(customEventObject.eventListener)
-                                _EVENTS_OBJECT.addEventListener(customEventObject.eventName, customEventObject.eventListener);
+                                addEventListener_I_2L(customEventObject.eventName, customEventObject.eventListener);
                         }
+                    }
+
+
+
+                    /**
+                     * Local helper functions
+                    */
+                    function addEventListener_I_2L(eventName, eventListener) {
+                        document.addEventListener(eventName, eventListener);
                     }
                 }
             }
@@ -100,8 +109,8 @@
 
     var _EVENTS_OBJECT = {
         initEvents: {
-            loadYourOwnResources: {
-                eventName: 'LoadYourOwnResources',
+            onLoadYourOwnResources: {
+                eventName: 'OnLoadYourOwnResources',
 
                 eventListener: function() {
                     return loadYourOwnResources_I_1L();
@@ -124,12 +133,12 @@
                 eventName: 'OnPresenterReady'
             },
 
-            loadNextViewResources: {
-                eventName: 'LoadNextViewResources'
+            onLoadNextViewResources: {
+                eventName: 'OnLoadNextViewResources'
             },
 
-            bindNextViewResourcesTogether: {
-                eventName: 'BindNextViewResourcesTogether'
+            onBindNextViewResourcesTogether: {
+                eventName: 'OnBindNextViewResourcesTogether'
             }
         },
 
@@ -149,8 +158,11 @@
                         // update event completion state
                         self.hasCompleted = true;
 
-                        // check if all events completed by this time
-                        _EVENTS_OBJECT.checkEventsCompletion(_EVENTS_OBJECT.statefulEvents);
+                        // check if all stateful events completed successfully by this time
+                        if(_EVENTS_OBJECT.statefulEvents.onPresenterModelReady.hasCompleted) {
+                            // return control to FCU
+                            _DISPATCHER_OBJECT.dispatchEvent(_EVENTS_OBJECT.statelessEvents.onPresenterReady.eventName);
+                        }
                     }
                 },
 
@@ -172,8 +184,11 @@
                         // update event completion state
                         self.hasCompleted = true;
 
-                        // check if all events completed by this time
-                        _EVENTS_OBJECT.checkEventsCompletion(_EVENTS_OBJECT.statefulEvents);
+                        // check if all stateful events completed successfully by this time
+                        if(_EVENTS_OBJECT.statefulEvents.onPresenterViewReady.hasCompleted) {
+                            // return control to FCU
+                            _DISPATCHER_OBJECT.dispatchEvent(_EVENTS_OBJECT.statelessEvents.onPresenterReady.eventName);
+                        }
                     }
                 },
 
@@ -194,9 +209,10 @@
                      * Local helper functions
                     */
                     function onGetNextView_I_1L() {
-_debugger.check(true);
-_debugger.count("PresenterManager received order to fetch next view... attempt #");
-                        _DISPATCHER_OBJECT.dispatchEvent(_EVENTS_OBJECT.statelessEvents.loadNextViewResources.eventName, _EVENTS_OBJECT.nextViewEvents.onGetNextView);
+                        _debugger.check(true);
+                        _debugger.count("PresenterManager received order to fetch next view... attempt #");
+
+                        _DISPATCHER_OBJECT.dispatchEvent(_EVENTS_OBJECT.statelessEvents.onLoadNextViewResources.eventName, _EVENTS_OBJECT.nextViewEvents.onGetNextView);
                     }
                 },
 
@@ -238,7 +254,7 @@ _debugger.count("PresenterManager received order to fetch next view... attempt #
 
                             // dispatch event to MCU's binder
                             _DISPATCHER_OBJECT.dispatchEvent(
-                                                                _EVENTS_OBJECT.statelessEvents.bindNextViewResourcesTogether.eventName,
+                                                                _EVENTS_OBJECT.statelessEvents.onBindNextViewResourcesTogether.eventName,
                                                                 {
                                                                     view: viewTemplate,
                                                                     model: viewModel
@@ -247,48 +263,6 @@ _debugger.count("PresenterManager received order to fetch next view... attempt #
                         }
                     }
                 },
-            }
-        },
-
-        checkEventsCompletion : function(eventObjectCollection) {
-            return checkEventsCompletion_I_1L(eventObjectCollection);
-
-
-
-            /**
-             * Local helper functions
-            */
-            function checkEventsCompletion_I_1L(eventObjectCollection) {
-                // assume all events have completed successfully
-                var allEventsCompleted = true;
-
-                // iterate over all event objects to assess the completion status
-                for(var eventObjectKey in eventObjectCollection) {
-                    // on first event that haven't completed yet, abort the assessment
-                    if(!eventObjectCollection[eventObjectKey].hasCompleted) {
-                        allEventsCompleted = false;
-                        break;
-                    }
-                }
-
-                // act appropriately
-                if(allEventsCompleted) {
-                    // return control to FCU
-                    _DISPATCHER_OBJECT.dispatchEvent(_EVENTS_OBJECT.statelessEvents.onPresenterReady.eventName);
-                }
-            }
-        },
-
-        addEventListener : function(eventName, eventListener) {
-            return addEventListener_I_1L(eventName, eventListener);
-
-
-
-            /**
-             * Local helper functions
-            */
-            function addEventListener_I_1L(eventName, eventListener) {
-                document.addEventListener(eventName, eventListener);
             }
         }
     };

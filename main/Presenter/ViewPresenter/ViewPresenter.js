@@ -17,11 +17,11 @@
     var _CORE_OBJECT = {
         __init__: function () {
             // setup event flow
-            this.Functions.bindListenersToEvents([_EVENTS_OBJECT.statefulEvents]);
+            this.Functions.bindListenersWithEvents([_EVENTS_OBJECT.statefulEvents]);
         },
 
         Functions: {
-            bindListenersToEvents: function(arrayOfEventObjectCollection) {
+            bindListenersWithEvents: function(arrayOfEventObjectCollection) {
                 return bindListenersToEvents_I_1L(arrayOfEventObjectCollection);
 
 
@@ -42,8 +42,17 @@
 
                             // if current event object has appropriate structure, bind its listener to its event
                             if(customEventObject.eventListener)
-                                _EVENTS_OBJECT.addEventListener(customEventObject.eventName, customEventObject.eventListener);
+                                addEventListener_I_2L(customEventObject.eventName, customEventObject.eventListener);
                         }
+                    }
+
+
+
+                    /**
+                     * Local helper functions
+                    */
+                    function addEventListener_I_2L(eventName, eventListener) {
+                        document.addEventListener(eventName, eventListener);
                     }
                 }
             }
@@ -58,8 +67,8 @@
         },
 
         statefulEvents: {
-            loadNextViewResources: {
-                eventName: 'LoadNextViewResources',
+            onLoadNextViewResources: {
+                eventName: 'OnLoadNextViewResources',
 
                 eventListener: function(event) {
                     return onLoadNextViewResources_I_1L(event);
@@ -80,24 +89,13 @@
 
                         // update event object
                         getNextViewEventObject.viewHasBeenLoaded = true;
-_debugger.count("ViewPresenter prepared html template... attempt #");
+
+                        _debugger.count("ViewPresenter prepared html template... attempt #");
+
                         // return control to PresenterManager with passing updated event object
                         _DISPATCHER_OBJECT.dispatchEvent(_EVENTS_OBJECT.statelessEvents.onGotNextViewResources.eventName, getNextViewEventObject);
                     }
                 }
-            }
-        },
-
-        addEventListener : function(eventName, eventListener) {
-            return addEventListener_I_1L(eventName, eventListener);
-
-
-
-            /**
-             * Local helper functions
-            */
-            function addEventListener_I_1L(eventName, eventListener) {
-                document.addEventListener(eventName, eventListener);
             }
         }
     };
