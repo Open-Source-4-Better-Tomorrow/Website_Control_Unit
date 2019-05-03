@@ -40,6 +40,7 @@
                                     */
                                     function bindModelWithView_I_1L(htmlTemplate, modelData) {
                                         _debugger.count("Binding model with html template... attempt # ");
+                                        //var binder = modelData.Functions.getBinder();
                                         _debugger.count("Binding model with html template... completed ! attempt # ");
                                     }
                                 }
