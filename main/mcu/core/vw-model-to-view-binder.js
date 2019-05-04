@@ -14,7 +14,7 @@
 
 (function () {
 
-    var _CUSTOM_MODEL_TO_VIEW_BINDER_OBJECT_FACTORY = {
+    var _MODEL_TO_VIEW_BINDER_OBJECT_FACTORY = {
         Factory: {
             BinderObject: {
                 createNew: function () {
@@ -30,18 +30,23 @@
                         var _CUSTOM_MODEL_TO_VIEW_BINDER_OBJECT = {
 
                             Functions: {
-                                bindModelWithView : function (htmlTemplate, modelData) {
-                                    return bindModelWithView_I_1L(htmlTemplate, modelData);
+                                bindModelWithView : function (htmlTemplate, modelData, binderFunction, bindingCompletedCallback, isLast) {
+                                    return bindModelWithView_I_1L(htmlTemplate, modelData, binderFunction, bindingCompletedCallback, isLast);
 
 
 
                                     /**
                                      * Local helper functions
                                     */
-                                    function bindModelWithView_I_1L(htmlTemplate, modelData) {
-                                        _debugger.count("Binding model with html template... attempt # ");
-                                        //var binder = modelData.Functions.getBinder();
-                                        _debugger.count("Binding model with html template... completed ! attempt # ");
+                                    function bindModelWithView_I_1L(htmlTemplate, modelData, binderFunction, bindingCompletedCallback, isLast) {
+                                        _debugger.count("Binding model with html template... # ");
+
+                                        // check if binder function is present, otherwise throw error
+                                        if(!binderFunction)
+                                            throw Error("MCU requires custom binder function to be present to render a view !");
+
+                                        // binder model with template and notify upon successful completion
+                                        binderFunction(htmlTemplate, modelData, bindingCompletedCallback, isLast);
                                     }
                                 }
                             }
@@ -100,14 +105,7 @@
         }
     };
 
-
     var _EVENTS_OBJECT = {
-        statelessEvents: {
-            onGetNextView: {
-                eventName: 'OnGetNextView'
-            }
-        },
-
         statefulEvents: {
             onBindNextViewResourcesTogether: {
                 eventName: 'OnBindNextViewResourcesTogether',
@@ -127,38 +125,25 @@
                         // reference model data
                         var viewModelData = event.detail.model;
 
-                        // create instance of the binder object
-                        _CUSTOM_MODEL_TO_VIEW_BINDER_OBJECT_FACTORY.Factory.BinderObject.createNew()
-                                                                                        .Functions.bindModelWithView(viewTemplate, viewModelData);
+                        // reference custom binder object that will bind a model to a template and successfully render the view
+                        var binder = event.detail.binder;
 
-                        // at this point we are sure that successful binding took place, hence return control to PresenterManager
-                        _DISPATCHER_OBJECT.dispatchEvent(_EVENTS_OBJECT.statelessEvents.onGetNextView.eventName);
+                        // reference binder function itself
+                        var binderFunction = binder.callBind;
+
+                        // reference callback that will be send when all binding have been completed
+                        var bindingCompletedCallback = binder.onBindingCompleted;
+
+                        // is this flow the last one in the workflow ?
+                        var isLast = event.detail.isLast;
+
+                        // create instance of the binder object
+                        _MODEL_TO_VIEW_BINDER_OBJECT_FACTORY.Factory.BinderObject.createNew()
+                                                                                             .Functions.bindModelWithView(viewTemplate, viewModelData, binderFunction, bindingCompletedCallback, isLast);
                     }
                 },
 
                 hasCompleted: false
-            }
-        }
-    };
-
-    var _DISPATCHER_OBJECT = {
-        dispatchEvent : function(eventName, eventDetails) {
-            return dispatchEvent_I_1L(eventName, eventDetails);
-
-
-
-            /**
-             * Local helper functions
-            */
-            function dispatchEvent_I_1L(eventName, eventDetails) {
-                var customEvent;
-
-                if(eventDetails)
-                    customEvent = new CustomEvent(eventName, { bubbles: false, cancelable: false, detail: eventDetails });
-                else
-                    customEvent = new CustomEvent(eventName);
-
-                document.dispatchEvent(customEvent);
             }
         }
     };

@@ -17,15 +17,15 @@
     var _CUSTOM_FLAT_FILE_LOAD_OBJECT_FACTORY = {
         Factory: {
             LoadObject: {
-                createNew: function (resource_type, resource_separator, notification_event, isJSON, resilient_attempt_time_interval) {
-                    return createNew_I_1L(resource_type, resource_separator, notification_event, isJSON, resilient_attempt_time_interval);
+                createNew: function (resource_type, resource_separator, notification_event, isJSON, resilient_attempt_time_interval, secondLevelEventDetail_array) {
+                    return createNew_I_1L(resource_type, resource_separator, notification_event, isJSON, resilient_attempt_time_interval, secondLevelEventDetail_array);
 
 
 
                     /**
                      * Local helper functions
                     */
-                    function createNew_I_1L(resource_type, resource_separator, notification_event, isJSON, resilient_attempt_time_interval) {
+                    function createNew_I_1L(resource_type, resource_separator, notification_event, isJSON, resilient_attempt_time_interval, secondLevelEventDetail_array) {
                         // throw error if no notification event present
                         if(!notification_event)
                             throw Error("No valid notification event provided to dispatch upon successful loading of resources !");
@@ -42,7 +42,9 @@
 
                                     isJSON: isJSON || false,
 
-                                    resilient_attempt_time_interval_I: resilient_attempt_time_interval || 50
+                                    resilient_attempt_time_interval_I: resilient_attempt_time_interval || 50,
+
+                                    secondLevelEventDetail_array_I: secondLevelEventDetail_array || []
                                 }
                             },
 
@@ -156,23 +158,32 @@
                                         }
 
                                         function prepareAndDispatchEvent_I_2L(eventDetailData) {
+                                            // event detail data array
+                                            var detail_array = [];
+
+                                            // setup event detail object
+                                            var params = {
+                                                bubbles: false,
+                                                cancelable: false,
+                                                detail: detail_array
+                                            };
+
                                             // if there is some event detail data
                                             if(eventDetailData) {
-                                                // prepare event detail data
-                                                var params = {
-                                                    bubbles: false,
-                                                    cancelable: false,
-                                                    detail: eventDetailData
-                                                };
+                                                // push to event details on-demand data
+                                                detail_array.push(eventDetailData);
 
-                                                // notify that all resources were successfully loaded up by dispatching an event
-                                                document.dispatchEvent(new CustomEvent(_CUSTOM_FLAT_FILE_LOAD_OBJECT.Loading._internals_.notification_event_I, params));
+                                                // merge event details on-demand data with second level event data
+                                                Array.prototype.push.apply(detail_array, _CUSTOM_FLAT_FILE_LOAD_OBJECT.Loading._internals_.secondLevelEventDetail_array_I);
                                             }
                                             // otherwise just dispatch the event
                                             else {
-                                                // notify that all resources were successfully loaded up by dispatching an event
-                                                document.dispatchEvent(new CustomEvent(_CUSTOM_FLAT_FILE_LOAD_OBJECT.Loading._internals_.notification_event_I));
+                                                // push to event details second level event data
+                                                detail_array.push(_CUSTOM_FLAT_FILE_LOAD_OBJECT.Loading._internals_.secondLevelEventDetail_array_I);
                                             }
+
+                                            // notify that all resources were successfully loaded up by dispatching an event
+                                            document.dispatchEvent(new CustomEvent(_CUSTOM_FLAT_FILE_LOAD_OBJECT.Loading._internals_.notification_event_I, params));
                                         }
                                     }
                                 }

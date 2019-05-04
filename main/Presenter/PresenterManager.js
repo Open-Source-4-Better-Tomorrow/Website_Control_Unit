@@ -210,7 +210,7 @@
                     */
                     function onGetNextView_I_1L() {
                         _debugger.check(true);
-                        _debugger.count("PresenterManager received order to fetch next view... attempt #");
+                        _debugger.count("PresenterManager received an order to fetch next view... #");
 
                         _DISPATCHER_OBJECT.dispatchEvent(_EVENTS_OBJECT.statelessEvents.onLoadNextViewResources.eventName, _EVENTS_OBJECT.nextViewEvents.onGetNextView);
                     }
@@ -240,14 +240,17 @@
                      * Local helper functions
                     */
                     function onGotNextViewResources_I_1L(event) {
+                        // cache event details
+                        var details = event.detail;
+
                         // check this view's resources load status
-                        var isNextViewReady = event.detail.viewHasBeenLoaded && event.detail.modelHasBeenLoaded;
+                        var isNextViewReady = details.viewHasBeenLoaded && details.modelHasBeenLoaded;
 
                         // if view's resources and model's resources were successfully loaded up, notify FCU, i.e. dispatch work to a MCU's binder
                         if(isNextViewReady) {
-                            // copy html template and model
-                            var viewTemplate = event.detail.viewTemplate;
-                            var viewModel = event.detail.viewModel;
+                            // reference html template and model
+                            var viewTemplate = details.viewTemplate;
+                            var viewModel = details.viewModel;
 
                             // reset onGetNextView object to default values
                             _EVENTS_OBJECT.nextViewEvents.onGetNextView.resetToDefault();
@@ -256,8 +259,25 @@
                             _DISPATCHER_OBJECT.dispatchEvent(
                                                                 _EVENTS_OBJECT.statelessEvents.onBindNextViewResourcesTogether.eventName,
                                                                 {
-                                                                    view: viewTemplate,
-                                                                    model: viewModel
+                                                                    view: viewTemplate.template,
+
+                                                                    model: viewModel.model.data,
+
+                                                                    binder: {
+                                                                        callBind : viewModel.model.bindFunc,
+
+                                                                        onBindingCompleted: function(isWorkflowCompleted) {
+                                                                            _debugger.count("Binding model with template have been completed... ! # ");
+
+                                                                            if(isWorkflowCompleted)
+                                                                                _debugger.count("Whole workflow has been completed... ! # ");
+                                                                            else
+                                                                                // otherwise after successful binding took place, yield the next view
+                                                                                _DISPATCHER_OBJECT.dispatchEvent(_EVENTS_OBJECT.nextViewEvents.onGetNextView.eventName);
+                                                                        }
+                                                                    },
+
+                                                                    isLast: viewModel.model.isLast
                                                                 }
                                                             );
                         }

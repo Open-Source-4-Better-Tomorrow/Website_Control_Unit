@@ -20,7 +20,7 @@
             this.Variables.__init__();
 
             // setup event flow
-            this.Functions.bindListenersWithEvents([_EVENTS_OBJECT.initEvents, _EVENTS_OBJECT.statefulEvents]);
+            this.Functions.bindListenersWithEvents([_EVENTS_OBJECT.initEvents, _EVENTS_OBJECT.statefulEvents, _EVENTS_OBJECT.nextViewEvents]);
         },
 
         Variables: {
@@ -44,7 +44,8 @@
 
             resilient_attempt_time_interval: 50,
 
-            model_metadata: null
+            model_metadata: null,
+            model_metadata_index: -1,
         },
 
         Functions: {
@@ -79,7 +80,16 @@
                  * Local helper functions
                 */
                 function processModelsMetadata_I_1L(metadataObject) {
-                    _CORE_OBJECT.Variables.model_metadata = metadataObject;
+                    // create array
+                    var viewModel_array = [];
+
+                    // put all models from object to array
+                    for(var key in metadataObject) {
+                        viewModel_array.push(metadataObject[key]);
+                    }
+
+                    // store array for later usage
+                    _CORE_OBJECT.Variables.model_metadata = viewModel_array;
                 }
             },
 
@@ -145,6 +155,10 @@
         statelessEvents: {
             onModelReady: {
                 eventName: 'OnModelReady'
+            },
+
+            onViewModelExposeYourData: {
+                eventName: 'OnViewModelExposeYourData'
             }
         },
 
@@ -188,7 +202,7 @@
                     */
                     function onModelMetadataReady_I_1L(self, eventObject) {
                         // process event detial data
-                        _CORE_OBJECT.Functions.processModelsMetadata(eventObject.detail);
+                        _CORE_OBJECT.Functions.processModelsMetadata(eventObject.detail[0]);
 
                         // update event completion state
                         self.hasCompleted = true;
@@ -202,6 +216,128 @@
                 },
 
                 hasCompleted: false
+            }
+        },
+
+        nextViewEvents: {
+            onGetNextViewModel: {
+                eventName: 'OnGetNextViewModel',
+
+                eventListener: function(event) {
+                    return onGetNextViewModel_I_1L(event);
+
+
+
+                    /**
+                     * Local helper functions
+                    */
+                    function onGetNextViewModel_I_1L(event) {
+                        _debugger.count("ModelManager received an order to fetch next view's model... # ");
+
+                        // fetch the next model metadata
+                        var nextViewModelMetadata = _CORE_OBJECT.Variables.model_metadata[++_CORE_OBJECT.Variables.model_metadata_index];
+
+                        var secondLevelEventDetails;
+                        // if there is another physical model data available
+                        if(nextViewModelMetadata && nextViewModelMetadata.isRequired) {
+                            // check if this is last view model in the whole workflow
+                            nextViewModelMetadata.isLast = _CORE_OBJECT.Variables.model_metadata_index + 1 === _CORE_OBJECT.Variables.model_metadata.length;
+
+                            // store event detail and next model metadata
+                            secondLevelEventDetails = [event.detail, nextViewModelMetadata];
+
+                            // load up physical model given its phisical location (load up JavaScript file)
+                            ral.GET_RAL_OBJECT.Loader.loadAsync(
+                                                                    [
+                                                                        nextViewModelMetadata.relativePath + nextViewModelMetadata.modelName
+                                                                    ],
+                                                                    'js',
+                                                                    /**
+                                                                     * Modules returned by ral.GET_RAL_OBJECT.Loader.loadAsync are executed in the order provided above.
+                                                                     * They're available globally via window object, therefore you can skip them in the function's arguments.
+                                                                    */
+                                                                    function () {
+                                                                        // trigger further flow
+                                                                        _DISPATCHER_OBJECT.dispatchEvent(_EVENTS_OBJECT.nextViewEvents.onNextViewModelPhysicallyLoaded.eventName, secondLevelEventDetails);
+                                                                    }
+                                                               );
+                        }
+                        else {
+                            // store event detail and next model metadata, which is null
+                            secondLevelEventDetails = [event.detail, null];
+
+                            // dispatch proper notification immediately
+                            _DISPATCHER_OBJECT.dispatchEvent(_EVENTS_OBJECT.nextViewEvents.onNextViewModelPhysicallyLoaded.eventName, secondLevelEventDetails);
+                        }
+
+                    }
+                }
+            },
+
+            onNextViewModelPhysicallyLoaded: {
+                eventName: 'OnNextViewModelPhysicallyLoaded',
+
+                eventListener: function(event) {
+                    return onNextViewModelPhysicallyLoaded_I_1L(event);
+
+
+
+                    /**
+                     * Local helper functions
+                    */
+                    function onNextViewModelPhysicallyLoaded_I_1L(event) {
+                        _debugger.count("ModelManager received a notification that next view's model could be available... # ");
+
+                        // cache event details
+                        var details = event.detail;
+
+                        // next view model callback
+                        var processNextViewModelCallback = details[0];
+
+                        // was next model available or required
+                        var nextViewModel = details[1];
+
+                        // if there is next view model "in accessible space" request the model data
+                        if(nextViewModel) {
+                            _DISPATCHER_OBJECT.dispatchEvent(_EVENTS_OBJECT.statelessEvents.onViewModelExposeYourData.eventName, [nextViewModel.isLast, processNextViewModelCallback, handleViewModel_I_2L]);
+                        }
+                        else {
+                            processNextViewModelCallback();
+                        }
+
+
+
+                        /**
+                         * Local helper functions
+                        */
+                        function handleViewModel_I_2L(viewModel, details) {
+                            // is last in the workflow
+                            var isLast = details[0];
+
+                            // next view model callback
+                            var processNextViewModelCallback = details[1];
+
+                            // return control to ModelPresenter passing required model data
+                            processNextViewModelCallback(viewModel, isLast);
+                        }
+                    }
+                }
+            },
+
+            onNextViewModelHasArrived: {
+                eventName: 'OnNextViewModelHasArrived',
+
+                eventListener: function(event) {
+                    return onNextViewModelHasArrived_I_1L(event);
+
+
+
+                    /**
+                     * Local helper functions
+                    */
+                    function onNextViewModelHasArrived_I_1L(event) {
+                    }
+                },
             }
         }
     };
@@ -229,7 +365,7 @@
     };
 
 
-    // kick of self-init
+    // kick off self-init
     _CORE_OBJECT.__init__();
 
 })();

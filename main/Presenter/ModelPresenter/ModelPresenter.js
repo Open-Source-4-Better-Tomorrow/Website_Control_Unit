@@ -61,6 +61,10 @@
 
     var _EVENTS_OBJECT = {
         statelessEvents: {
+            onGetNextViewModel: {
+                eventName: 'OnGetNextViewModel'
+            },
+
             onGotNextViewResources: {
                 eventName: 'OnGotNextViewResources'
             }
@@ -82,18 +86,60 @@
                         // reference the source event
                         var getNextViewEventObject = event.detail;
 
+                        // prepare the next model data, i.e. output has to match the viewModel object structure !
+                        _DISPATCHER_OBJECT.dispatchEvent(_EVENTS_OBJECT.statelessEvents.onGetNextViewModel.eventName, processNextViewModel_I_2L);
+
+
+
                         /**
-                         * Prepare the next model data... (some calculations take place here)
+                         * Local helper functions
                         */
-                        getNextViewEventObject.viewModel = {model:  {h1: "Hello from dynamically fetched template"}};
+                        function processNextViewModel_I_2L(viewModel, isLast) {
+                            // if there is next view's model to process
+                            if(viewModel) {
+                                getNextViewEventObject.viewModel = {
+                                    model:  {
+                                        required : viewModel.isRequired,
 
-                        // update event object
-                        getNextViewEventObject.modelHasBeenLoaded = true;
+                                        data: {
+                                            a1: {
+                                                tagPrefix: "",
+                                                tagName : "h1",
+                                                content: "Hello from Hamburger Project !"
+                                            }
+                                        },
 
-                        _debugger.count("ModelPresenter prepared model data... attempt #");
+                                        bindFunc: viewModel.Functions.viewModelBinder,
 
-                        // return control to PresenterManager with passing updated event object
-                        _DISPATCHER_OBJECT.dispatchEvent(_EVENTS_OBJECT.statelessEvents.onGotNextViewResources.eventName, getNextViewEventObject);
+                                        isLast : isLast
+                                    }
+                               };
+                            }
+                            else {
+                                getNextViewEventObject.viewModel = {
+                                    model:  {
+                                        required : false,
+                                        data: {},
+                                        /**
+                                         * Arguments to bindFunc function are mandatory !
+                                         * You cannot skip them in the function definition !
+                                         * Third argument is callback that has to be invoked when all actions completed successfully, otherwise flow of the logic can be unpredictable.
+                                        */
+                                        bindFunc: function(htmlTemplate, modelData, bindingCompletedCallback, isLast) {
+                                            bindingCompletedCallback(isLast);
+                                        }
+                                    }
+                               };
+                            }
+
+                            // update event object
+                            getNextViewEventObject.modelHasBeenLoaded = true;
+
+                            _debugger.count("ModelPresenter prepared model data... #");
+
+                            // return control to PresenterManager with passing updated event object
+                            _DISPATCHER_OBJECT.dispatchEvent(_EVENTS_OBJECT.statelessEvents.onGotNextViewResources.eventName, getNextViewEventObject);
+                        }
                     }
                 }
             }
@@ -112,8 +158,9 @@
             function dispatchEvent_I_1L(eventName, eventDetails) {
                 var customEvent;
 
-                if(eventDetails)
+                if(eventDetails) {
                     customEvent = new CustomEvent(eventName, { bubbles: false, cancelable: false, detail: eventDetails });
+                }
                 else
                     customEvent = new CustomEvent(eventName);
 

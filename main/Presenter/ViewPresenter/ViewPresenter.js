@@ -85,12 +85,14 @@
                         /**
                          * Prepare the next HTML template... (some calculations take place here)
                         */
-                        getNextViewEventObject.viewTemplate = {template: "<h1></h1>"};
+                        getNextViewEventObject.viewTemplate = {
+                                                                template: "<h1></h1>"
+                                                              };
 
                         // update event object
                         getNextViewEventObject.viewHasBeenLoaded = true;
 
-                        _debugger.count("ViewPresenter prepared html template... attempt #");
+                        _debugger.count("ViewPresenter prepared html template... #");
 
                         // return control to PresenterManager with passing updated event object
                         _DISPATCHER_OBJECT.dispatchEvent(_EVENTS_OBJECT.statelessEvents.onGotNextViewResources.eventName, getNextViewEventObject);
