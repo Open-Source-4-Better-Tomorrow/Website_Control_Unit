@@ -1,8 +1,8 @@
-# vWebsite Mechanism &nbsp;:hash::one:.:zero: &nbsp;&nbsp;:new::free:&nbsp;:heavy_check_mark:
+# Website Control Unit, a.k.a Progressive Website Mechanism &nbsp;:hash::one:.:zero: &nbsp;&nbsp;:new::free:&nbsp;:heavy_check_mark:
 ## Codenamed : [ :hamburger: Project ] &nbsp;:zap:
-vNext mechanism powering vWebsite 1.0 Design Concept's DHTML MVP PV internals !
+vNext mechanism powering DHTML MVP PV internals of Progressive Website Concept 1.0 !
 
-![vWebsite Mechanism Logo](/vNext_Mechanism_Logo.png)
+![Website Control Unit](/Website_Control_Unit_logo.png)
 
 ## All stuff is developed under exclusive control from C4B Solutions Lab &nbsp;:registered:
 ## No any conflict of interests involved. 

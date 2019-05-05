@@ -1,2 +1,0 @@
-/Presenter/ModelPresenter/utils/vs-model-helper.js,
-/Presenter/ModelPresenter/ModelPresenter.js

@@ -1,0 +1,27 @@
+{
+    "fast_initial_view" : {
+        "rootPath" : "/View/fast-initial-view/",
+        "css" : {
+            "isRequired" : false,
+            "relativePath" : "css/",
+            "fonts" : [],
+            "waitForAll" : false
+        },
+        "html" : {
+            "relativePath" : "html/fast-initial-view-template.html"
+        }
+    },
+
+    "main_view" : {
+        "rootPath" : "/View/main-view/",
+        "css" : {
+            "isRequired" : true,
+            "relativePath" : "css/",
+            "fonts" : ["index__misc.css", "normalize.css"],
+            "waitForAll" : true
+        },
+        "html" : {
+            "relativePath" : "html/main-view-template.html"
+        }
+    }
+}

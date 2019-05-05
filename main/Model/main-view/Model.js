@@ -15,6 +15,9 @@
 
 (function () {
 
+    /**
+     * This is a private object, a.k.a implementation details (~ behind the scenes logic etc.)
+    */
     var _VIEW_MODEL_OBJECT = {
         __init__: function () {
             // init variables
@@ -111,10 +114,73 @@
                         document.removeEventListener(eventName, eventListener);
                     }
                 }
+            },
+
+            getData: function() {
+                return getData_I_1L();
+
+
+
+                /**
+                 * Local helper functions
+                */
+                function getData_I_1L() {
+                    return {
+                                some_key_1: {
+                                    tagPrefix:  "",
+                                    tagName: "h1",
+                                    content: "Hello from Hamburger Project !"
+                                },
+
+                                some_key_2: {
+                                    tagPrefix:  "",
+                                    tagName: "h2",
+                                    content: "Officially called [<span class=\"mechanism_name\"> Website Control Unit </span>]"
+                                },
+
+                                some_key_3: {
+                                    tagPrefix:  "",
+                                    tagName: "h3",
+                                    content: "Core mechanism of <span class=\"part_of_project_name\"> Progressive Website Concept 1.0 </span>"
+                                }
+                           };
+                }
             }
         }
     };
 
+
+    /**
+     * This is a public object that is requested by the ModelPresenter.
+     *
+     * It has to have these two "hard-coded" properites called [Data] and [DataToViewBinder].
+     *
+     * Implementation of the aforementioned props is open to you, i.e. you have to provide valid stuff for these two properties !
+     *
+     * - [Data] is a property that delivers final view data
+     * - [DataToViewBinder.get()] is function that knows the logic of how to "tie" data to html template
+     *
+     * This object [_VIEW_MODEL_EXPOSER] should be considered as kind of pre-defined object ! (You just copy and paste it into your own Model's module and provide the aforementioned implementation)
+    */
+    var _VIEW_MODEL_EXPOSER = {
+        Data: _VIEW_MODEL_OBJECT.Functions.getData(),
+
+        DataToViewBinder: {
+            get: function() {
+                return _VIEW_MODEL_OBJECT.Functions.viewModelBinder;
+            }
+        }
+    };
+
+    /**
+     * This is an entry point to this model.
+     *
+     * It has to have this "hard-coded" event called [OnViewModelExposeYourData].
+     *
+     * Implementation of this event handler should not be changed !
+     *
+     * This object [_EVENTS_OBJECT] should be considered as kind of pre-defined object ! (You just copy and paste it into your own Model's module and provide the aforementioned implementation)
+    */
     var _EVENTS_OBJECT = {
         initEvents: {
             onViewModelExposeYourData: {
@@ -139,7 +205,7 @@
                         unbindExposingModel_I_2L();
 
                         // return the model data
-                        handleNextViewModelCallback(_VIEW_MODEL_OBJECT, details);
+                        handleNextViewModelCallback(_VIEW_MODEL_EXPOSER, details);
 
 
 

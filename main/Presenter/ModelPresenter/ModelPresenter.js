@@ -86,7 +86,7 @@
                         // reference the source event
                         var getNextViewEventObject = event.detail;
 
-                        // prepare the next model data, i.e. output has to match the viewModel object structure !
+                        // prepare the next model data
                         _DISPATCHER_OBJECT.dispatchEvent(_EVENTS_OBJECT.statelessEvents.onGetNextViewModel.eventName, processNextViewModel_I_2L);
 
 
@@ -101,15 +101,9 @@
                                     model:  {
                                         required : viewModel.isRequired,
 
-                                        data: {
-                                            a1: {
-                                                tagPrefix: "",
-                                                tagName : "h1",
-                                                content: "Hello from Hamburger Project !"
-                                            }
-                                        },
+                                        data: viewModel.Data,
 
-                                        bindFunc: viewModel.Functions.viewModelBinder,
+                                        bindFunc: viewModel.DataToViewBinder.get(),
 
                                         isLast : isLast
                                     }
@@ -126,8 +120,18 @@
                                          * Third argument is callback that has to be invoked when all actions completed successfully, otherwise flow of the logic can be unpredictable.
                                         */
                                         bindFunc: function(htmlTemplate, modelData, bindingCompletedCallback, isLast) {
+                                            // some binding logic takes place here
+
+
+                                            /**
+                                             * When all binding is completed, notify appropriately.
+                                             * This must be a logically last operation in this method !
+                                             * Otherwise flow of the logic can be unpredictable.
+                                            */
                                             bindingCompletedCallback(isLast);
-                                        }
+                                        },
+
+                                        isLast : false
                                     }
                                };
                             }
@@ -135,7 +139,7 @@
                             // update event object
                             getNextViewEventObject.modelHasBeenLoaded = true;
 
-                            _debugger.count("ModelPresenter prepared model data... #");
+                            _debugger.count("ModelPresenter prepared model data... # ");
 
                             // return control to PresenterManager with passing updated event object
                             _DISPATCHER_OBJECT.dispatchEvent(_EVENTS_OBJECT.statelessEvents.onGotNextViewResources.eventName, getNextViewEventObject);

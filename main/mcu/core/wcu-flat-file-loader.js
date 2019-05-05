@@ -17,15 +17,15 @@
     var _CUSTOM_FLAT_FILE_LOAD_OBJECT_FACTORY = {
         Factory: {
             LoadObject: {
-                createNew: function (resource_type, resource_separator, notification_event, isJSON, resilient_attempt_time_interval, secondLevelEventDetail_array) {
-                    return createNew_I_1L(resource_type, resource_separator, notification_event, isJSON, resilient_attempt_time_interval, secondLevelEventDetail_array);
+                createNew: function (resource_type, resource_separator, notification_event, isJSON, isHTML, resilient_attempt_time_interval, secondLevelEventDetail_array) {
+                    return createNew_I_1L(resource_type, resource_separator, notification_event, isJSON, isHTML, resilient_attempt_time_interval, secondLevelEventDetail_array);
 
 
 
                     /**
                      * Local helper functions
                     */
-                    function createNew_I_1L(resource_type, resource_separator, notification_event, isJSON, resilient_attempt_time_interval, secondLevelEventDetail_array) {
+                    function createNew_I_1L(resource_type, resource_separator, notification_event, isJSON, isHTML, resilient_attempt_time_interval, secondLevelEventDetail_array) {
                         // throw error if no notification event present
                         if(!notification_event)
                             throw Error("No valid notification event provided to dispatch upon successful loading of resources !");
@@ -41,6 +41,8 @@
                                     notification_event_I: notification_event,
 
                                     isJSON: isJSON || false,
+
+                                    isHTML: isHTML || false,
 
                                     resilient_attempt_time_interval_I: resilient_attempt_time_interval || 50,
 
@@ -117,6 +119,9 @@
                                         if(_CUSTOM_FLAT_FILE_LOAD_OBJECT.Loading._internals_.isJSON) {
                                             return handleJSONFormat_I_2L(resource_array_string);
                                         }
+                                        else if(_CUSTOM_FLAT_FILE_LOAD_OBJECT.Loading._internals_.isHTML) {
+                                            return handleHTMLFormat_I_2L(resource_array_string);
+                                        }
                                         // otherwise handle plain text format
                                         else {
                                             return handlePlainTextFormat_I_2L(resource_array_string);
@@ -133,6 +138,11 @@
 
                                             // dispatch an event
                                             prepareAndDispatchEvent_I_2L(jsonObject);
+                                        }
+
+                                        function handleHTMLFormat_I_2L(content) {
+                                            // dispatch an event
+                                            prepareAndDispatchEvent_I_2L(content);
                                         }
 
                                         function handlePlainTextFormat_I_2L(content) {

@@ -45,12 +45,12 @@
         document.addEventListener("DOMContentLoaded", function() {
           ral.GET_RAL_OBJECT.Loader.loadAsync(
             [
-                '../mcu/core/_DEBUGGER.js',
-                '../mcu/core/vw-custom-progress-bar.js',  // load up progress bar in the first place to boost UX
-                '../mcu/core/vw-custom-polyfills.js',     // load up custom polyfills to ensure cross-browser feature compatibility
-                '../mcu/core/vw-flat-file-loader.js',     // load up core library that will handle loading of flat files
-                '../mcu/core/vw-model-to-view-binder.js',     // load up core library that will handle loading of flat files
-                '../mcu/fcu.js'                           // Flow Control Unit, a.k.a entry point to the mechanism
+                '../mcu/DEBUG/_DEBUGGER.js',
+                '../mcu/core/wcu-custom-progress-bar.js',  // load up progress bar in the first place to boost UX
+                '../mcu/core/wcu-custom-polyfills.js',     // load up custom polyfills to ensure cross-browser feature compatibility
+                '../mcu/core/wcu-flat-file-loader.js',     // load up core library that will handle loading of flat files
+                '../mcu/core/wcu-model-to-view-binder.js',     // load up core library that will handle loading of flat files
+                '../mcu/fcu.js'                            // Flow Control Unit, a.k.a entry point to the mechanism
             ],
             'js',
             /** 

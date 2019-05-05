@@ -29,21 +29,27 @@
                 // setup event flow
                 this.resource_notification_array = [
                                                     _EVENTS_OBJECT.statefulEvents.onPresenterViewReady.eventName,
+                                                    _EVENTS_OBJECT.statefulEvents.onPresenterViewMetadataReady.eventName,
                                                     _EVENTS_OBJECT.statefulEvents.onPresenterModelReady.eventName
                                                    ];
             },
 
-            resource_path_array: ['/Presenter/Presenter.View.resources.txt', '/Presenter/Presenter.Model.resources.txt'],
+            resource_path_array: ['/Presenter/Presenter.View.core.resources.txt', '/Presenter/Presenter.View.metadata.resources.txt', '/Presenter/Presenter.Model.core.resources.txt'],
 
-            resource_type_array: ['js', 'js'],
+            resource_type_array: ['js', 'json', 'js'],
 
-            resource_separator_array: [',', ','],
+            resource_separator_array: [',', '', ','],
 
             resource_notification_array: null,
 
-            resource_isJSONFormat_array: [false, false],
+            resource_isJSONFormat_array: [false, true, false],
 
-            resilient_attempt_time_interval: 50
+            resource_isHTMLFormat_array: [false, false, false],
+
+            resilient_attempt_time_interval: 50,
+
+            view_metadata: null,
+            view_metadata_index: -1
         },
 
         Functions: {
@@ -62,10 +68,33 @@
                                                                 _CORE_OBJECT.Variables.resource_separator_array[i],
                                                                 _CORE_OBJECT.Variables.resource_notification_array[i],
                                                                 _CORE_OBJECT.Variables.resource_isJSONFormat_array[i],
+                                                                _CORE_OBJECT.Variables.resource_isHTMLFormat_array[i],
                                                                 _CORE_OBJECT.Variables.resilient_attempt_time_interval
                                                                 )
                                                                 .Functions.loadFlatFile(_CORE_OBJECT.Variables.resource_path_array[i]);
                     }
+                }
+            },
+
+            processTemplatesMetadata: function(metadataObject) {
+                return processTemplatesMetadata_I_1L(metadataObject);
+
+
+
+                /**
+                 * Local helper functions
+                */
+                function processTemplatesMetadata_I_1L(metadataObject) {
+                    // create array
+                    var viewTemplates_array = [];
+
+                    // put all view templates from object to array
+                    for(var key in metadataObject) {
+                        viewTemplates_array.push(metadataObject[key]);
+                    }
+
+                    // store array for later usage
+                    _CORE_OBJECT.Variables.view_metadata = viewTemplates_array;
                 }
             },
 
@@ -159,7 +188,36 @@
                         self.hasCompleted = true;
 
                         // check if all stateful events completed successfully by this time
-                        if(_EVENTS_OBJECT.statefulEvents.onPresenterModelReady.hasCompleted) {
+                        if(_EVENTS_OBJECT.statefulEvents.onPresenterViewMetadataReady.hasCompleted && _EVENTS_OBJECT.statefulEvents.onPresenterModelReady.hasCompleted) {
+                            // return control to FCU
+                            _DISPATCHER_OBJECT.dispatchEvent(_EVENTS_OBJECT.statelessEvents.onPresenterReady.eventName);
+                        }
+                    }
+                },
+
+                hasCompleted: false
+            },
+
+            onPresenterViewMetadataReady: {
+                eventName: 'OnPresenterViewMetadataReady',
+
+                eventListener: function(event) {
+                    return onPresenterViewMetadataReady_I_1L(_EVENTS_OBJECT.statefulEvents.onPresenterViewMetadataReady, event);
+
+
+
+                    /**
+                     * Local helper functions
+                    */
+                    function onPresenterViewMetadataReady_I_1L(self, eventObject) {
+                        // process event detial data
+                        _CORE_OBJECT.Functions.processTemplatesMetadata(eventObject.detail[0]);
+
+                        // update event completion state
+                        self.hasCompleted = true;
+
+                        // check if all stateful events completed successfully by this time
+                        if(_EVENTS_OBJECT.statefulEvents.onPresenterViewReady.hasCompleted && _EVENTS_OBJECT.statefulEvents.onPresenterModelReady.hasCompleted) {
                             // return control to FCU
                             _DISPATCHER_OBJECT.dispatchEvent(_EVENTS_OBJECT.statelessEvents.onPresenterReady.eventName);
                         }
@@ -185,7 +243,7 @@
                         self.hasCompleted = true;
 
                         // check if all stateful events completed successfully by this time
-                        if(_EVENTS_OBJECT.statefulEvents.onPresenterViewReady.hasCompleted) {
+                        if(_EVENTS_OBJECT.statefulEvents.onPresenterViewReady.hasCompleted && _EVENTS_OBJECT.statefulEvents.onPresenterViewMetadataReady.hasCompleted) {
                             // return control to FCU
                             _DISPATCHER_OBJECT.dispatchEvent(_EVENTS_OBJECT.statelessEvents.onPresenterReady.eventName);
                         }
@@ -209,8 +267,7 @@
                      * Local helper functions
                     */
                     function onGetNextView_I_1L() {
-                        _debugger.check(true);
-                        _debugger.count("PresenterManager received an order to fetch next view... #");
+                        _debugger.count("PresenterManager received an order to yield the next view... # ");
 
                         _DISPATCHER_OBJECT.dispatchEvent(_EVENTS_OBJECT.statelessEvents.onLoadNextViewResources.eventName, _EVENTS_OBJECT.nextViewEvents.onGetNextView);
                     }
@@ -225,6 +282,38 @@
                 resetToDefault: function() {
                     this.viewHasBeenLoaded = this.modelHasBeenLoaded = false;
                     this.viewTemplate = this.viewModel = null;
+                }
+            },
+
+            onGetNextViewTemplate: {
+                eventName: 'OnGetNextViewTemplate',
+
+                eventListener: function(event) {
+                    return onGetNextViewTemplate_I_1L(event);
+
+
+
+                    /**
+                     * Local helper functions
+                    */
+                    function onGetNextViewTemplate_I_1L(event) {
+                        _debugger.count("PresenterManager received a request from a ViewPresenter to yield next view template metadata... # ");
+
+                        // fetch the next template metadata
+                        var nextViewTemplateMetadata = _CORE_OBJECT.Variables.view_metadata[++_CORE_OBJECT.Variables.view_metadata_index];
+
+                        // check if this is last view template in the whole workflow
+                        var isLast = _CORE_OBJECT.Variables.view_metadata_index + 1 === _CORE_OBJECT.Variables.view_metadata.length;
+
+                        // cache event details
+                        var details = event.detail;
+
+                        // reference callback of these two-item array
+                        var processNextViewTemplateCallback = details[1];
+
+                        // yield this template's metadata to ViewPresenter
+                        processNextViewTemplateCallback(nextViewTemplateMetadata, isLast, details[0]);
+                    }
                 }
             },
 
@@ -259,7 +348,7 @@
                             _DISPATCHER_OBJECT.dispatchEvent(
                                                                 _EVENTS_OBJECT.statelessEvents.onBindNextViewResourcesTogether.eventName,
                                                                 {
-                                                                    view: viewTemplate.template,
+                                                                    view: viewTemplate.template.data,
 
                                                                     model: viewModel.model.data,
 
@@ -269,15 +358,20 @@
                                                                         onBindingCompleted: function(isWorkflowCompleted) {
                                                                             _debugger.count("Binding model with template have been completed... ! # ");
 
-                                                                            if(isWorkflowCompleted)
-                                                                                _debugger.count("Whole workflow has been completed... ! # ");
-                                                                            else
+                                                                            if(!isWorkflowCompleted) {
+                                                                                _debugger.check();
                                                                                 // otherwise after successful binding took place, yield the next view
                                                                                 _DISPATCHER_OBJECT.dispatchEvent(_EVENTS_OBJECT.nextViewEvents.onGetNextView.eventName);
+                                                                            }
+                                                                            // else block can be safely removed. It's provided here for debugging purposes
+                                                                            else {
+                                                                                _debugger.count("Whole workflow has been completed... ! # ");
+                                                                                _debugger.check();
+                                                                            }
                                                                         }
                                                                     },
 
-                                                                    isLast: viewModel.model.isLast
+                                                                    isLast: viewModel.model.isLast && viewTemplate.template.isLast
                                                                 }
                                                             );
                         }

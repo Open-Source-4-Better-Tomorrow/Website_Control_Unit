@@ -42,10 +42,12 @@
 
             resource_isJSONFormat_array: [false, true],
 
+            resource_isHTMLFormat_array: [false, false],
+
             resilient_attempt_time_interval: 50,
 
             model_metadata: null,
-            model_metadata_index: -1,
+            model_metadata_index: -1
         },
 
         Functions: {
@@ -64,6 +66,7 @@
                                                                 _CORE_OBJECT.Variables.resource_separator_array[i],
                                                                 _CORE_OBJECT.Variables.resource_notification_array[i],
                                                                 _CORE_OBJECT.Variables.resource_isJSONFormat_array[i],
+                                                                _CORE_OBJECT.Variables.resource_isHTMLFormat_array[i],
                                                                 _CORE_OBJECT.Variables.resilient_attempt_time_interval
                                                                 )
                                                                 .Functions.loadFlatFile(_CORE_OBJECT.Variables.resource_path_array[i]);
@@ -232,7 +235,7 @@
                      * Local helper functions
                     */
                     function onGetNextViewModel_I_1L(event) {
-                        _debugger.count("ModelManager received an order to fetch next view's model... # ");
+                        _debugger.count("ModelManager received an order to yield the next view model... # ");
 
                         // fetch the next model metadata
                         var nextViewModelMetadata = _CORE_OBJECT.Variables.model_metadata[++_CORE_OBJECT.Variables.model_metadata_index];
@@ -246,7 +249,7 @@
                             // store event detail and next model metadata
                             secondLevelEventDetails = [event.detail, nextViewModelMetadata];
 
-                            // load up physical model given its phisical location (load up JavaScript file)
+                            // load up physical model given its physical location (load up JavaScript file)
                             ral.GET_RAL_OBJECT.Loader.loadAsync(
                                                                     [
                                                                         nextViewModelMetadata.relativePath + nextViewModelMetadata.modelName
@@ -286,7 +289,7 @@
                      * Local helper functions
                     */
                     function onNextViewModelPhysicallyLoaded_I_1L(event) {
-                        _debugger.count("ModelManager received a notification that next view's model could be available... # ");
+                        _debugger.count("ModelManager received a notification that next view model was loaded up into memory and is available to be fetched... # ");
 
                         // cache event details
                         var details = event.detail;

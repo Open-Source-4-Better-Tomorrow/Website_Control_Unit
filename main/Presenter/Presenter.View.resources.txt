@@ -1,9 +1,0 @@
-/Presenter/ViewPresenter/browser/browser-address-bar-utility-0.0.1.js,
-/Presenter/ViewPresenter/browser/browser-utility-1.0.4.js,
-/Presenter/ViewPresenter/core/vw-custom-hover-animation.js,
-/Presenter/ViewPresenter/core/vw-custom-markup.js,
-/Presenter/ViewPresenter/core/vw-custom-text-looper.js,
-/Presenter/ViewPresenter/dom/jquery-3.2.1.min.js,
-/Presenter/ViewPresenter/dom/jquery-ui.min.js,
-/Presenter/ViewPresenter/seo/my-google-analytics.js,
-/Presenter/ViewPresenter/ViewPresenter.js

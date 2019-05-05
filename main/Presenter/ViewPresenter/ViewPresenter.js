@@ -61,6 +61,10 @@
 
     var _EVENTS_OBJECT = {
         statelessEvents: {
+            onGetNextViewTemplate: {
+                eventName: 'OnGetNextViewTemplate'
+            },
+
             onGotNextViewResources: {
                 eventName: 'OnGotNextViewResources'
             }
@@ -79,25 +83,185 @@
                      * Local helper functions
                     */
                     function onLoadNextViewResources_I_1L(event) {
-                        // reference the source event
-                        var getNextViewEventObject = event.detail;
+                        // prepare event detail data
+                        var details = [event.detail, processNextViewTemplate_I_2L];
+
+                        // prepare the next view template
+                        _DISPATCHER_OBJECT.dispatchEvent(_EVENTS_OBJECT.statelessEvents.onGetNextViewTemplate.eventName, details);
+
+
 
                         /**
-                         * Prepare the next HTML template... (some calculations take place here)
+                         * Local helper functions
                         */
-                        getNextViewEventObject.viewTemplate = {
-                                                                template: "<h1></h1>"
-                                                              };
+                        function processNextViewTemplate_I_2L(nextViewTemplateMetadata, isLast, getNextViewEventObject) {
+                                // store event detail and next template metadata
+                                var secondLevelEventDetails = [isLast, getNextViewEventObject];
 
-                        // update event object
-                        getNextViewEventObject.viewHasBeenLoaded = true;
+                                // load HTML template for this view
+                                flatFileAPI.Factory.LoadObject.createNew(
+                                                                            null,
+                                                                            null,
+                                                                            _EVENTS_OBJECT.statefulEvents.onHTMLLoaded.eventName,
+                                                                            false,
+                                                                            true,
+                                                                            null,
+                                                                            secondLevelEventDetails
+                                                                        )
+                                                                        .Functions.loadFlatFile((nextViewTemplateMetadata.rootPath + nextViewTemplateMetadata.html.relativePath).trim().replace('\r\n', ''));
 
-                        _debugger.count("ViewPresenter prepared html template... #");
+                                // load CSS stylesheets if there are any
+                                if(nextViewTemplateMetadata.css.isRequired) {
+                                    // test whether not to wait for all CSS to be fully loaded, and bind model data with html template
+                                    if(!nextViewTemplateMetadata.css.waitForAll) {
+                                        // "pretend" that loading of all CSS stylesheets has been completed
+                                        _EVENTS_OBJECT.statefulEvents.onWaitForCSSLoaded.hasCompleted = true;
+                                    }
 
-                        // return control to PresenterManager with passing updated event object
-                        _DISPATCHER_OBJECT.dispatchEvent(_EVENTS_OBJECT.statelessEvents.onGotNextViewResources.eventName, getNextViewEventObject);
+                                    // prepare full path of each CSS stylesheet
+                                    nextViewTemplateMetadata.css.fonts.forEach(function(item, index) {
+                                                                                                        nextViewTemplateMetadata.css.fonts[index] =
+                                                                                                                                nextViewTemplateMetadata.rootPath +
+                                                                                                                                nextViewTemplateMetadata.css.relativePath +
+                                                                                                                                item.trim().replace('\r\n', '');
+                                                                                                     }
+                                                                              );
+
+                                    // load up physical template's stylesheet given its physical location (load up CSS file)
+                                    ral.GET_RAL_OBJECT.Loader.loadAsync(
+                                        nextViewTemplateMetadata.css.fonts,
+                                        'css',
+                                        /**
+                                         * Modules returned by ral.GET_RAL_OBJECT.Loader.loadAsync are executed in the order provided above.
+                                         * They're available globally via window object, therefore you can skip them in the function's arguments.
+                                        */
+                                        onCSSLoad_I_3L
+                                    );
+                                }
+                                // otherwise "mark" that loading of CSS stylesheets has been completed
+                                else {
+                                    // "pretend" that loading of all CSS stylesheets has been completed
+                                    _EVENTS_OBJECT.statefulEvents.onWaitForCSSLoaded.hasCompleted = true;
+                                }
+
+
+
+                                /**
+                                 * Local helper functions
+                                */
+                                function onCSSLoad_I_3L() {
+                                    // if wait for all CSS to be fully loaded
+                                    if(nextViewTemplateMetadata.css.waitForAll) {
+                                        // notify that all CSS stylesheets have been loaded as well as external Google Fonts files
+                                        _DISPATCHER_OBJECT.dispatchEvent(_EVENTS_OBJECT.statefulEvents.onWaitForCSSLoaded.eventName, secondLevelEventDetails);
+                                    }
+                                }
+                        }
                     }
                 }
+            },
+
+            onWaitForCSSLoaded: {
+                eventName: 'OnWaitForCSSLoaded',
+
+                eventListener: function(event) {
+                    return onWaitForCSSLoaded_I_1L(_EVENTS_OBJECT.statefulEvents.onWaitForCSSLoaded, event);
+
+
+
+                    /**
+                     * Local helper functions
+                    */
+                    function onWaitForCSSLoaded_I_1L(self, event) {
+                        // update event completion state
+                        self.hasCompleted = true;
+
+                        // cache event details
+                        var details = event.detail;
+
+                        // check if all stateful events completed successfully by this time
+                        if(_EVENTS_OBJECT.statefulEvents.onHTMLLoaded.hasCompleted) {
+                            // is this template the last one in the workflow
+                            var isLast = details[0];
+
+                            // reference next view event object
+                            var getNextViewEventObject = event.detail[1];
+
+                            // update next view event object
+                            getNextViewEventObject.viewTemplate = {
+                                template:  {
+                                    data: _EVENTS_OBJECT.statefulEvents.onHTMLLoaded.htmlTemplate,
+
+                                    isLast: isLast
+                                }
+                           };
+
+                            // update event object
+                            getNextViewEventObject.viewHasBeenLoaded = true;
+
+                            _debugger.count("ViewPresenter prepared html template... # ");
+
+                            // return control to PresenterManager with passing updated event object
+                            _DISPATCHER_OBJECT.dispatchEvent(_EVENTS_OBJECT.statelessEvents.onGotNextViewResources.eventName, getNextViewEventObject);
+                        }
+                    }
+                },
+
+                hasCompleted: false
+            },
+
+            onHTMLLoaded: {
+                eventName: 'OnHTMLLoaded',
+
+                eventListener: function(event) {
+                    return onHTMLLoaded_I_1L(_EVENTS_OBJECT.statefulEvents.onHTMLLoaded, event);
+
+
+
+                    /**
+                     * Local helper functions
+                    */
+                    function onHTMLLoaded_I_1L(self, event) {
+                        // update event completion state
+                        self.hasCompleted = true;
+
+                        // cache event details
+                        var details = event.detail;
+
+                        // store html template inside this custom event object
+                        self.htmlTemplate = details[0];
+
+                        // check if all stateful events completed successfully by this time
+                        if(_EVENTS_OBJECT.statefulEvents.onWaitForCSSLoaded.hasCompleted) {
+                            // is this template the last one in the workflow
+                            var isLast = details[1];
+
+                            // reference next view event object
+                            var getNextViewEventObject = details[2];
+
+                            // update next view event object
+                            getNextViewEventObject.viewTemplate = {
+                                template:  {
+                                    data: self.htmlTemplate,
+
+                                    isLast: isLast
+                                }
+                           };
+
+                            // update event object
+                            getNextViewEventObject.viewHasBeenLoaded = true;
+
+                            _debugger.count("ViewPresenter prepared html template... # ");
+
+                            // return control to PresenterManager with passing updated event object
+                            _DISPATCHER_OBJECT.dispatchEvent(_EVENTS_OBJECT.statelessEvents.onGotNextViewResources.eventName, getNextViewEventObject);
+                        }
+                    }
+                },
+
+                hasCompleted: false,
+
+                htmlTemplate: null
             }
         }
     };
