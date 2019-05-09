@@ -1,6 +1,9 @@
-# Website Control Unit, a.k.a Progressive Website Mechanism &nbsp;:hash::one:.:zero: &nbsp;&nbsp;:new::free:&nbsp;:heavy_check_mark:
+# Website Control Unit, a.k.a Progressive Website Mechanism
+
 ## Codenamed : [ :hamburger: Project ] &nbsp;:zap:
-vNext mechanism powering DHTML MVP PV internals of Progressive Website Concept 1.0 !
+vNext mechanism powering DHTML MVP PV internals of Progressive Website Concept 1.0 ! (PWC)
+
+## Version:&nbsp;:hash::one:.:zero:&nbsp;&nbsp;:new::free:&nbsp;:heavy_check_mark:
 
 ![Website Control Unit](/Website_Control_Unit_logo.png)
 
