@@ -13,6 +13,6 @@ vNext mechanism powering DHTML MVP PV internals of Progressive Website Concept 1
 ## Developer : Łukasz Dąbrowski &nbsp;&nbsp;:poland:
 ### Title     : Lead Engineer
 #
-#### GA Release : 2020-01-15 &nbsp;&nbsp;:pushpin:
+#### GA Release : 2019-06-01 &nbsp;&nbsp;:pushpin: (Yes, it's gonna be GA)&nbsp;:zap:
 #
 ###### :information_source: &nbsp;&nbsp; [C4B Solutions](https://c4b.solutions)
