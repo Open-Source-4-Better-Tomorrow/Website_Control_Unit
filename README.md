@@ -5,7 +5,7 @@ vNext mechanism powering DHTML MVP PV internals of Progressive Website Concept 1
 
 ## Version:&nbsp;:hash::one:.:zero:&nbsp;&nbsp;:new::free:&nbsp;:heavy_check_mark:
 ## Status:&nbsp;UAD
-## GA Release : 2019-06-01 &nbsp;&nbsp;:pushpin: (Yes, it's gonna be GA)&nbsp;:zap:
+## GA Release : 2019-06-01 &nbsp;&nbsp;:pushpin::zap: (Yes, it's gonna be GA)
 
 ![Website Control Unit](/Website_Control_Unit_logo.png)
 
