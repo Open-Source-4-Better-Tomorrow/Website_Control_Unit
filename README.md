@@ -12,7 +12,7 @@ vNext mechanism powering DHTML MVP PV internals of Progressive Website Concept 1
 ## All stuff is developed under exclusive control from C4B Solutions Lab &nbsp;:registered:
 ## No any conflict of interests involved. 
 #
-## Developer : Łukasz Dąbrowski &nbsp;&nbsp;:poland:
-### Title     : Lead Engineer
+## Developer:&nbsp; Łukasz Dąbrowski &nbsp;&nbsp;:poland:
+### Title:&nbsp; [Lead Engineer](https://www.google.com "What does a lead engineer do ?")
 #
 ###### :information_source: &nbsp;&nbsp; [C4B Solutions](https://c4b.solutions)
