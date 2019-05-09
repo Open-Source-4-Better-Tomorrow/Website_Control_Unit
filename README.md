@@ -8,7 +8,7 @@ vNext mechanism powering DHTML MVP PV internals of Progressive Website Concept 1
 ## No any conflict of interests involved. 
 #
 ## Developer : Łukasz Dąbrowski &nbsp;&nbsp;:poland:
-### Title     : Software Engineer
+### Title     : Lead Engineer
 #
 #### GA Release : 2020-01-15 &nbsp;&nbsp;:pushpin:
 #
