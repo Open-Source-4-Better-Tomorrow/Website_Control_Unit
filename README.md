@@ -1,11 +1,11 @@
 # Website Control Unit, a.k.a Progressive Website Mechanism
 
-## Codenamed : [ :hamburger: Project ] &nbsp;:zap:
+## Codenamed: [ :hamburger: Project ] &nbsp;:zap:
 vNext mechanism powering DHTML MVP PV internals of Progressive Website Concept 1.0 ! (PWC)
 
 ## Version:&nbsp;:hash::one:.:zero:&nbsp;&nbsp;:new::free:&nbsp;:heavy_check_mark:
 ## Status:&nbsp;UAD
-## GA Release : 2019-06-01 &nbsp;&nbsp;:pushpin::zap: (Yes, it's gonna be GA)
+## GA Release: 2019-06-01 &nbsp;:pushpin::zap: (Yes, it's gonna be GA)
 
 ![Website Control Unit](/Website_Control_Unit_logo.png)
 
