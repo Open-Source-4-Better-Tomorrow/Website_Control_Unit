@@ -10,9 +10,10 @@ This is the vNext mechanism powering DHTML MVP PV internals of Progressive Websi
 ## Status:&nbsp;UAD&nbsp;(Heading toward RC version)&nbsp;:zap:
 ## GA Release: 2019-06-01 Local Time &nbsp;:pushpin:
 ## License:&nbsp;:free:&nbsp;:heavy_check_mark:
+#
 ## All stuff is developed under exclusive control from C4B Solutions Lab &nbsp;:registered:
 ## No any conflict of interests involved. 
-#
+##
 ## Developer:&nbsp; Łukasz Dąbrowski &nbsp;&nbsp;:poland:
 ### Title:&nbsp; [Lead Engineer](https://medium.com/engineering-leadership/what-does-a-lead-engineer-do-ec8cdc119ff7 "What does a lead engineer do ?")
 #
