@@ -101,7 +101,7 @@
                                     model:  {
                                         required : viewModel.isRequired,
 
-                                        data: viewModel.Data,
+                                        data: viewModel.Data.get(),
 
                                         bindFunc: viewModel.DataToViewBinder.get(),
 
@@ -120,7 +120,26 @@
                                          * Third argument is callback that has to be invoked when all actions completed successfully, otherwise flow of the logic can be unpredictable.
                                         */
                                         bindFunc: function(htmlTemplate, modelData, bindingCompletedCallback, isLast) {
-                                            // some binding logic takes place here
+                                            // define constants
+                                            var headBegin = '<head>';
+                                            var headEnd = '</head>';
+
+                                            var bodyBegin = '<body>';
+                                            var bodyEnd = '</body>';
+
+                                            var emptyString = '';
+
+                                            // default binding logic takes place here - extract head section
+                                            var pageHEAD = htmlTemplate.substring(htmlTemplate.indexOf(headBegin), htmlTemplate.lastIndexOf(headEnd));
+                                            pageHEAD = pageHEAD.replace(headBegin, emptyString);
+
+                                            // default binding logic takes place here - extract body section
+                                            var pageBody = htmlTemplate.substring(htmlTemplate.indexOf(bodyBegin), htmlTemplate.lastIndexOf(bodyEnd));
+                                            pageBody = pageBody.replace(bodyBegin, emptyString);
+
+                                            // "bind" (inject) head and body into container
+                                            document.head.innerHTML = pageHEAD;
+                                            document.body.innerHTML = pageBody;
 
 
                                             /**

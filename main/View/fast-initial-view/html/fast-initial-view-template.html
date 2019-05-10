@@ -3,7 +3,6 @@
 
 <head>
 	<meta charset="utf-8" />
-	<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src c4b.solutions 'unsafe-eval' 'unsafe-inline' https://www.google-analytics.com data:; style-src c4b.solutions 'unsafe-inline' https://fonts.googleapis.com; font-src c4b.solutions https://fonts.googleapis.com/ https://fonts.gstatic.com; img-src c4b.solutions https://www.google-analytics.com; connect-src c4b.solutions; worker-src 'self'" />
 	<meta name="google" content="notranslate" />
 	<meta name="robots" content="index,follow" />
 	<meta name="googlebot" content="index,follow" />
@@ -12,63 +11,32 @@
 	<title>C4B Solutions | C4B Design | C4B Software | Lukasz Dabrowski - Software Engineer | Łukasz Dąbrowski - Inżynier Oprogramowania</title>
 	<style>
 		/* here come CSS rules for Above-The-Fold-View */
-		.splash {
-			background-image: url('/View/fast-initial-view/images/core/splash_logo.png'); /* absolute path from the server root */
-			background-repeat: no-repeat;
-			background-size: 100% 500px;
+		body {
+			background-color: rgb(255, 234, 43);
 
-			height: 500px;
+			width: 96%;
+		}
+
+		div.fast_initial_view_frame {
+			color: rgb(20, 79, 124);
+
+			font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+			font-size: 2em;
 
 			margin-left: auto;
 			margin-right: auto;
-			margin-top: 9em;
+			margin-top: 20%;
 
-			opacity: 0;
+			text-align: center;
 
-			width: 543px;
-		}
-
-		.progressInfo {
-			float: left;
-
-			font-size: 2em;
-			font-family: cursive;
-
-			left: 43.5%;
-
-			margin-top: 0.3em;
-
-			position: relative;
-
-			width: 34%;
-
-			visibility: hidden;
-		}
-
-		.inline {
-			display: inline-block;
-		}
-
-		.progress_1,
-		.progress_2,
-		.progress_3 {
-			border: 1px solid #C10C06;
-
-			height: 0.05em;
-
-			width: 60px;
+			width: 98%;
 		}
 	</style>
 	<link rel="icon" href="/favicon.ico" />
 </head>
 
 <body>
-	<div class="splash"></div>
-	<div class="progressInfo">
-		<div class="inline progress_1"></div>
-		<div class="inline progress_2"></div>
-		<div class="inline progress_3"></div>
-	</div>
+	<div class="fast_initial_view_frame">Fast Initial View - it will replaced with subsequent views !</div>
 </body>
 
 </html>

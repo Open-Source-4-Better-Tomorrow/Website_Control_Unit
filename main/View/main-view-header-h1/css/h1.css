@@ -1,0 +1,13 @@
+.div_h1 {
+    font-family: 'Verdana', 'Helvetica', 'sans-serif';
+    font-size: 4em;
+
+    margin-left: auto;
+    margin-right: auto;
+
+    position: relative;
+
+    top: 20%;
+
+    width: 100%;
+}

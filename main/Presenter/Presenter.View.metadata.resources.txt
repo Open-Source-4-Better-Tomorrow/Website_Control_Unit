@@ -2,10 +2,7 @@
     "fast_initial_view" : {
         "rootPath" : "/View/fast-initial-view/",
         "css" : {
-            "isRequired" : false,
-            "relativePath" : "css/",
-            "fonts" : [],
-            "waitForAll" : false
+            "isRequired" : false
         },
         "html" : {
             "relativePath" : "html/fast-initial-view-template.html"
@@ -17,11 +14,50 @@
         "css" : {
             "isRequired" : true,
             "relativePath" : "css/",
-            "fonts" : ["index__misc.css", "normalize.css"],
-            "waitForAll" : true
+            "fonts" : ["normalize.css", "content.css"],
+            "waitForLoad" : true
         },
         "html" : {
             "relativePath" : "html/main-view-template.html"
+        }
+    },
+
+    "main_view_header_h1" : {
+        "rootPath" : "/View/main-view-header-h1/",
+        "css" : {
+            "isRequired" : true,
+            "relativePath" : "css/",
+            "fonts" : ["h1.css"],
+            "waitForLoad" : true
+        },
+        "html" : {
+            "relativePath" : "html/main-view-header-h1-template.html"
+        }
+    },
+
+    "main_view_header_h2" : {
+        "rootPath" : "/View/main-view-header-h2/",
+        "css" : {
+            "isRequired" : true,
+            "relativePath" : "css/",
+            "fonts" : ["h2.css"],
+            "waitForLoad" : true
+        },
+        "html" : {
+            "relativePath" : "html/main-view-header-h2-template.html"
+        }
+    },
+
+    "main_view_header_h3" : {
+        "rootPath" : "/View/main-view-header-h3/",
+        "css" : {
+            "isRequired" : true,
+            "relativePath" : "css/",
+            "fonts" : ["h3.css"],
+            "waitForLoad" : true
+        },
+        "html" : {
+            "relativePath" : "html/main-view-header-h3-template.html"
         }
     }
 }

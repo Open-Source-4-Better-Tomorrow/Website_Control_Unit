@@ -95,35 +95,47 @@
                          * Local helper functions
                         */
                         function processNextViewTemplate_I_2L(nextViewTemplateMetadata, isLast, getNextViewEventObject) {
-                                // store event detail and next template metadata
-                                var secondLevelEventDetails = [isLast, getNextViewEventObject];
+                            // store event detail and next template metadata
+                            var secondLevelEventDetails = [isLast, getNextViewEventObject];
 
-                                // load HTML template for this view
+                            // load HTML template for this view
+                            loadHTML_I_3L();
+
+                            // load CSS stylesheets if there are any
+                            loadCSS_I_3L();
+
+
+
+                            /**
+                             * Local helper functions
+                            */
+                            function loadHTML_I_3L() {
                                 flatFileAPI.Factory.LoadObject.createNew(
-                                                                            null,
-                                                                            null,
-                                                                            _EVENTS_OBJECT.statefulEvents.onHTMLLoaded.eventName,
-                                                                            false,
-                                                                            true,
-                                                                            null,
-                                                                            secondLevelEventDetails
-                                                                        )
-                                                                        .Functions.loadFlatFile((nextViewTemplateMetadata.rootPath + nextViewTemplateMetadata.html.relativePath).trim().replace('\r\n', ''));
+                                    null,
+                                    null,
+                                    _EVENTS_OBJECT.statefulEvents.onHTMLLoaded.eventName,
+                                    false,
+                                    true,
+                                    null,
+                                    secondLevelEventDetails
+                                )
+                                .Functions.loadFlatFile((nextViewTemplateMetadata.rootPath + nextViewTemplateMetadata.html.relativePath).trim().replace('\r\n', ''));
+                            }
 
-                                // load CSS stylesheets if there are any
+                            function loadCSS_I_3L() {
                                 if(nextViewTemplateMetadata.css.isRequired) {
                                     // test whether not to wait for all CSS to be fully loaded, and bind model data with html template
-                                    if(!nextViewTemplateMetadata.css.waitForAll) {
-                                        // "pretend" that loading of all CSS stylesheets has been completed
-                                        _EVENTS_OBJECT.statefulEvents.onWaitForCSSLoaded.hasCompleted = true;
+                                    if(!nextViewTemplateMetadata.css.waitForLoad) {
+                                        // notify that CSS load has logically completed
+                                        pretendCssWasLoaded_I_4L();
                                     }
 
                                     // prepare full path of each CSS stylesheet
                                     nextViewTemplateMetadata.css.fonts.forEach(function(item, index) {
                                                                                                         nextViewTemplateMetadata.css.fonts[index] =
-                                                                                                                                nextViewTemplateMetadata.rootPath +
-                                                                                                                                nextViewTemplateMetadata.css.relativePath +
-                                                                                                                                item.trim().replace('\r\n', '');
+                                                                                                                                            nextViewTemplateMetadata.rootPath +
+                                                                                                                                            nextViewTemplateMetadata.css.relativePath +
+                                                                                                                                            item.trim().replace('\r\n', '');
                                                                                                      }
                                                                               );
 
@@ -135,13 +147,13 @@
                                          * Modules returned by ral.GET_RAL_OBJECT.Loader.loadAsync are executed in the order provided above.
                                          * They're available globally via window object, therefore you can skip them in the function's arguments.
                                         */
-                                        onCSSLoad_I_3L
+                                        onCSSLoad_I_4L
                                     );
                                 }
                                 // otherwise "mark" that loading of CSS stylesheets has been completed
                                 else {
-                                    // "pretend" that loading of all CSS stylesheets has been completed
-                                    _EVENTS_OBJECT.statefulEvents.onWaitForCSSLoaded.hasCompleted = true;
+                                    // notify that CSS load has logically completed
+                                    pretendCssWasLoaded_I_4L();
                                 }
 
 
@@ -149,30 +161,36 @@
                                 /**
                                  * Local helper functions
                                 */
-                                function onCSSLoad_I_3L() {
+                                function pretendCssWasLoaded_I_4L() {
+                                    // mark that loading of all CSS stylesheets has logically been completed
+                                    _EVENTS_OBJECT.statefulEvents.onCSSLoaded.hasCompleted = true;
+                                }
+
+                                function onCSSLoad_I_4L() {
                                     // if wait for all CSS to be fully loaded
-                                    if(nextViewTemplateMetadata.css.waitForAll) {
+                                    if(nextViewTemplateMetadata.css.waitForLoad) {
                                         // notify that all CSS stylesheets have been loaded as well as external Google Fonts files
-                                        _DISPATCHER_OBJECT.dispatchEvent(_EVENTS_OBJECT.statefulEvents.onWaitForCSSLoaded.eventName, secondLevelEventDetails);
+                                        _DISPATCHER_OBJECT.dispatchEvent(_EVENTS_OBJECT.statefulEvents.onCSSLoaded.eventName, secondLevelEventDetails);
                                     }
                                 }
+                            }
                         }
                     }
                 }
             },
 
-            onWaitForCSSLoaded: {
-                eventName: 'OnWaitForCSSLoaded',
+            onCSSLoaded: {
+                eventName: 'OnCSSLoaded',
 
                 eventListener: function(event) {
-                    return onWaitForCSSLoaded_I_1L(_EVENTS_OBJECT.statefulEvents.onWaitForCSSLoaded, event);
+                    return onCSSLoaded_I_1L(_EVENTS_OBJECT.statefulEvents.onCSSLoaded, event);
 
 
 
                     /**
                      * Local helper functions
                     */
-                    function onWaitForCSSLoaded_I_1L(self, event) {
+                    function onCSSLoaded_I_1L(self, event) {
                         // update event completion state
                         self.hasCompleted = true;
 
@@ -198,6 +216,9 @@
 
                             // update event object
                             getNextViewEventObject.viewHasBeenLoaded = true;
+
+                            // reset state of _EVENTS_OBJECT.statefulEvents object to a default one
+                            _EVENTS_OBJECT.resetToDefault();
 
                             _debugger.count("ViewPresenter prepared html template... # ");
 
@@ -232,7 +253,7 @@
                         self.htmlTemplate = details[0];
 
                         // check if all stateful events completed successfully by this time
-                        if(_EVENTS_OBJECT.statefulEvents.onWaitForCSSLoaded.hasCompleted) {
+                        if(_EVENTS_OBJECT.statefulEvents.onCSSLoaded.hasCompleted) {
                             // is this template the last one in the workflow
                             var isLast = details[1];
 
@@ -251,6 +272,9 @@
                             // update event object
                             getNextViewEventObject.viewHasBeenLoaded = true;
 
+                            // reset state of _EVENTS_OBJECT.statefulEvents object to a default one
+                            _EVENTS_OBJECT.resetToDefault();
+
                             _debugger.count("ViewPresenter prepared html template... # ");
 
                             // return control to PresenterManager with passing updated event object
@@ -262,6 +286,20 @@
                 hasCompleted: false,
 
                 htmlTemplate: null
+            }
+        },
+
+        resetToDefault: function() {
+            return resetToDefault_I_1L();
+
+
+
+            /**
+             * Local helper functions
+            */
+            function resetToDefault_I_1L() {
+                _EVENTS_OBJECT.statefulEvents.onCSSLoaded.hasCompleted = _EVENTS_OBJECT.statefulEvents.onHTMLLoaded.hasCompleted = false;
+                _EVENTS_OBJECT.statefulEvents.onHTMLLoaded.htmlTemplate = null;
             }
         }
     };

@@ -3,23 +3,62 @@
 
 <head>
 	<meta charset="utf-8" />
-	<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src c4b.solutions 'unsafe-eval' 'unsafe-inline' https://www.google-analytics.com data:; style-src c4b.solutions 'unsafe-inline' https://fonts.googleapis.com; font-src c4b.solutions https://fonts.googleapis.com/ https://fonts.gstatic.com; img-src c4b.solutions https://www.google-analytics.com; connect-src c4b.solutions; worker-src 'self'" />
+	<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src localhost:8080 'unsafe-eval' 'unsafe-inline' https://www.google-analytics.com data:; style-src localhost:8080 'unsafe-inline' https://fonts.googleapis.com; font-src localhost:8080 https://fonts.googleapis.com/ https://fonts.gstatic.com; img-src localhost:8080 https://www.google-analytics.com; connect-src localhost:8080; worker-src 'self'" />
 	<meta name="google" content="notranslate" />
 	<meta name="robots" content="index,follow" />
 	<meta name="googlebot" content="index,follow" />
 	<meta name="description"
 		content="Changing 4 Better by Lukasz Dabrowski | Zmieniając na Lepsze wg Łukasz Dąbrowski | Resilent Web Design - approach to better software development | Software for Better Tomorrow | Krakow | Kraków" />
 	<title>C4B Solutions | C4B Design | C4B Software | Lukasz Dabrowski - Software Engineer | Łukasz Dąbrowski - Inżynier Oprogramowania | Dabrowski Software Development | Senior Software Developer | Senior Programmer | professional development | out of the box algorithms | T-SQL unique algorithms | The Pragmatic Programmer | Clean Code | Agile Development</title>
+	<style>
+		/* here come CSS rules for Above-The-Fold-View */
+		body {
+			background-color: rgb(255, 223, 43);
+
+			width: 96%;
+		}
+		
+		.main_view_frame {
+			color: #ffffff;
+
+			font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+			font-size: 1.3em;
+
+			margin-left: auto;
+			margin-right: auto;
+			margin-top: 5%;
+
+			text-align: center;
+
+			width: 98%;
+		}
+
+		.content {
+			background-color: rgb(20, 79, 124);
+
+			border-radius: 15px;
+
+			color: white;
+
+			height: 35em;
+
+			margin-left: auto;
+			margin-right: auto;
+			margin-top: 5%;
+
+			position: relative;
+
+			text-align: center;
+
+			width: 90%;    
+		}		
+	</style>	
 	<link rel="icon" href="/favicon.ico" />
 </head>
 
 <body>
 	<div class="content">
-			<h1></h1>
-			<br />
-			<h2></h2>
-			<br />
-			<h3></h3>
+		<div class="main_view_frame">Main View Container Frame - it will host DIV_H1, DIV_H2 and DIV_H3 templates !</div>
 	</div>
 </body>
 
