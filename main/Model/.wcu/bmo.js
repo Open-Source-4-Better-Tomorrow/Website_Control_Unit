@@ -79,7 +79,7 @@
     var _EVENTS_OBJECT = {
         initEvents: {
             onViewModelExposeYourData: {
-                eventName: 'OnViewModelExposeYourData',
+                eventName: 'ViewModelExposeYourData',
 
                 eventListener: function(event) {
                     return onViewModelExposeYourData_I_1L(event);

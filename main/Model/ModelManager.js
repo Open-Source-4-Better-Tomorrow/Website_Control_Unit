@@ -137,7 +137,7 @@
     var _EVENTS_OBJECT = {
         initEvents: {
             onLoadYourOwnResources: {
-                eventName: 'OnLoadYourOwnResources',
+                eventName: 'LoadYourOwnResources',
 
                 eventListener: function() {
                     return loadYourOwnResources_I_1L();
@@ -157,17 +157,17 @@
 
         statelessEvents: {
             onModelReady: {
-                eventName: 'OnModelReady'
+                eventName: 'ModelReady'
             },
 
             onViewModelExposeYourData: {
-                eventName: 'OnViewModelExposeYourData'
+                eventName: 'ViewModelExposeYourData'
             }
         },
 
         statefulEvents: {
             onModelCoreReady: {
-                eventName: 'OnModelCoreReady',
+                eventName: 'ModelCoreReady',
 
                 eventListener: function() {
                     return onModelCoreReady_I_1L(_EVENTS_OBJECT.statefulEvents.onModelCoreReady);
@@ -193,7 +193,7 @@
             },
 
             onModelMetadataReady: {
-                eventName: 'OnModelMetadataReady',
+                eventName: 'ModelMetadataReady',
 
                 eventListener: function(event) {
                     return onModelMetadataReady_I_1L(_EVENTS_OBJECT.statefulEvents.onModelMetadataReady, event);
@@ -224,7 +224,7 @@
 
         nextViewEvents: {
             onGetNextViewModel: {
-                eventName: 'OnGetNextViewModel',
+                eventName: 'GetNextViewModel',
 
                 eventListener: function(event) {
                     return onGetNextViewModel_I_1L(event);
@@ -278,7 +278,7 @@
             },
 
             onNextViewModelPhysicallyLoaded: {
-                eventName: 'OnNextViewModelPhysicallyLoaded',
+                eventName: 'NextViewModelPhysicallyLoaded',
 
                 eventListener: function(event) {
                     return onNextViewModelPhysicallyLoaded_I_1L(event);
@@ -328,7 +328,7 @@
             },
 
             onNextViewModelHasArrived: {
-                eventName: 'OnNextViewModelHasArrived',
+                eventName: 'NextViewModelHasArrived',
 
                 eventListener: function(event) {
                     return onNextViewModelHasArrived_I_1L(event);

@@ -62,17 +62,17 @@
     var _EVENTS_OBJECT = {
         statelessEvents: {
             onGetNextViewTemplate: {
-                eventName: 'OnGetNextViewTemplate'
+                eventName: 'GetNextViewTemplate'
             },
 
             onGotNextViewResources: {
-                eventName: 'OnGotNextViewResources'
+                eventName: 'GotNextViewResources'
             }
         },
 
         statefulEvents: {
             onLoadNextViewResources: {
-                eventName: 'OnLoadNextViewResources',
+                eventName: 'LoadNextViewResources',
 
                 eventListener: function(event) {
                     return onLoadNextViewResources_I_1L(event);
@@ -132,16 +132,30 @@
 
                                     // prepare full path of each CSS stylesheet
                                     nextViewTemplateMetadata.css.fonts.forEach(function(item, index) {
-                                                                                                        nextViewTemplateMetadata.css.fonts[index] =
-                                                                                                                                            nextViewTemplateMetadata.rootPath +
-                                                                                                                                            nextViewTemplateMetadata.css.relativePath +
-                                                                                                                                            item.trim().replace('\r\n', '');
+                                                                                                        if(item.isLocal) {
+                                                                                                            // clean the stylesheet path
+                                                                                                            item.name = nextViewTemplateMetadata.rootPath + nextViewTemplateMetadata.css.relativePath + item.name.trim().replace('\r\n', '');
+
+                                                                                                            // update this cleaned stylesheet in the array
+                                                                                                            nextViewTemplateMetadata.css.fonts[index] = item;
+
+                                                                                                        }
+                                                                                                        else {
+                                                                                                            // clean the stylesheet path
+                                                                                                            item.name = item.name.trim().replace('\r\n', '');
+
+                                                                                                            // update this cleaned stylesheet in the array
+                                                                                                            nextViewTemplateMetadata.css.fonts[index] = item;
+                                                                                                        }
                                                                                                      }
                                                                               );
 
+                                    // transform custom CSS object array into string array
+                                    var cssFontArray = convertCustomCssObjectArrayToStringArray_I_4L(nextViewTemplateMetadata.css.fonts);
+
                                     // load up physical template's stylesheet given its physical location (load up CSS file)
                                     ral.GET_RAL_OBJECT.Loader.loadAsync(
-                                        nextViewTemplateMetadata.css.fonts,
+                                        cssFontArray,
                                         'css',
                                         /**
                                          * Modules returned by ral.GET_RAL_OBJECT.Loader.loadAsync are executed in the order provided above.
@@ -166,6 +180,17 @@
                                     _EVENTS_OBJECT.statefulEvents.onCSSLoaded.hasCompleted = true;
                                 }
 
+                                function convertCustomCssObjectArrayToStringArray_I_4L(customCssObjectArray) {
+                                    // declare array of css files' paths
+                                    var css_fonts_array = [];
+
+                                    // extract only CSS file full path
+                                    customCssObjectArray.forEach(function(item, index) { css_fonts_array.push(item.name); });
+
+                                    // return CSS file path array
+                                    return css_fonts_array;
+                                }
+
                                 function onCSSLoad_I_4L() {
                                     // if wait for all CSS to be fully loaded
                                     if(nextViewTemplateMetadata.css.waitForLoad) {
@@ -180,7 +205,7 @@
             },
 
             onCSSLoaded: {
-                eventName: 'OnCSSLoaded',
+                eventName: 'CSSLoaded',
 
                 eventListener: function(event) {
                     return onCSSLoaded_I_1L(_EVENTS_OBJECT.statefulEvents.onCSSLoaded, event);
@@ -232,7 +257,7 @@
             },
 
             onHTMLLoaded: {
-                eventName: 'OnHTMLLoaded',
+                eventName: 'HTMLLoaded',
 
                 eventListener: function(event) {
                     return onHTMLLoaded_I_1L(_EVENTS_OBJECT.statefulEvents.onHTMLLoaded, event);

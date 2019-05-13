@@ -108,7 +108,7 @@
     var _EVENTS_OBJECT = {
         statefulEvents: {
             onBindNextViewResourcesTogether: {
-                eventName: 'OnBindNextViewResourcesTogether',
+                eventName: 'BindNextViewResourcesTogether',
 
                 eventListener: function(event) {
                     return onBindNextViewResourcesTogether_I_1L(event);

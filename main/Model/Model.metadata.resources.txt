@@ -26,5 +26,12 @@
         "relativePath" : "/Model/main-view-header-h3/",
         "modelName" : "Model.js",
         "modelConfig" : "config.txt"
+    },
+
+    "main_view_header_h4" : {
+        "isRequired" : true,
+        "relativePath" : "/Model/main-view-header-h4/",
+        "modelName" : "Model.js",
+        "modelConfig" : "config.txt"
     }
 }

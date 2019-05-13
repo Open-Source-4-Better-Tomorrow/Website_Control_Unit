@@ -139,7 +139,7 @@
     var _EVENTS_OBJECT = {
         initEvents: {
             onLoadYourOwnResources: {
-                eventName: 'OnLoadYourOwnResources',
+                eventName: 'LoadYourOwnResources',
 
                 eventListener: function() {
                     return loadYourOwnResources_I_1L();
@@ -159,21 +159,21 @@
 
         statelessEvents: {
             onPresenterReady: {
-                eventName: 'OnPresenterReady'
+                eventName: 'PresenterReady'
             },
 
             onLoadNextViewResources: {
-                eventName: 'OnLoadNextViewResources'
+                eventName: 'LoadNextViewResources'
             },
 
             onBindNextViewResourcesTogether: {
-                eventName: 'OnBindNextViewResourcesTogether'
+                eventName: 'BindNextViewResourcesTogether'
             }
         },
 
         statefulEvents: {
             onPresenterViewReady: {
-                eventName: 'OnPresenterViewReady',
+                eventName: 'PresenterViewReady',
 
                 eventListener: function() {
                     return onPresenterViewReady_I_1L(_EVENTS_OBJECT.statefulEvents.onPresenterViewReady);
@@ -199,7 +199,7 @@
             },
 
             onPresenterViewMetadataReady: {
-                eventName: 'OnPresenterViewMetadataReady',
+                eventName: 'PresenterViewMetadataReady',
 
                 eventListener: function(event) {
                     return onPresenterViewMetadataReady_I_1L(_EVENTS_OBJECT.statefulEvents.onPresenterViewMetadataReady, event);
@@ -228,7 +228,7 @@
             },
 
             onPresenterModelReady: {
-                eventName: 'OnPresenterModelReady',
+                eventName: 'PresenterModelReady',
 
                 eventListener: function() {
                     return onPresenterModelReady_I_1L(_EVENTS_OBJECT.statefulEvents.onPresenterModelReady);
@@ -256,7 +256,7 @@
 
         nextViewEvents: {
             onGetNextView: {
-                eventName: 'OnGetNextView',
+                eventName: 'GetNextView',
 
                 eventListener: function() {
                     return onGetNextView_I_1L();
@@ -286,7 +286,7 @@
             },
 
             onGetNextViewTemplate: {
-                eventName: 'OnGetNextViewTemplate',
+                eventName: 'GetNextViewTemplate',
 
                 eventListener: function(event) {
                     return onGetNextViewTemplate_I_1L(event);
@@ -318,7 +318,7 @@
             },
 
             onGotNextViewResources: {
-                eventName: 'OnGotNextViewResources',
+                eventName: 'GotNextViewResources',
 
                 eventListener: function(event) {
                     return onGotNextViewResources_I_1L(event);

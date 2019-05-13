@@ -21,7 +21,7 @@
         },
 
         Variables: {
-            resource_path: '../mcu/fcu.resources.txt',  // path relative to View/Index.html
+            resource_path: '../mcu/MCU.resources.txt',  // path relative to View/Index.html
 
             resource_type: 'js',
 
@@ -115,7 +115,7 @@
             },
 
             onFlowControlUnitReady: {
-                eventName: 'OnFlowControlUnitReady',
+                eventName: 'FlowControlUnitReady',
 
                 eventListener: function() {
                     return dispatchLoadOrders_I_1L();
@@ -135,17 +135,17 @@
 
         statelessEvents: {
             onLoadYourOwnResources: {
-                eventName: 'OnLoadYourOwnResources'
+                eventName: 'LoadYourOwnResources'
             },
 
             onGetNextView: {
-                eventName: 'OnGetNextView'
+                eventName: 'GetNextView'
             }
         },
 
         statefulEvents: {
             onPresenterReady: {
-                eventName: 'OnPresenterReady',
+                eventName: 'PresenterReady',
 
                 eventListener: function() {
                     return onPresenterReady_I_1L(_EVENTS_OBJECT.statefulEvents.onPresenterReady);
@@ -171,7 +171,7 @@
             },
 
             onModelReady: {
-                eventName: 'OnModelReady',
+                eventName: 'ModelReady',
 
                 eventListener: function() {
                     return onModelReady_I_1L(_EVENTS_OBJECT.statefulEvents.onModelReady);

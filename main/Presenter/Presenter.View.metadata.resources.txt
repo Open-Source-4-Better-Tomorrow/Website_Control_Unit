@@ -12,10 +12,7 @@
     "main_view" : {
         "rootPath" : "/View/main-view/",
         "css" : {
-            "isRequired" : true,
-            "relativePath" : "css/",
-            "fonts" : ["normalize.css", "content.css"],
-            "waitForLoad" : true
+            "isRequired" : false
         },
         "html" : {
             "relativePath" : "html/main-view-template.html"
@@ -27,7 +24,20 @@
         "css" : {
             "isRequired" : true,
             "relativePath" : "css/",
-            "fonts" : ["h1.css"],
+            "fonts" : [
+                        {
+                          "name" : "normalize.css",
+                          "isLocal" : true
+                        },
+                        {
+                          "name" : "h1.css",
+                          "isLocal" : true
+                        },
+                        {
+                          "name" : "https://fonts.googleapis.com/css?family=Akronim|Stylish",
+                          "isLocal" : false
+                        }
+                ],
             "waitForLoad" : true
         },
         "html" : {
@@ -40,7 +50,12 @@
         "css" : {
             "isRequired" : true,
             "relativePath" : "css/",
-            "fonts" : ["h2.css"],
+            "fonts" : [
+                        {
+                          "name" : "h2.css",
+                          "isLocal" : true
+                        }
+                ],
             "waitForLoad" : true
         },
         "html" : {
@@ -53,11 +68,58 @@
         "css" : {
             "isRequired" : true,
             "relativePath" : "css/",
-            "fonts" : ["h3.css"],
+            "fonts" : [
+                        {
+                          "name" : "h3.css",
+                          "isLocal" : true
+                        },
+                        {
+                          "name" : "https://fonts.googleapis.com/css?family=Aldrich",
+                          "isLocal" : false
+                        }                        
+                ],
             "waitForLoad" : true
         },
         "html" : {
             "relativePath" : "html/main-view-header-h3-template.html"
+        }
+    },
+
+    "main_view_header_h4" : {
+        "rootPath" : "/View/main-view-header-h4/",
+        "css" : {
+            "isRequired" : true,
+            "relativePath" : "css/",
+            "fonts" : [
+                        {
+                          "name" : "h4.css",
+                          "isLocal" : true
+                        },
+                        {
+                          "name" : "inline.css",
+                          "isLocal" : true
+                        },
+                        {
+                          "name" : "developer.css",
+                          "isLocal" : true
+                        },
+                        {
+                          "name" : "location.css",
+                          "isLocal" : true
+                        },
+                        {
+                          "name" : "https://fonts.googleapis.com/css?family=Rajdhani",
+                          "isLocal" : false
+                        },
+                        {
+                          "name" : "https://fonts.googleapis.com/icon?family=Material+Icons",
+                          "isLocal" : false
+                        }
+                ],
+            "waitForLoad" : true
+        },
+        "html" : {
+            "relativePath" : "html/main-view-header-h4-template.html"
         }
     }
 }

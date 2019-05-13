@@ -85,7 +85,7 @@
                                             xhr.onreadystatechange = function() {
                                                 try {
                                                     // on success invoke callback with received data
-                                                    if(this.status == 200 && this.readyState == 4) {
+                                                    if(this.readyState == 4 && this.status == 200) {
                                                         this.callback(this.responseText);
                                                     }
                                                 }

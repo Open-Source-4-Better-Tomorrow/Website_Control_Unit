@@ -36,6 +36,180 @@
             storageDescription: ""
         };
 
+        var _XHR_LOADER = {
+            loadFlatFileAsync: function (path, callback, setValidationOfContext) {
+                return loadAsync_I_1L(path, callback, setValidationOfContext);
+
+
+
+                /**
+                 * Local helper functions
+                */
+                function loadAsync_I_1L(path, callback, setValidationOfContext) {
+                    // create XHR object
+                    var xhr = createXHR_I_2L();
+
+                    // open channel
+                    xhr.open("GET", path, true);
+
+                    // trigger flow
+                    xhr.send(null);
+
+
+
+                    /**
+                     * Local helper functions
+                    */
+                    function createXHR_I_2L() {
+                        // create request
+                        var xhr = new XMLHttpRequest();
+
+                        // save callback
+                        xhr.callback = callback;
+                        // save driving flag
+                        xhr.setValidationOfContext = setValidationOfContext;
+
+                        // handle request flow change
+                        xhr.onreadystatechange = function() {
+                            try {
+                                // on success invoke callback with received data
+                                if(this.readyState == 4 && this.status == 200) {
+                                    // at this point we already know that we are about to return some data, hence mark that invocation context is valid, if necessary
+                                    if(this.setValidationOfContext)
+                                        _invocationContext.isValid = true;
+
+                                    // return plain text data via callback
+                                    this.callback(this.responseText);
+                                }
+                            }
+                            catch (error) {
+                                // on failure just invoke parent of this data handler function (a way to achieve resilient load mechanism !)
+                                setTimeout(
+                                            function() {
+                                                loadAsync_I_1L(path, xhr.callback);
+                                            },
+                                            _resilientAttemptTimeInterval
+                                        );
+                            }
+                        };
+
+                        // return XmlHttpRequest object instance
+                        return xhr;
+                    }
+                }
+            },
+
+            ajax: function(ajaxConfig) {
+                return ajax_I_1L(ajaxConfig);
+
+
+
+                /**
+                 * Local helper functions
+                */
+                function ajax_I_1L(ajaxConfig) {
+                    // create XHR object
+                    var xhr = new XMLHttpRequest();
+
+                    // open channel for GET request with data
+                    if(ajaxConfig.type === 'GET' && ajaxConfig.processData) {
+                        // initialize XHR
+                        xhr.open(ajaxConfig.type, ajaxConfig.url + '?' + convertDataToQueryString_I_2L(ajaxConfig.data), true);
+
+                        // configure XHR
+                        configureXHR_I_2L();
+
+                        // trigger flow
+                        xhr.send(null);
+                    }
+                    // open channel for GET request without data
+                    else if(ajaxConfig.type === 'GET') {
+                        // initialize XHR
+                        xhr.open(ajaxConfig.type, ajaxConfig.url, true);
+
+                        // configure XHR
+                        configureXHR_I_2L(xhr);
+
+                        // trigger flow
+                        xhr.send(null);
+                    }
+                    // throw error on trying POST request with converting data to query string
+                    else if(ajaxConfig.type === 'POST' && ajaxConfig.processData) {
+                        throw new Error (ajaxConfig.type + ' request with query string disallowed !');
+                    }
+                    // open channel for POST request with or without data
+                    else if(ajaxConfig.type === 'POST') {
+                        // initialize XHR
+                        xhr.open(ajaxConfig.type, ajaxConfig.url, true);
+
+                        // configure XHR
+                        configureXHR_I_2L(xhr);
+
+                        // trigger flow
+                        xhr.send(ajaxConfig.data);
+                    }
+                    else {
+                        throw new Error (ajaxConfig.type + ' request not implemented !');
+                    }
+
+
+
+                    /**
+                     * Local helper functions
+                    */
+                    function convertDataToQueryString_I_2L(data) {
+                        // define query string
+                        var qs = "";
+
+                        // create query string
+                        for(var key in data) {
+                            qs += '&';
+                            qs += (key + '=' + data[key]);
+                        }
+
+                        // return query string without the very first ampersand
+                        return qs.substring(1);
+                    }
+
+                    function configureXHR_I_2L() {
+                        /**
+                         * Set [predefined] header like most libraries do so, f.e. jQuery/Prototype/Dojo.
+                         * This header tells a server that this call is made for ajax purposes.
+                        */
+                        xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+
+                        // set the media type of the body of the request (used with POST and PUT requests)
+                        xhr.setRequestHeader('Content-Type', ajaxConfig.contentType);
+
+                        // set the response format
+                        xhr.responseType = ajaxConfig.dataType;
+
+                        // whether or not to force a cross-domain request (such as JSONP) on the same domain
+                        xhr.withCredentials = ajaxConfig.crossDomain;
+
+                        // configure beforeSend
+                        if(ajaxConfig.beforeSend)
+                            ajaxConfig.beforeSend(xhr);
+
+                        // handle request flow change
+                        xhr.onreadystatechange = function() {
+                            try {
+                                // on success invoke callback with received data
+                                if(this.readyState == 4 && this.status == 200) {
+                                    // return plain text data via callback
+                                    ajaxConfig.success(this.responseText);
+                                }
+                            }
+                            catch (error) {
+                                // on failure invoke error callback
+                                ajaxConfig.error(xhr, xhr.statusText, error);
+                            }
+                       };
+                    }
+                }
+            }
+        };
+
         var _resilientAttemptTimeInterval = 10;
 
         var _moduleDOM_Object;
@@ -55,32 +229,7 @@
         }
 
         function readDataFromExternalStorage_I_1L(dataPath, callback) {
-            // create temporary container
-            var temporaryContainer = $("<div />");
-
-            // trigger load process
-            $(temporaryContainer).load(dataPath, externalDataHandler_I_2L);
-
-
-
-            /**
-             * Local helper functions
-            */
-            function externalDataHandler_I_2L(responseTxt, textStatus, xhr) {
-                // on success invoke callback with received data
-                if (xhr.status === 200 && xhr.readyState === 4) {
-                    callback(responseTxt);
-                }
-                // on failure just invoke parent of this data handler function (a way to achieve kind of a recurrency in JavaScript to provide resilient load mechanism !)
-                else {
-                    setTimeout(
-                        function () {
-                            readDataFromExternalStorage_I_1L(dataPath, callback);
-                        },
-                        _resilientAttemptTimeInterval
-                    );
-                }
-            }
+            return _XHR_LOADER.loadFlatFileAsync(dataPath, callback, false);
         }
 
         function parseConfig_I_1L(configData) {
@@ -95,7 +244,6 @@
             /**
              * Local helper functions
             */
-
             // local helper function to parse module config
             function parseConfigJsonObject_I_2L(configJsonObject) {
                 // validate object
@@ -115,7 +263,6 @@
                 /**
                  * Local helper functions
                 */
-
                 // local helper function to validate SAAL params object
                 function validate_SALM_Params_Object_I_3L(salpo) {
                     var isValid = false;
@@ -327,41 +474,12 @@
 
                         // local helper function to read data from an external flat file
                         function readDataFromExternalFlatFile_I_5L(dataPath, callback) {
-                            // create temporary container
-                            var temporaryContainer = $("<div />");
-
-                            // trigger load process
-                            $(temporaryContainer).load(dataPath, externalDataHandler_I_6L);
-
-
-
-                            /**
-                             * Local helper functions
-                            */
-                            function externalDataHandler_I_6L(responseTxt, textStatus, xhr) {
-                                // on success invoke callback with received data
-                                if (xhr.status === 200 && xhr.readyState === 4) {
-                                    // at this point we already know that we are about to return some data
-                                    _invocationContext.isValid = true;
-
-                                    // return data via callback
-                                    callback(responseTxt);
-                                }
-                                // on failure just invoke parent of this data handler function (a way to achieve kind of a recurrency in JavaScript to provide resilient load mechanism !)
-                                else {
-                                    setTimeout(
-                                        function () {
-                                            readDataFromExternalFlatFile_I_5L(dataPath, callback);
-                                        },
-                                        _resilientAttemptTimeInterval
-                                    );
-                                }
-                            }
+                            return _XHR_LOADER.loadFlatFileAsync(dataPath, callback, true);
                         }
 
                         // local helper function to read data from an external database
                         function readDataFromExternalDatabase_I_5L(storageDataObject) {
-                            $.ajax({
+                            _XHR_LOADER.ajax({
                                 type: "GET",
                                 url: storageDataObject.serverSideScriptUrl,
                                 data: {
@@ -392,14 +510,14 @@
                              * Local helper functions
                             */
                             function onDatabaseSuccess_I_6L(data) {
-                                // at this point we already know that we are about to return some data
+                                // at this point we already know that we are about to return some data, hence mark that invocation context is valid, if necessary
                                 _invocationContext.isValid = true;
 
                                 // return data via callback
                                 return storageDataObject.callback(data);
                             }
 
-                            function onDatabaseError_I_6L(xhr, textStatus, err) {
+                            function onDatabaseError_I_6L(xhr, statusText, err) {
                                 // renew load process
                                 return readDataFromExternalDatabase_I_5L(storageDataObject);
                             }
@@ -407,7 +525,7 @@
 
                         // local helper function to read data from an external service
                         function readDataFromExternalService_I_5L(storageDataObject) {
-                            $.ajax({
+                            _XHR_LOADER.ajax({
                                 type: "GET",
                                 url: storageDataObject.serviceUrl,
                                 data: storageDataObject.serviceMethodRequiresParams ?
@@ -438,7 +556,7 @@
                                 return storageDataObject.callback(data);
                             }
 
-                            function onServiceError_I_6L(xhr, textStatus, err) {
+                            function onServiceError_I_6L(xhr, statusText, err) {
                                 // renew load process
                                 return readDataFromExternalService_I_5L(storageDataObject);
                             }

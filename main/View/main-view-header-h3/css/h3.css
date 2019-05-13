@@ -1,6 +1,6 @@
 .div_h3 {
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    font-size: 2em;
+    font-family: 'Aldrich', sans-serif;
+    font-size: 2.7em;
 
     margin-left: auto;
     margin-right: auto;
@@ -14,5 +14,5 @@
 
 .part_of_project_name {
     text-decoration: underline;
-    text-decoration-color: rgb(255, 223, 43);
+    text-decoration-color: red;
 }

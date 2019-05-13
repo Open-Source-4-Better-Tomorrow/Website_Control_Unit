@@ -62,17 +62,17 @@
     var _EVENTS_OBJECT = {
         statelessEvents: {
             onGetNextViewModel: {
-                eventName: 'OnGetNextViewModel'
+                eventName: 'GetNextViewModel'
             },
 
             onGotNextViewResources: {
-                eventName: 'OnGotNextViewResources'
+                eventName: 'GotNextViewResources'
             }
         },
 
         statefulEvents: {
             onLoadNextViewResources: {
-                eventName: 'OnLoadNextViewResources',
+                eventName: 'LoadNextViewResources',
 
                 eventListener: function(event) {
                     return onLoadNextViewResources_I_1L(event);
