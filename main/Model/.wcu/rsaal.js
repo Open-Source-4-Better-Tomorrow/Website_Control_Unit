@@ -36,7 +36,7 @@
             storageDescription: ""
         };
 
-        var _XHR_LOADER = {
+        var _AJAX_OBJECT = {
             loadFlatFileAsync: function (path, callback, setValidationOfContext) {
                 return loadAsync_I_1L(path, callback, setValidationOfContext);
 
@@ -229,7 +229,7 @@
         }
 
         function readDataFromExternalStorage_I_1L(dataPath, callback) {
-            return _XHR_LOADER.loadFlatFileAsync(dataPath, callback, false);
+            return _AJAX_OBJECT.loadFlatFileAsync(dataPath, callback, false);
         }
 
         function parseConfig_I_1L(configData) {
@@ -474,12 +474,12 @@
 
                         // local helper function to read data from an external flat file
                         function readDataFromExternalFlatFile_I_5L(dataPath, callback) {
-                            return _XHR_LOADER.loadFlatFileAsync(dataPath, callback, true);
+                            return _AJAX_OBJECT.loadFlatFileAsync(dataPath, callback, true);
                         }
 
                         // local helper function to read data from an external database
                         function readDataFromExternalDatabase_I_5L(storageDataObject) {
-                            _XHR_LOADER.ajax({
+                            _AJAX_OBJECT.ajax({
                                 type: "GET",
                                 url: storageDataObject.serverSideScriptUrl,
                                 data: {
@@ -525,7 +525,7 @@
 
                         // local helper function to read data from an external service
                         function readDataFromExternalService_I_5L(storageDataObject) {
-                            _XHR_LOADER.ajax({
+                            _AJAX_OBJECT.ajax({
                                 type: "GET",
                                 url: storageDataObject.serviceUrl,
                                 data: storageDataObject.serviceMethodRequiresParams ?

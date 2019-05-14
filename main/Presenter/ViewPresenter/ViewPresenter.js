@@ -130,32 +130,45 @@
                                         pretendCssWasLoaded_I_4L();
                                     }
 
-                                    // prepare full path of each CSS stylesheet
-                                    nextViewTemplateMetadata.css.fonts.forEach(function(item, index) {
-                                                                                                        if(item.isLocal) {
-                                                                                                            // clean the stylesheet path
-                                                                                                            item.name = nextViewTemplateMetadata.rootPath + nextViewTemplateMetadata.css.relativePath + item.name.trim().replace('\r\n', '');
+                                    // declare CSS array of valid paths
+                                    var css_fonts_array = [];
 
-                                                                                                            // update this cleaned stylesheet in the array
-                                                                                                            nextViewTemplateMetadata.css.fonts[index] = item;
+                                    // declare 'this' value
+                                    var thisValue;
 
-                                                                                                        }
-                                                                                                        else {
-                                                                                                            // clean the stylesheet path
-                                                                                                            item.name = item.name.trim().replace('\r\n', '');
+                                    // prepare full path of each local CSS stylesheet if there are present
+                                    if(nextViewTemplateMetadata.css.fonts.internal) {
+                                        // define 'this' value
+                                        thisValue = {
+                                            isInternal: true,
+                                            isExternal: false
+                                        };
 
-                                                                                                            // update this cleaned stylesheet in the array
-                                                                                                            nextViewTemplateMetadata.css.fonts[index] = item;
-                                                                                                        }
-                                                                                                     }
-                                                                              );
+                                        // process CSS stylesheets
+                                        nextViewTemplateMetadata.css.fonts.internal.forEach(forEachFilter_I_4L, thisValue);
 
-                                    // transform custom CSS object array into string array
-                                    var cssFontArray = convertCustomCssObjectArrayToStringArray_I_4L(nextViewTemplateMetadata.css.fonts);
+                                        // add internal stylesheets
+                                        css_fonts_array.push.apply(css_fonts_array, nextViewTemplateMetadata.css.fonts.internal);
+                                    }
+
+                                    // clean the path of each external CSS stylesheet
+                                    if(nextViewTemplateMetadata.css.fonts.external) {
+                                        // define 'this' value
+                                        thisValue = {
+                                            isInternal: false,
+                                            isExternal: true
+                                        };
+
+                                        // process CSS stylesheets
+                                        nextViewTemplateMetadata.css.fonts.external.forEach(forEachFilter_I_4L, thisValue);
+
+                                        // add external stylesheets
+                                        css_fonts_array.push.apply(css_fonts_array, nextViewTemplateMetadata.css.fonts.external);
+                                    }
 
                                     // load up physical template's stylesheet given its physical location (load up CSS file)
                                     ral.GET_RAL_OBJECT.Loader.loadAsync(
-                                        cssFontArray,
+                                        css_fonts_array,
                                         'css',
                                         /**
                                          * Modules returned by ral.GET_RAL_OBJECT.Loader.loadAsync are executed in the order provided above.
@@ -180,15 +193,28 @@
                                     _EVENTS_OBJECT.statefulEvents.onCSSLoaded.hasCompleted = true;
                                 }
 
-                                function convertCustomCssObjectArrayToStringArray_I_4L(customCssObjectArray) {
-                                    // declare array of css files' paths
-                                    var css_fonts_array = [];
+                                function forEachFilter_I_4L(item, index, itemParentArray) {
+                                    // check 'this' value to determine internal CSS stylesheets or external ones
+                                    if(this.isInternal) {
+                                        // clean the stylesheet path
+                                        item = nextViewTemplateMetadata.rootPath + nextViewTemplateMetadata.css.relativePath + removeNonPrintableChars_I_5L(item);
+                                    }
+                                    else if(this.isExternal) {
+                                        // clean the stylesheet path
+                                        item = removeNonPrintableChars_I_5L(item);
+                                    }
 
-                                    // extract only CSS file full path
-                                    customCssObjectArray.forEach(function(item, index) { css_fonts_array.push(item.name); });
+                                    // update this cleaned stylesheet in the array
+                                    itemParentArray[index] = item;
 
-                                    // return CSS file path array
-                                    return css_fonts_array;
+
+
+                                    /**
+                                     * Local helper functions
+                                    */
+                                    function removeNonPrintableChars_I_5L(item) {
+                                        return item.trim().replace('\r\n', '');
+                                    }
                                 }
 
                                 function onCSSLoad_I_4L() {

@@ -24,20 +24,10 @@
         "css" : {
             "isRequired" : true,
             "relativePath" : "css/",
-            "fonts" : [
-                        {
-                          "name" : "normalize.css",
-                          "isLocal" : true
-                        },
-                        {
-                          "name" : "h1.css",
-                          "isLocal" : true
-                        },
-                        {
-                          "name" : "https://fonts.googleapis.com/css?family=Akronim|Stylish",
-                          "isLocal" : false
-                        }
-                ],
+            "fonts" : {
+              "internal" : ["normalize.css", "h1.css"],
+              "external" : ["https://fonts.googleapis.com/css?family=Akronim|Stylish"]
+            },
             "waitForLoad" : true
         },
         "html" : {
@@ -50,12 +40,9 @@
         "css" : {
             "isRequired" : true,
             "relativePath" : "css/",
-            "fonts" : [
-                        {
-                          "name" : "h2.css",
-                          "isLocal" : true
-                        }
-                ],
+            "fonts" : {
+              "internal" : ["h2.css"]
+            },
             "waitForLoad" : true
         },
         "html" : {
@@ -68,16 +55,10 @@
         "css" : {
             "isRequired" : true,
             "relativePath" : "css/",
-            "fonts" : [
-                        {
-                          "name" : "h3.css",
-                          "isLocal" : true
-                        },
-                        {
-                          "name" : "https://fonts.googleapis.com/css?family=Aldrich",
-                          "isLocal" : false
-                        }                        
-                ],
+            "fonts" : {
+              "internal" : ["h3.css"],
+              "external" : ["https://fonts.googleapis.com/css?family=Aldrich"]
+            },
             "waitForLoad" : true
         },
         "html" : {
@@ -90,32 +71,10 @@
         "css" : {
             "isRequired" : true,
             "relativePath" : "css/",
-            "fonts" : [
-                        {
-                          "name" : "h4.css",
-                          "isLocal" : true
-                        },
-                        {
-                          "name" : "inline.css",
-                          "isLocal" : true
-                        },
-                        {
-                          "name" : "developer.css",
-                          "isLocal" : true
-                        },
-                        {
-                          "name" : "location.css",
-                          "isLocal" : true
-                        },
-                        {
-                          "name" : "https://fonts.googleapis.com/css?family=Rajdhani",
-                          "isLocal" : false
-                        },
-                        {
-                          "name" : "https://fonts.googleapis.com/icon?family=Material+Icons",
-                          "isLocal" : false
-                        }
-                ],
+            "fonts" : {
+              "internal" : ["h4.css", "inline.css", "developer.css", "location.css"],
+              "external" : ["https://fonts.googleapis.com/css?family=Rajdhani", "https://fonts.googleapis.com/icon?family=Material+Icons"]
+            },
             "waitForLoad" : true
         },
         "html" : {
