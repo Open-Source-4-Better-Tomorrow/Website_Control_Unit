@@ -1,7 +1,7 @@
 /* eslint-disable no-empty */
 
 /**
- * ViewPresenter manages loading of all View-related resources on demand
+ * ViewPresenter manages loading of all View-related resources on demand.
  *
  *
  * Author: Łukasz Dąbrowski
