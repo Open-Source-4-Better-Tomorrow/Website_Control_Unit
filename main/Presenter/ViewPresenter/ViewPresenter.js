@@ -94,9 +94,9 @@
                         /**
                          * Local helper functions
                         */
-                        function processNextViewTemplate_I_2L(nextViewTemplateMetadata, isLast, getNextViewEventObject) {
+                        function processNextViewTemplate_I_2L(nextViewTemplateMetadata, isLast, flowNavigation, getNextViewEventObject) {
                             // store event detail and next template metadata
-                            var secondLevelEventDetails = [isLast, getNextViewEventObject];
+                            var secondLevelEventDetails = [isLast, flowNavigation, getNextViewEventObject];
 
                             // load HTML template for this view
                             loadHTML_I_3L();
@@ -144,11 +144,12 @@
                                             isExternal: false
                                         };
 
-                                        // process CSS stylesheets
-                                        nextViewTemplateMetadata.css.fonts.internal.forEach(forEachFilter_I_4L, thisValue);
+                                        // process CSS stylesheets (create copy of the base array)
+                                        var fonts_internal_array = nextViewTemplateMetadata.css.fonts.internal.slice();
+                                        fonts_internal_array.forEach(forEachFilter_I_4L, thisValue);
 
                                         // add internal stylesheets
-                                        css_fonts_array.push.apply(css_fonts_array, nextViewTemplateMetadata.css.fonts.internal);
+                                        css_fonts_array.push.apply(css_fonts_array, fonts_internal_array);
                                     }
 
                                     // clean the path of each external CSS stylesheet
@@ -159,11 +160,12 @@
                                             isExternal: true
                                         };
 
-                                        // process CSS stylesheets
-                                        nextViewTemplateMetadata.css.fonts.external.forEach(forEachFilter_I_4L, thisValue);
+                                        // process CSS stylesheets (create copy of the base array)
+                                        var fonts_external_array = nextViewTemplateMetadata.css.fonts.external.slice();
+                                        fonts_external_array.forEach(forEachFilter_I_4L, thisValue);
 
                                         // add external stylesheets
-                                        css_fonts_array.push.apply(css_fonts_array, nextViewTemplateMetadata.css.fonts.external);
+                                        css_fonts_array.push.apply(css_fonts_array, fonts_external_array);
                                     }
 
                                     // load up physical template's stylesheet given its physical location (load up CSS file)
@@ -253,15 +255,20 @@
                             // is this template the last one in the workflow
                             var isLast = details[0];
 
+                            // check whether this view template requires some user interaction to yield the next one or the previous one
+                            var flowNavigation = details[1];
+
                             // reference next view event object
-                            var getNextViewEventObject = event.detail[1];
+                            var getNextViewEventObject = details[2];
 
                             // update next view event object
                             getNextViewEventObject.viewTemplate = {
                                 template:  {
                                     data: _EVENTS_OBJECT.statefulEvents.onHTMLLoaded.htmlTemplate,
 
-                                    isLast: isLast
+                                    isLast: isLast,
+
+                                    flowNavigation: flowNavigation
                                 }
                            };
 
@@ -308,15 +315,20 @@
                             // is this template the last one in the workflow
                             var isLast = details[1];
 
+                            // check whether this view template requires some user interaction to yield the next one or the previous one
+                            var flowNavigation = details[2];
+
                             // reference next view event object
-                            var getNextViewEventObject = details[2];
+                            var getNextViewEventObject = details[3];
 
                             // update next view event object
                             getNextViewEventObject.viewTemplate = {
                                 template:  {
                                     data: self.htmlTemplate,
 
-                                    isLast: isLast
+                                    isLast: isLast,
+
+                                    flowNavigation: flowNavigation
                                 }
                            };
 

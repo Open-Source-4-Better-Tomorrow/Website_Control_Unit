@@ -20,7 +20,7 @@
             this.Variables.__init__();
 
             // setup event flow
-            baseModelObject.Factory.createNew(this.Functions.getData, this.Functions.viewModelBinder);
+            baseModelObject.Factory.createNew(this.Functions.getData, this.Functions.applyViewModelBinder, this.Functions.applyListenerEventBinder);
         },
 
         Variables: {
@@ -44,15 +44,15 @@
         },
 
         Functions: {
-            viewModelBinder: function(htmlTemplate, dataModel, successCallback, isLast) {
-                return viewModelBinder_I_1L(htmlTemplate, dataModel, successCallback, isLast);
+            applyViewModelBinder: function(htmlTemplate, dataModel, successCallback, prevModelEventListenerBinder, isLast, flowNavigation) {
+                return applyViewModelBinder_I_1L(htmlTemplate, dataModel, successCallback, prevModelEventListenerBinder, isLast, flowNavigation);
 
 
 
                 /**
                  * Local helper functions
                 */
-                function viewModelBinder_I_1L(htmlTemplate, dataModel, successCallback, isLast) {
+                function applyViewModelBinder_I_1L(htmlTemplate, dataModel, successCallback, prevModelEventListenerBinder, isLast, flowNavigation) {
                     // get encapsulated object
                     var dataModelObject = dataModel();
 
@@ -72,12 +72,15 @@
                         contentContainer.querySelector(tagObject.tagPrefix + tagObject.tagName).innerHTML = tagObject.content;
                     }
 
+                    // add some event handlers for this view-model part that will resume further flow of logic if required by Presenter.View.metadata.resources' flowNavigaton object
+                    _VIEW_MODEL_OBJECT.Functions.applyListenerEventBinder();
+
                     /**
                      * At this point all data is already binded with template placeholders, hence notify that binding is completed !
                      * This method acting as a callback function has to be invoked as a last one !
                      * Otherwise results could be unpredictable !
                     */
-                    successCallback(isLast);
+                    successCallback(isLast, flowNavigation);
                 }
             },
 
@@ -96,10 +99,34 @@
                                     some_key_1: {
                                         tagPrefix:  ".",
                                         tagName: "div_h1",
-                                        content: "Hello from Hamburger Project !"
+                                        content: "Hello from <span class=\"mechanism_unofficially\">Hamburger Project</span> !"
                                     }
                                 }
                            };
+                }
+            },
+
+            applyListenerEventBinder: function() {
+                return applyListenerEventBinder_I_1L();
+
+
+
+                /**
+                 * Local helper functions
+                */
+                function applyListenerEventBinder_I_1L() {
+                    // handle get next view
+                    document.getElementsByClassName('mechanism_unofficially')[0].addEventListener('click', yieldNextView_I_2L);
+
+
+
+                    /**
+                     * Local helper functions
+                    */
+                    function yieldNextView_I_2L() {
+                        // resume flow from this point (yield the next view) !!!!
+                        document.dispatchEvent(new CustomEvent('GetNextView'));
+                    }
                 }
             }
         }

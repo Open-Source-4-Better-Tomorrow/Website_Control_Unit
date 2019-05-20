@@ -28,17 +28,16 @@
                     function createNew_I_1L() {
                         // create brand new instance of custom flat file load object
                         var _CUSTOM_MODEL_TO_VIEW_BINDER_OBJECT = {
-
                             Functions: {
-                                bindModelWithView : function (htmlTemplate, modelData, binderFunction, bindingCompletedCallback, isLast) {
-                                    return bindModelWithView_I_1L(htmlTemplate, modelData, binderFunction, bindingCompletedCallback, isLast);
+                                bindModelWithView : function (htmlTemplate, modelData, binderFunction, bindingCompletedCallback, prevModelEventListenerBinder, isLast, flowNavigation) {
+                                    return bindModelWithView_I_1L(htmlTemplate, modelData, binderFunction, bindingCompletedCallback, prevModelEventListenerBinder, isLast, flowNavigation);
 
 
 
                                     /**
                                      * Local helper functions
                                     */
-                                    function bindModelWithView_I_1L(htmlTemplate, modelData, binderFunction, bindingCompletedCallback, isLast) {
+                                    function bindModelWithView_I_1L(htmlTemplate, modelData, binderFunction, bindingCompletedCallback, prevModelEventListenerBinder, isLast, flowNavigation) {
                                         _debugger.count("Binding model with html template... # ");
 
                                         // check if binder function is present, otherwise throw error
@@ -46,7 +45,7 @@
                                             throw Error("MCU requires custom binder function to be present to render a view !");
 
                                         // binder model with template and notify upon successful completion
-                                        binderFunction(htmlTemplate, modelData, bindingCompletedCallback, isLast);
+                                        binderFunction(htmlTemplate, modelData, bindingCompletedCallback, prevModelEventListenerBinder, isLast, flowNavigation);
                                     }
                                 }
                             }
@@ -129,7 +128,10 @@
                         var binder = event.detail.binder;
 
                         // reference binder function itself
-                        var binderFunction = binder.callBind;
+                        var binderFunction = binder.bindDataWithTemplate;
+
+                        // reference previous model's event-to-listener binder function itself
+                        var prevModelEventListenerBinder = binder.prevModelBindListenerWithEvent;
 
                         // reference callback that will be send when all binding have been completed
                         var bindingCompletedCallback = binder.onBindingCompleted;
@@ -137,9 +139,20 @@
                         // is this flow the last one in the workflow ?
                         var isLast = event.detail.isLast;
 
+                        // check whether this view template requires some user interaction to yield the next one or the previous one
+                        var flowNavigation = event.detail.flowNavigation;
+
                         // create instance of the binder object
                         _MODEL_TO_VIEW_BINDER_OBJECT_FACTORY.Factory.BinderObject.createNew()
-                                                                                             .Functions.bindModelWithView(viewTemplate, viewModelData, binderFunction, bindingCompletedCallback, isLast);
+                                                                                 .Functions.bindModelWithView(
+                                                                                                                viewTemplate,
+                                                                                                                viewModelData,
+                                                                                                                binderFunction,
+                                                                                                                bindingCompletedCallback,
+                                                                                                                prevModelEventListenerBinder,
+                                                                                                                isLast,
+                                                                                                                flowNavigation
+                                                                                                             );
                     }
                 },
 

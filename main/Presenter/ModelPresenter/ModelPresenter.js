@@ -99,11 +99,11 @@
                             if(viewModel) {
                                 getNextViewEventObject.viewModel = {
                                     model:  {
-                                        required : viewModel.isRequired,
-
                                         data: viewModel.Data.get(),
 
-                                        bindFunc: viewModel.DataToViewBinder.get(),
+                                        templateDataBindFunc: viewModel.DataToViewBinder.get(),
+
+                                        prevModelEventListenerBindFunc: viewModel.previousModelEventListenerBinder,
 
                                         isLast : isLast
                                     }
@@ -112,14 +112,14 @@
                             else {
                                 getNextViewEventObject.viewModel = {
                                     model:  {
-                                        required : false,
                                         data: {},
+
                                         /**
                                          * Arguments to bindFunc function are mandatory !
                                          * You cannot skip them in the function definition !
                                          * Third argument is callback that has to be invoked when all actions completed successfully, otherwise flow of the logic can be unpredictable.
                                         */
-                                        bindFunc: function(htmlTemplate, modelData, bindingCompletedCallback, isLast) {
+                                        templateDataBindFunc: function(htmlTemplate, modelData, bindingCompletedCallback, prevModelEventListenerBinder, isLast, flowNavigation) {
                                             // define constants
                                             var headBegin = '<head>';
                                             var headEnd = '</head>';
@@ -147,8 +147,15 @@
                                              * This must be a logically last operation in this method !
                                              * Otherwise flow of the logic can be unpredictable.
                                             */
-                                            bindingCompletedCallback(isLast);
+                                            bindingCompletedCallback(isLast, flowNavigation);
                                         },
+
+                                        /**
+                                         * When there is no model default listener-to-event binder is an empty function !
+                                         * Because it is assumed, that when there is no model, it has to be a static template.
+                                         * Because it is a static template, this design pattern does not have buit-in event handlers !
+                                        */
+                                        prevModelEventListenerBindFunc: function() {},
 
                                         isLast : false
                                     }

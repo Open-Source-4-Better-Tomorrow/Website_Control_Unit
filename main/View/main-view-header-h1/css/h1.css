@@ -13,3 +13,10 @@
 
     width: 100%;
 }
+
+.mechanism_unofficially:hover {
+    background-color: rgb(255, 223, 43);
+    color: rgb(20, 79, 124);
+
+    cursor: pointer;
+}

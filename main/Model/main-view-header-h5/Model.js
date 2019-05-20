@@ -91,12 +91,17 @@
                 */
                 function getData_I_1L() {
                     return {
-                                parentSelector: ".content",
+                                parentSelector: "body",
                                 dataCollection: {
                                     some_key_1: {
                                         tagPrefix:  ".",
-                                        tagName: "div_h4",
-                                        content: "UAD Status: RC Update1<i class=\"material-icons\">priority_high</i>"
+                                        tagName: "city_name",
+                                        content: "Krakow, Malopolska, Poland \/ "
+                                    },
+                                    some_key_2: {
+                                        tagPrefix:  ".",
+                                        tagName: "lab_name",
+                                        content: "C4B Solutions Lab"
                                     }
                                 }
                            };

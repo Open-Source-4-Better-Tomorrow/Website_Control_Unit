@@ -20,7 +20,7 @@
             this.Variables.__init__();
 
             // setup event flow
-            baseModelObject.Factory.createNew(this.Functions.getData, this.Functions.viewModelBinder);
+            baseModelObject.Factory.createNew(this.Functions.getData, this.Functions.applyViewModelBinder, this.Functions.applyListenerEventBinder);
         },
 
         Variables: {
@@ -44,15 +44,15 @@
         },
 
         Functions: {
-            viewModelBinder: function(htmlTemplate, dataModel, successCallback, isLast) {
-                return viewModelBinder_I_1L(htmlTemplate, dataModel, successCallback, isLast);
+            applyViewModelBinder: function(htmlTemplate, dataModel, successCallback, prevModelEventListenerBinder, isLast, flowNavigation) {
+                return applyViewModelBinder_I_1L(htmlTemplate, dataModel, successCallback, prevModelEventListenerBinder, isLast, flowNavigation);
 
 
 
                 /**
                  * Local helper functions
                 */
-                function viewModelBinder_I_1L(htmlTemplate, dataModel, successCallback, isLast) {
+                function applyViewModelBinder_I_1L(htmlTemplate, dataModel, successCallback, prevModelEventListenerBinder, isLast, flowNavigation) {
                     // get encapsulated object
                     var dataModelObject = dataModel();
 
@@ -72,12 +72,54 @@
                         contentContainer.querySelector(tagObject.tagPrefix + tagObject.tagName).innerHTML = tagObject.content;
                     }
 
+                    // add some event handlers for this view-model part that will resume further flow of logic if required by Presenter.View.metadata.resources' flowNavigaton object
+                    _VIEW_MODEL_OBJECT.Functions.applyListenerEventBinder(applyViewModelUnbinder_I_1L, htmlTemplate, dataModel, successCallback, prevModelEventListenerBinder, isLast, flowNavigation);
+
                     /**
                      * At this point all data is already binded with template placeholders, hence notify that binding is completed !
                      * This method acting as a callback function has to be invoked as a last one !
                      * Otherwise results could be unpredictable !
                     */
-                    successCallback(isLast);
+                    successCallback(isLast, flowNavigation);
+                }
+
+                function applyViewModelUnbinder_I_1L(htmlTemplate, dataModel, successCallback, isLast, flowNavigation) {
+                    // remove some event handlers for this view-model part
+                    _VIEW_MODEL_OBJECT.Functions.applyListenerEventBinder(function() {});
+
+                    // get encapsulated object
+                    var dataModelObject = dataModel();
+
+                    // reference "entry point"
+                    var contentContainer = document.body.querySelector(dataModelObject.parentSelector);
+
+                    // reference data collection
+                    var dataCollection = dataModelObject.dataCollection;
+
+                    // remove all children from DOM (much faster solution than contentContainer.innerHTML = "" !!!!)
+                    for(var tag in dataCollection) {
+                        // get current partial view selector
+                        var tagObject = dataCollection[tag];
+
+                        // reference current partial view
+                        var currentPartialView = contentContainer.querySelector(tagObject.tagPrefix + tagObject.tagName);
+
+                        // remove all children of this partial view
+                        while(currentPartialView.firstChild) {
+                            currentPartialView.removeChild(currentPartialView.firstChild);
+                        }
+
+                        // remove current partial view itself
+                        contentContainer.removeChild(currentPartialView);
+                    }
+
+
+                    /**
+                     * At this point all data is already binded with template placeholders, hence notify that binding is completed !
+                     * This method acting as a callback function has to be invoked as a last one !
+                     * Otherwise results could be unpredictable !
+                    */
+                    successCallback(isLast, flowNavigation);
                 }
             },
 
@@ -96,10 +138,87 @@
                                     some_key_2: {
                                         tagPrefix:  ".",
                                         tagName: "div_h2",
-                                        content: "Officially called [<span class=\"mechanism_name\"> Website Control Unit </span>]"
+                                        content: "<span class=\"mechanism_officially\">Officially</span> called [<span class=\"mechanism_name\"> Website Control Unit </span>]"
                                     }
                                 }
                            };
+                }
+            },
+
+            applyListenerEventBinder: function(viewModelUnbinder, htmlTemplate, dataModel, successCallback, prevModelEventListenerBinder, isLast, flowNavigation) {
+                return applyListenerEventBinder_I_1L(viewModelUnbinder, htmlTemplate, dataModel, successCallback, prevModelEventListenerBinder, isLast, flowNavigation);
+
+
+
+                /**
+                 * Local helper functions
+                */
+                function applyListenerEventBinder_I_1L(viewModelUnbinder, htmlTemplate, dataModel, successCallback, prevModelEventListenerBinder, isLast, flowNavigation) {
+                    getNextView_I_2L(true);
+                    removeCurrentView_I_2L(
+                                            true,
+                                            viewModelUnbinder.bind(
+                                                                    null,
+                                                                    htmlTemplate,
+                                                                    dataModel,
+                                                                    successCallback,
+                                                                    isLast,
+                                                                    flowNavigation
+                                                                  ),
+                                            prevModelEventListenerBinder
+                                          );
+
+
+
+                    /**
+                     * Local helper functions
+                    */
+                    function getNextView_I_2L(doBind) {
+                        // handle get next view
+                        if(doBind) {
+                            document.getElementsByClassName('mechanism_name')[0].addEventListener('click', yieldNextView_I_3L);
+                        }
+                        else {
+                            document.getElementsByClassName('mechanism_name')[0].removeEventListener('click', yieldNextView_I_3L);
+                        }
+
+
+
+                        /**
+                         * Local helper functions
+                        */
+                        function yieldNextView_I_3L() {
+                            // resume flow from this point (yield the next view) !!!!
+                            document.dispatchEvent(new CustomEvent('GetNextView'));
+                        }
+                    }
+
+                    function removeCurrentView_I_2L(doBind, unbinderCallback, previousModelEventListenerBinder) {
+                        if(doBind) {
+                            // bind core data to callback that will remove the current view view
+                            var removeCurrentViewCallback = removeCurrentView_I_3L.bind(null, unbinderCallback, previousModelEventListenerBinder);
+
+                            // handle get previous view
+                            document.getElementsByClassName('mechanism_officially')[0].addEventListener('click', removeCurrentViewCallback);
+                        }
+                        else {
+                            // handle get previous view
+                            document.getElementsByClassName('mechanism_officially')[0].removeEventListener('click', removeCurrentView_I_3L);
+                        }
+
+
+
+                        /**
+                         * Local helper functions
+                        */
+                        function removeCurrentView_I_3L(optionalUnbinderCallback, optionalPreviousModelEventListenerBinder) {
+                            // resume flow from this point (remove the current view view) !!!!
+                            if(optionalUnbinderCallback)
+                                document.dispatchEvent(new CustomEvent('RemoveCurrentView',{bubbles: false, cancelable: false, detail: [optionalUnbinderCallback, optionalPreviousModelEventListenerBinder]}));
+                            else
+                                document.dispatchEvent(new CustomEvent('RemoveCurrentView'));
+                        }
+                    }
                 }
             }
         }

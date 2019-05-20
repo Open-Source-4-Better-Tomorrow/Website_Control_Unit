@@ -20,7 +20,7 @@
             this.Variables.__init__();
 
             // setup event flow
-            this.Functions.bindListenersWithEvents([_EVENTS_OBJECT.initEvents, _EVENTS_OBJECT.statefulEvents, _EVENTS_OBJECT.nextViewEvents]);
+            this.Functions.bindListenersWithEvents([_EVENTS_OBJECT.initEvents, _EVENTS_OBJECT.statefulEvents, _EVENTS_OBJECT.nextViewEvents, _EVENTS_OBJECT.rollbackEvents]);
         },
 
         Variables: {
@@ -46,8 +46,14 @@
 
             resilient_attempt_time_interval: 50,
 
-            model_metadata: null,
-            model_metadata_index: -1
+            model_metadata: {
+                elb_prefix: 'elb_',
+                model_index: -1,
+
+                models: null,
+
+                elbs: {} // event-to-listener binders
+            }
         },
 
         Functions: {
@@ -92,7 +98,7 @@
                     }
 
                     // store array for later usage
-                    _CORE_OBJECT.Variables.model_metadata = viewModel_array;
+                    _CORE_OBJECT.Variables.model_metadata.models = viewModel_array;
                 }
             },
 
@@ -162,6 +168,10 @@
 
             onViewModelExposeYourData: {
                 eventName: 'ViewModelExposeYourData'
+            },
+
+            onResetCurrentViewModelMetadata: {
+                eventName: 'ResetCurrentViewModelMetadata'
             }
         },
 
@@ -236,15 +246,14 @@
                     */
                     function onGetNextViewModel_I_1L(event) {
                         _debugger.count("ModelManager received an order to yield the next view model... # ");
-
                         // fetch the next model metadata
-                        var nextViewModelMetadata = _CORE_OBJECT.Variables.model_metadata[++_CORE_OBJECT.Variables.model_metadata_index];
+                        var nextViewModelMetadata = _CORE_OBJECT.Variables.model_metadata.models[++_CORE_OBJECT.Variables.model_metadata.model_index];
 
                         var secondLevelEventDetails;
                         // if there is another physical model data available
                         if(nextViewModelMetadata && nextViewModelMetadata.isRequired) {
                             // check if this is last view model in the whole workflow
-                            nextViewModelMetadata.isLast = _CORE_OBJECT.Variables.model_metadata_index + 1 === _CORE_OBJECT.Variables.model_metadata.length;
+                            nextViewModelMetadata.isLast = _CORE_OBJECT.Variables.model_metadata.model_index + 1 === _CORE_OBJECT.Variables.model_metadata.models.length;
 
                             // store event detail and next model metadata
                             secondLevelEventDetails = [event.detail, nextViewModelMetadata];
@@ -297,7 +306,7 @@
                         // next view model callback
                         var processNextViewModelCallback = details[0];
 
-                        // was next model available or required
+                        // was next model available or required ?
                         var nextViewModel = details[1];
 
                         // if there is next view model "in accessible space" request the model data
@@ -314,14 +323,67 @@
                          * Local helper functions
                         */
                         function handleViewModel_I_2L(viewModel, details) {
-                            // is last in the workflow
+                            // is last in the workflow ?
                             var isLast = details[0];
+
+                            // apply listener-to-event binder of this model to the very next model metadata, if available
+                            applyThisModelEventListenerBinderToNextModelMetadata_I_2L(viewModel, isLast);
+
+                            // apply listener-to-event binder of previous model to this model, if available
+                            applyPreviousModelEventListenerBinderToThisModel_I_2L(viewModel);
 
                             // next view model callback
                             var processNextViewModelCallback = details[1];
 
                             // return control to ModelPresenter passing required model data
                             processNextViewModelCallback(viewModel, isLast);
+                        }
+
+                        function applyThisModelEventListenerBinderToNextModelMetadata_I_2L(viewModel, isLast) {
+                            // the last model has no following models, hence skip it
+                            if(!isLast) {
+                                // the next model metadata index
+                                var next = _CORE_OBJECT.Variables.model_metadata.model_index + 1;
+
+                                // fetch the next model metadata relative to this model metadata
+                                var relativelyNextViewModelMetadata = _CORE_OBJECT.Variables.model_metadata.models[next];
+
+                                // apply event listener rebinder only if the very next model has phisical model available
+                                if(relativelyNextViewModelMetadata && relativelyNextViewModelMetadata.isRequired) {
+                                    if(!_CORE_OBJECT.Variables.model_metadata.elbs[_CORE_OBJECT.Variables.model_metadata.elb_prefix + next]) {
+                                        _CORE_OBJECT.Variables.model_metadata.elbs[_CORE_OBJECT.Variables.model_metadata.elb_prefix + next] = viewModel.ListenerToEventBinder.get();
+                                        console.log(
+                                                    "This model #" + _CORE_OBJECT.Variables.model_metadata.model_index +
+                                                    " event listener was assigned to model #" + (_CORE_OBJECT.Variables.model_metadata.elb_prefix + next)
+                                        );
+                                    }
+                                }
+                            }
+                        }
+
+                        function applyPreviousModelEventListenerBinderToThisModel_I_2L(viewModel) {
+                                // the previous model metadata index
+                                var previous = _CORE_OBJECT.Variables.model_metadata.model_index - 1;
+                                // the current model metadata index
+                                var current = _CORE_OBJECT.Variables.model_metadata.model_index;
+
+                                // fetch the previous model metadata relative to this model metadata
+                                var relativelyPreviousViewModelMetadata = _CORE_OBJECT.Variables.model_metadata.models[previous];
+                                // fetch the current model metadata
+                                var currentViewModelMetadata = _CORE_OBJECT.Variables.model_metadata.models[current];
+
+                                // apply event listener rebinder of the previous model if it has phisical model available
+                                if(
+                                    relativelyPreviousViewModelMetadata && relativelyPreviousViewModelMetadata.isRequired &&
+                                    currentViewModelMetadata && currentViewModelMetadata.isRequired
+                                    ) {
+                                    console.log(
+                                                "Current model and previous one are both required" +
+                                                ", and previous model requires event listener binder stored in current model #" + current +
+                                                " with id = #" + (_CORE_OBJECT.Variables.model_metadata.elb_prefix + current)
+                                    );
+                                    viewModel.previousModelEventListenerBinder = _CORE_OBJECT.Variables.model_metadata.elbs[_CORE_OBJECT.Variables.model_metadata.elb_prefix + current];
+                                }
                         }
                     }
                 }
@@ -341,6 +403,33 @@
                     function onNextViewModelHasArrived_I_1L(event) {
                     }
                 },
+            }
+        },
+
+        rollbackEvents: {
+            onResetCurrentView: {
+                eventName: 'ResetCurrentView',
+
+                eventListener: function(event) {
+                    return onResetCurrentViewModelMetadata_I_1L(event);
+
+
+
+                    /**
+                     * Local helper functions
+                    */
+                    function onResetCurrentViewModelMetadata_I_1L(eventObject) {
+                        _debugger.count("ModelManager received an order to update current view model state... # ");
+
+                        // move the model's metadata index to the previous position
+                        _CORE_OBJECT.Variables.model_metadata.model_index--;
+
+                        _debugger.count("ModelManager updated view model state !... # ");
+
+                        // reset current view, i.e. view's template metadata object internals as well as view's model metadata object internals
+                        _DISPATCHER_OBJECT.dispatchEvent(_EVENTS_OBJECT.statelessEvents.onResetCurrentViewModelMetadata.eventName, eventObject.detail);
+                    }
+                }
             }
         }
     };

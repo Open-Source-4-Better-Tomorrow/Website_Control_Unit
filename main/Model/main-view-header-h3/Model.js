@@ -20,7 +20,7 @@
             this.Variables.__init__();
 
             // setup event flow
-            baseModelObject.Factory.createNew(this.Functions.getData, this.Functions.viewModelBinder);
+            baseModelObject.Factory.createNew(this.Functions.getData, this.Functions.applyViewModelBinder, function() {});
         },
 
         Variables: {
@@ -44,15 +44,15 @@
         },
 
         Functions: {
-            viewModelBinder: function(htmlTemplate, dataModel, successCallback, isLast) {
-                return viewModelBinder_I_1L(htmlTemplate, dataModel, successCallback, isLast);
+            applyViewModelBinder: function(htmlTemplate, dataModel, successCallback, prevModelEventListenerBinder, isLast, flowNavigation) {
+                return applyViewModelBinder_I_1L(htmlTemplate, dataModel, successCallback, prevModelEventListenerBinder, isLast, flowNavigation);
 
 
 
                 /**
                  * Local helper functions
                 */
-                function viewModelBinder_I_1L(htmlTemplate, dataModel, successCallback, isLast) {
+                function applyViewModelBinder_I_1L(htmlTemplate, dataModel, successCallback, prevModelEventListenerBinder, isLast, flowNavigation) {
                     // get encapsulated object
                     var dataModelObject = dataModel();
 
@@ -77,7 +77,7 @@
                      * This method acting as a callback function has to be invoked as a last one !
                      * Otherwise results could be unpredictable !
                     */
-                    successCallback(isLast);
+                    successCallback(isLast, flowNavigation);
                 }
             },
 

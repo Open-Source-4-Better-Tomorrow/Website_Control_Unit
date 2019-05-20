@@ -15,3 +15,20 @@
 .mechanism_name {
     color: rgb(255, 223, 43);
 }
+
+.mechanism_name:hover {
+    background-color: rgb(255, 223, 43);
+
+    color: rgb(20, 79, 124);
+
+    cursor: pointer;
+
+    text-decoration: underline;
+}
+
+.mechanism_officially:hover {
+    color: red;
+
+    cursor: pointer;
+}
+

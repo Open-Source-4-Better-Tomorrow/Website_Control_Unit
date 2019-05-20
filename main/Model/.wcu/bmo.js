@@ -17,17 +17,18 @@
     /**
      * This is a public object that is requested by the ModelPresenter.
      *
-     * It has to have these two "hard-coded" properites called [Data] and [DataToViewBinder].
+     * It has to have these three "hard-coded" properites called [Data], [DataToViewBinder] and [ListenerToEventBinder].
      *
      * Implementation of the aforementioned props is open to you, i.e. you have to provide valid stuff for these two properties !
      *
      * - [Data] is a property that delivers final view data
      * - [DataToViewBinder.get()] is function that knows the logic of how to "tie" data to html template
+     * - [ListenerToEventBinder.get()] is function that knows the logic of how to "tie" listeners to events
      *
      * This object [_VIEW_MODEL_EXPOSER] should be considered as kind of pre-defined object ! (You just copy and paste it into your own Model's module and provide the aforementioned implementation)
     */
     var _VIEW_MODEL_EXPOSER = {
-        __init__: function(userViewModel_GetData, userViewModel_GetBinder) {
+        __init__: function(userViewModel_GetData, userViewModel_GetBinder, userViewModel_GetListenerEventBinder) {
             // apply listeners to events
             _EVENTS_OBJECT.bindListenersWithEvents([_EVENTS_OBJECT.initEvents]);
 
@@ -36,6 +37,9 @@
 
             // initialize model data binder getter
             this.DataToViewBinder.__init__(userViewModel_GetBinder);
+
+            // initialize listener event binder getter
+            this.ListenerToEventBinder.__init__(userViewModel_GetListenerEventBinder);
         },
 
         Data: {
@@ -63,6 +67,20 @@
 
             _internals_: {
                 _getBinder: null
+            }
+        },
+
+        ListenerToEventBinder: {
+            __init__: function(userViewModel_GetListenerEventBinder) {
+                this._internals_._getListenerToEventBinder = userViewModel_GetListenerEventBinder;
+            },
+
+            get: function() {
+                return this._internals_._getListenerToEventBinder;
+            },
+
+            _internals_: {
+                _getListenerToEventBinder: null
             }
         }
     };
@@ -158,17 +176,17 @@
 
     var _MODEL_TO_VIEW_BINDER_OBJECT_FACTORY = {
         Factory: {
-            createNew: function (userViewModel_GetData, userViewModel_GetBinder) {
-                return createNew_I_1L(userViewModel_GetData, userViewModel_GetBinder);
+            createNew: function (userViewModel_GetData, userViewModel_GetBinder, userViewModel_GetListenerEventBinder) {
+                return createNew_I_1L(userViewModel_GetData, userViewModel_GetBinder, userViewModel_GetListenerEventBinder);
 
 
 
                 /**
                  * Local helper functions
                 */
-                function createNew_I_1L(userViewModel_GetData, userViewModel_GetBinder) {
+                function createNew_I_1L(userViewModel_GetData, userViewModel_GetBinder, userViewModel_GetListenerEventBinder) {
                     // initialize model exposer
-                    _VIEW_MODEL_EXPOSER.__init__(userViewModel_GetData, userViewModel_GetBinder);
+                    _VIEW_MODEL_EXPOSER.__init__(userViewModel_GetData, userViewModel_GetBinder, userViewModel_GetListenerEventBinder);
 
                     // return your model exposer
                     return _VIEW_MODEL_EXPOSER;
