@@ -32,7 +32,7 @@
             "relativePath" : "css/",
             "fonts" : {
               "internal" : ["normalize.css", "h1.css"],
-              "external" : ["/___offline-css/fonts_and_icons.css"]
+              "external" : ["https://fonts.googleapis.com/css?family=Akronim|Stylish"]
             },
             "waitForLoad" : true
         },
@@ -69,7 +69,7 @@
             "relativePath" : "css/",
             "fonts" : {
               "internal" : ["h3.css"],
-              "external" : ["/___offline-css/fonts_and_icons.css"]
+              "external" : ["https://fonts.googleapis.com/css?family=Aldrich"]
             },
             "waitForLoad" : true
         },
@@ -88,7 +88,7 @@
             "relativePath" : "css/",
             "fonts" : {
               "internal" : ["h4.css"],
-              "external" : ["/___offline-css/fonts_and_icons.css"]
+              "external" : ["https://fonts.googleapis.com/css?family=Anaheim"]
             },
             "waitForLoad" : true
         },
@@ -107,7 +107,7 @@
             "relativePath" : "css/",
             "fonts" : {
               "internal" : ["h5.css", "inline.css", "developer.css", "location.css"],
-              "external" : ["/___offline-css/fonts_and_icons.css"]
+              "external" : ["https://fonts.googleapis.com/css?family=Rajdhani", "https://fonts.googleapis.com/icon?family=Material+Icons"]
             },
             "waitForLoad" : true
         },
