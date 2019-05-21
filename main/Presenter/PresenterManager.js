@@ -274,7 +274,7 @@
                         var isLast = _CORE_OBJECT.Variables.view_metadata_index + 1 === _CORE_OBJECT.Variables.view_metadata.length;
 
                         // get the information, whether this view template requires some user interaction to yield the next one or the previous one
-                        var flowNavigation = nextViewTemplateMetadata.flowNavigaton;
+                        var flowNavigation = nextViewTemplateMetadata.flowNavigation;
 
                         // cache event details
                         var details = event.detail;
@@ -424,7 +424,7 @@
                         _CORE_OBJECT.Variables.view_metadata_index--;
 
                         // update and/or override view metadata to reflect current flow changes (require user to resume the flow in order to avoid infinite loop)
-                        _CORE_OBJECT.Variables.view_metadata[_CORE_OBJECT.Variables.view_metadata_index].flowNavigaton.userYieldsNextView = true;
+                        _CORE_OBJECT.Variables.view_metadata[_CORE_OBJECT.Variables.view_metadata_index].flowNavigation.userYieldsNextView = true;
 
                         // update event completion state
                         self.hasCompleted = true;

@@ -7,7 +7,7 @@
         "html" : {
             "relativePath" : "html/fast-initial-view-template.html"
         },
-        "flowNavigaton" : {
+        "flowNavigation" : {
             "userYieldsNextView" : false
         }
     },
@@ -20,7 +20,7 @@
         "html" : {
             "relativePath" : "html/main-view-template.html"
         },
-        "flowNavigaton" : {
+        "flowNavigation" : {
             "userYieldsNextView" : false
         }
     },
@@ -32,14 +32,14 @@
             "relativePath" : "css/",
             "fonts" : {
               "internal" : ["normalize.css", "h1.css"],
-              "external" : ["https://fonts.googleapis.com/css?family=Akronim|Stylish"]
+              "external" : ["/___offline-css/fonts_and_icons.css"]
             },
             "waitForLoad" : true
         },
         "html" : {
             "relativePath" : "html/main-view-header-h1-template.html"
         },
-        "flowNavigaton" : {
+        "flowNavigation" : {
             "userYieldsNextView" : true
         }
     },
@@ -57,7 +57,7 @@
         "html" : {
             "relativePath" : "html/main-view-header-h2-template.html"
         },
-        "flowNavigaton" : {
+        "flowNavigation" : {
             "userYieldsNextView" : true
         }
     },
@@ -69,14 +69,14 @@
             "relativePath" : "css/",
             "fonts" : {
               "internal" : ["h3.css"],
-              "external" : ["https://fonts.googleapis.com/css?family=Aldrich"]
+              "external" : ["/___offline-css/fonts_and_icons.css"]
             },
             "waitForLoad" : true
         },
         "html" : {
             "relativePath" : "html/main-view-header-h3-template.html"
         },
-        "flowNavigaton" : {
+        "flowNavigation" : {
             "userYieldsNextView" : false
         }
     },
@@ -88,14 +88,14 @@
             "relativePath" : "css/",
             "fonts" : {
               "internal" : ["h4.css"],
-              "external" : ["https://fonts.googleapis.com/css?family=Anaheim"]
+              "external" : ["/___offline-css/fonts_and_icons.css"]
             },
             "waitForLoad" : true
         },
         "html" : {
             "relativePath" : "html/main-view-header-h4-template.html"
         },
-        "flowNavigaton" : {
+        "flowNavigation" : {
             "userYieldsNextView" : false
         }
     },
@@ -107,14 +107,14 @@
             "relativePath" : "css/",
             "fonts" : {
               "internal" : ["h5.css", "inline.css", "developer.css", "location.css"],
-              "external" : ["https://fonts.googleapis.com/css?family=Rajdhani", "https://fonts.googleapis.com/icon?family=Material+Icons"]
+              "external" : ["/___offline-css/fonts_and_icons.css"]
             },
             "waitForLoad" : true
         },
         "html" : {
             "relativePath" : "html/main-view-header-h5-template.html"
         },
-        "flowNavigaton" : {
+        "flowNavigation" : {
             "userYieldsNextView" : false
         }
     }
