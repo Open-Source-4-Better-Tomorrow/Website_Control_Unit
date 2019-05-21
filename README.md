@@ -4,10 +4,10 @@
 
 ![Website Control Unit](/Website_Control_Unit_logo.png)
 
-This is the vNext mechanism powering DHTML MVP PV internals of Progressive Website Concept 1.0 ! (PWC)
+This is a brand new mechanism powering internals of Progressive Website Concept 1.0 ! ( PWC 1.0 )
 ##
 ## Version:&nbsp;:one:.:zero:
-## Status:&nbsp;UAD&nbsp;(RC version)&nbsp;:zap:
+## Status:&nbsp;UAD&nbsp;[ RC Update1 ]&nbsp;:zap:
 ## GA Release: 2019-06-01 Local Time &nbsp;:pushpin:
 ## License:&nbsp;:free:&nbsp;:heavy_check_mark:
 #

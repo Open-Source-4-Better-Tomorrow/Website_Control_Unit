@@ -17,11 +17,11 @@
     var _CORE_OBJECT = {
         __init__: function () {
             // setup event flow
-            this.Functions.bindListenersWithEvents([_EVENTS_OBJECT.initEvents, _EVENTS_OBJECT.statefulEvents]);
+            _EVENTS_OBJECT.bindListenersWithEvents([_EVENTS_OBJECT.initEvents, _EVENTS_OBJECT.statefulEvents]);
         },
 
         Variables: {
-            resource_path: '../mcu/MCU.resources.txt',  // path relative to View/Index.html
+            resource_path: '/.mcu/.conf/MCU.resources.txt',  // path relative to View/Index.html
 
             resource_type: 'js',
 
@@ -53,42 +53,6 @@
                                                             _CORE_OBJECT.Variables.resilient_attempt_time_interval
                                                             )
                                                             .Functions.loadFlatFile(_CORE_OBJECT.Variables.resource_path);
-                }
-            },
-
-            bindListenersWithEvents: function(arrayOfEventObjectCollection) {
-                return bindListenersToEvents_I_1L(arrayOfEventObjectCollection);
-
-
-
-                /**
-                 * Local helper functions
-                */
-                function bindListenersToEvents_I_1L(arrayOfEventObjectCollection) {
-                    // iterate over array of event object collections
-                    for(var i = 0, length = arrayOfEventObjectCollection.length; i < length; i++) {
-                        // access current event object collection
-                        var eventObjectCollection = arrayOfEventObjectCollection[i];
-
-                        // iterate over event objects
-                        for(var eventObject in eventObjectCollection) {
-                            // access current event object
-                            var customEventObject = eventObjectCollection[eventObject];
-
-                            // if current event object has appropriate structure, bind its listener to its event
-                            if(customEventObject.eventListener)
-                                addEventListener_I_2L(customEventObject.eventName, customEventObject.eventListener);
-                        }
-                    }
-
-
-
-                    /**
-                     * Local helper functions
-                    */
-                    function addEventListener_I_2L(eventName, eventListener) {
-                        document.addEventListener(eventName, eventListener);
-                    }
                 }
             }
         }
@@ -194,6 +158,46 @@
                 },
 
                 hasCompleted: false
+            }
+        },
+
+        bindListenersWithEvents: function(arrayOfEventObjectCollection, unbind) {
+            return bindListenersToEvents_I_1L(arrayOfEventObjectCollection, unbind);
+
+
+
+            /**
+             * Local helper functions
+            */
+            function bindListenersToEvents_I_1L(arrayOfEventObjectCollection, unbind) {
+                // iterate over array of event object collections
+                for(var i = 0, length = arrayOfEventObjectCollection.length; i < length; i++) {
+                    // access current event object collection
+                    var eventObjectCollection = arrayOfEventObjectCollection[i];
+
+                    // iterate over event objects
+                    for(var eventObject in eventObjectCollection) {
+                        // access current event object
+                        var customEventObject = eventObjectCollection[eventObject];
+
+                        // if current event object has appropriate structure, bind its listener to its event
+                        if(customEventObject.eventListener)
+                            unbind ? removeEventListener_I_2L(customEventObject.eventName, customEventObject.eventListener) : addEventListener_I_2L(customEventObject.eventName, customEventObject.eventListener);
+                    }
+                }
+
+
+
+                /**
+                 * Local helper functions
+                */
+                function addEventListener_I_2L(eventName, eventListener) {
+                    document.addEventListener(eventName, eventListener);
+                }
+
+                function removeEventListener_I_2L(eventName, eventListener) {
+                    document.removeEventListener(eventName, eventListener);
+                }
             }
         }
     };

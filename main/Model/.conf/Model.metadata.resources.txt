@@ -9,35 +9,35 @@
 
     "main_view_header_h1" : {
         "isRequired" : true,
-        "relativePath" : "/Model/main-view-header-h1/",
+        "relativePath" : "/Model/user-defined/main-view-header-h1/",
         "modelName" : "Model.js",
         "modelConfig" : "config.txt"
     },
 
     "main_view_header_h2" : {
         "isRequired" : true,
-        "relativePath" : "/Model/main-view-header-h2/",
+        "relativePath" : "/Model/user-defined/main-view-header-h2/",
         "modelName" : "Model.js",
         "modelConfig" : "config.txt"
     },
 
     "main_view_header_h3" : {
         "isRequired" : true,
-        "relativePath" : "/Model/main-view-header-h3/",
+        "relativePath" : "/Model/user-defined/main-view-header-h3/",
         "modelName" : "Model.js",
         "modelConfig" : "config.txt"
     },
 
     "main_view_header_h4" : {
         "isRequired" : true,
-        "relativePath" : "/Model/main-view-header-h4/",
+        "relativePath" : "/Model/user-defined/main-view-header-h4/",
         "modelName" : "Model.js",
         "modelConfig" : "config.txt"
     },
 
     "main_view_header_h5" : {
         "isRequired" : true,
-        "relativePath" : "/Model/main-view-header-h5/",
+        "relativePath" : "/Model/user-defined/main-view-header-h5/",
         "modelName" : "Model.js",
         "modelConfig" : "config.txt"
     }

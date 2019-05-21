@@ -34,7 +34,7 @@
                                                    ];
             },
 
-            resource_path_array: ['/Presenter/Presenter.View.core.resources.txt', '/Presenter/Presenter.View.metadata.resources.txt', '/Presenter/Presenter.Model.core.resources.txt'],
+            resource_path_array: ['/Presenter/.conf/Presenter.View.core.resources.txt', '/Presenter/.conf/Presenter.View.metadata.resources.txt', '/Presenter/.conf/Presenter.Model.core.resources.txt'],
 
             resource_type_array: ['js', 'json', 'js'],
 

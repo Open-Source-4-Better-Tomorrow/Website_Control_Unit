@@ -20,7 +20,7 @@
             this.Variables.__init__();
 
             // setup event flow
-            this.Functions.bindListenersWithEvents([_EVENTS_OBJECT.initEvents, _EVENTS_OBJECT.statefulEvents, _EVENTS_OBJECT.nextViewEvents, _EVENTS_OBJECT.rollbackEvents]);
+            _EVENTS_OBJECT.bindListenersWithEvents([_EVENTS_OBJECT.initEvents, _EVENTS_OBJECT.statefulEvents, _EVENTS_OBJECT.nextViewEvents, _EVENTS_OBJECT.rollbackEvents]);
         },
 
         Variables: {
@@ -32,7 +32,7 @@
                                                    ];
             },
 
-            resource_path_array: ['/Model/Model.core.resources.txt', '/Model/Model.metadata.resources.txt'],
+            resource_path_array: ['/Model/.conf/Model.core.resources.txt', '/Model/.conf/Model.metadata.resources.txt'],
 
             resource_type_array: ['js', 'json'],
 
@@ -99,42 +99,6 @@
 
                     // store array for later usage
                     _CORE_OBJECT.Variables.model_metadata.models = viewModel_array;
-                }
-            },
-
-            bindListenersWithEvents: function(arrayOfEventObjectCollection) {
-                return bindListenersToEvents_I_1L(arrayOfEventObjectCollection);
-
-
-
-                /**
-                 * Local helper functions
-                */
-                function bindListenersToEvents_I_1L(arrayOfEventObjectCollection) {
-                    // iterate over array of event object collections
-                    for(var i = 0, length = arrayOfEventObjectCollection.length; i < length; i++) {
-                        // access current event object collection
-                        var eventObjectCollection = arrayOfEventObjectCollection[i];
-
-                        // iterate over event objects
-                        for(var eventObject in eventObjectCollection) {
-                            // access current event object
-                            var customEventObject = eventObjectCollection[eventObject];
-
-                            // if current event object has appropriate structure, bind its listener to its event
-                            if(customEventObject.eventListener)
-                                addEventListener_I_2L(customEventObject.eventName, customEventObject.eventListener);
-                        }
-                    }
-
-
-
-                    /**
-                     * Local helper functions
-                    */
-                    function addEventListener_I_2L(eventName, eventListener) {
-                        document.addEventListener(eventName, eventListener);
-                    }
                 }
             }
         }
@@ -429,6 +393,46 @@
                         // reset current view, i.e. view's template metadata object internals as well as view's model metadata object internals
                         _DISPATCHER_OBJECT.dispatchEvent(_EVENTS_OBJECT.statelessEvents.onResetCurrentViewModelMetadata.eventName, eventObject.detail);
                     }
+                }
+            }
+        },
+
+        bindListenersWithEvents: function(arrayOfEventObjectCollection, unbind) {
+            return bindListenersToEvents_I_1L(arrayOfEventObjectCollection, unbind);
+
+
+
+            /**
+             * Local helper functions
+            */
+            function bindListenersToEvents_I_1L(arrayOfEventObjectCollection, unbind) {
+                // iterate over array of event object collections
+                for(var i = 0, length = arrayOfEventObjectCollection.length; i < length; i++) {
+                    // access current event object collection
+                    var eventObjectCollection = arrayOfEventObjectCollection[i];
+
+                    // iterate over event objects
+                    for(var eventObject in eventObjectCollection) {
+                        // access current event object
+                        var customEventObject = eventObjectCollection[eventObject];
+
+                        // if current event object has appropriate structure, bind its listener to its event
+                        if(customEventObject.eventListener)
+                            unbind ? removeEventListener_I_2L(customEventObject.eventName, customEventObject.eventListener) : addEventListener_I_2L(customEventObject.eventName, customEventObject.eventListener);
+                    }
+                }
+
+
+
+                /**
+                 * Local helper functions
+                */
+                function addEventListener_I_2L(eventName, eventListener) {
+                    document.addEventListener(eventName, eventListener);
+                }
+
+                function removeEventListener_I_2L(eventName, eventListener) {
+                    document.removeEventListener(eventName, eventListener);
                 }
             }
         }
