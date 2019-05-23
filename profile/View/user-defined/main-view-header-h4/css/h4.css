@@ -1,0 +1,22 @@
+.div_h4 {
+    font-family: 'Anaheim', sans-serif;
+    font-size: 2em;
+
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 18%;
+
+    position: relative;
+
+    text-align: center;
+
+    width: 90%;
+}
+
+.div_h4 i.material-icons {
+    font-size: 1em;
+
+    position: absolute;
+
+    top: 1.5%;
+}

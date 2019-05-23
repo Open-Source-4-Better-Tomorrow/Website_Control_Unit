@@ -1,0 +1,22 @@
+.div_h1 {
+    color: rgb(255, 223, 43);
+
+    font-family: 'Akronim', cursive;
+    font-size: 6em;
+
+    margin-left: auto;
+    margin-right: auto;
+
+    position: relative;
+
+    top: 20%;
+
+    width: 100%;
+}
+
+.mechanism_unofficially:hover {
+    background-color: rgb(255, 223, 43);
+    color: rgb(20, 79, 124);
+
+    cursor: pointer;
+}
