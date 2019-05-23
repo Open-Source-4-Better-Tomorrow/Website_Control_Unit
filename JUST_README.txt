@@ -7,6 +7,8 @@ Paths definition:
  - all paths are relative to View/Index.html, i.e. to View/
 
 
+
+
 ==================================
  How it really works ?
 ==================================
