@@ -1,2 +1,0 @@
-./../Model/.wcu/rsaal.js,
-./../Model/.wcu/bmo.js

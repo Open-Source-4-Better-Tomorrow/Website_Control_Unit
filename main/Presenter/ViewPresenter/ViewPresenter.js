@@ -187,6 +187,7 @@
                                 function onCSSLoad_I_4L() {
                                     // if wait for all CSS to be fully loaded
                                     if(nextViewTemplateMetadata.css.waitForLoad) {
+                                        _debugger.count("============================== Required CSS loaded ! ==============================");
                                         // notify that all CSS stylesheets have been loaded as well as external Google Fonts files
                                         _DISPATCHER_OBJECT.dispatchEvent(_EVENTS_OBJECT.statefulEvents.onCSSLoaded.eventName, secondLevelEventDetails);
                                     }
@@ -266,6 +267,7 @@
                      * Local helper functions
                     */
                     function onHTMLLoaded_I_1L(self, event) {
+                        _debugger.count("============================== Required HTML loaded ! ==============================");
                         // update event completion state
                         self.hasCompleted = true;
 
