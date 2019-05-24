@@ -36,16 +36,16 @@ function getCurrentLogTime() {
      * Local helper functions
     */
     function formatDatePart_I_1L(datepart, datepartWidth, datepartFiller) {
-        var milis = "";
+        var datepart_formatted = "";
 
         if(datepart.toString().length < datepartWidth) {
             for(var i = 0; i < datepartWidth - datepart.toString().length; i++)
-                milis += datepartFiller;
+                datepart_formatted += datepartFiller;
         }
 
-        milis += datepart;
+        datepart_formatted += datepart;
 
-        return milis;
+        return datepart_formatted;
     }
 }
 
