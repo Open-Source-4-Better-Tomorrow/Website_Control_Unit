@@ -68,12 +68,12 @@
                 function run_I_1L() {
                     for(var i = 0, length = _CORE_OBJECT.Variables.resource_path_array.length; i < length; i++) {
                         flatFileAPI.Factory.LoadObject.createNew(
-                                                                _CORE_OBJECT.Variables.resource_type_array[i],
-                                                                _CORE_OBJECT.Variables.resource_separator_array[i],
-                                                                _CORE_OBJECT.Variables.resource_notification_array[i],
-                                                                _CORE_OBJECT.Variables.resource_isJSONFormat_array[i],
-                                                                _CORE_OBJECT.Variables.resource_isHTMLFormat_array[i],
-                                                                _CORE_OBJECT.Variables.resilient_attempt_time_interval
+                                                                    _CORE_OBJECT.Variables.resource_type_array[i],
+                                                                    _CORE_OBJECT.Variables.resource_separator_array[i],
+                                                                    _CORE_OBJECT.Variables.resource_notification_array[i],
+                                                                    _CORE_OBJECT.Variables.resource_isJSONFormat_array[i],
+                                                                    _CORE_OBJECT.Variables.resource_isHTMLFormat_array[i],
+                                                                    _CORE_OBJECT.Variables.resilient_attempt_time_interval
                                                                 )
                                                                 .Functions.loadFlatFile(_CORE_OBJECT.Variables.resource_path_array[i]);
                     }
@@ -178,7 +178,7 @@
                      * Local helper functions
                     */
                     function onModelMetadataReady_I_1L(self, eventObject) {
-                        // process event detial data
+                        // process event detail data
                         _CORE_OBJECT.Functions.processModelsMetadata(eventObject.detail[0]);
 
                         // update event completion state
@@ -214,7 +214,7 @@
                         var nextViewModelMetadata = _CORE_OBJECT.Variables.model_metadata.models[++_CORE_OBJECT.Variables.model_metadata.model_index];
 
                         var secondLevelEventDetails;
-                        // if there is another physical model data available
+                        // if there is another physical model available
                         if(nextViewModelMetadata && nextViewModelMetadata.isRequired) {
                             // check if this is last view model in the whole workflow
                             nextViewModelMetadata.isLast = _CORE_OBJECT.Variables.model_metadata.model_index + 1 === _CORE_OBJECT.Variables.model_metadata.models.length;
@@ -245,7 +245,6 @@
                             // dispatch proper notification immediately
                             _DISPATCHER_OBJECT.dispatchEvent(_EVENTS_OBJECT.nextViewEvents.onNextViewModelPhysicallyLoaded.eventName, secondLevelEventDetails);
                         }
-
                     }
                 }
             },
@@ -267,10 +266,10 @@
                         // cache event details
                         var details = event.detail;
 
-                        // next view model callback
+                        // get next view model callback
                         var processNextViewModelCallback = details[0];
 
-                        // was next model available or required ?
+                        // is next model available or required ?
                         var nextViewModel = details[1];
 
                         // if there is next view model "in accessible space" request the model data
@@ -287,26 +286,26 @@
                          * Local helper functions
                         */
                         function handleViewModel_I_2L(viewModel, details) {
-                            // is last in the workflow ?
+                            // is this model last in the workflow ?
                             var isLast = details[0];
 
                             // apply listener-to-event binder of this model to the very next model metadata, if available
                             applyThisModelEventListenerBinderToNextModelMetadata_I_2L(viewModel, isLast);
 
-                            // apply listener-to-event binder of previous model to this model, if available
+                            // apply listener-to-event binder of the previous model to this model, if available
                             applyPreviousModelEventListenerBinderToThisModel_I_2L(viewModel);
 
-                            // next view model callback
+                            // get next view model callback
                             var processNextViewModelCallback = details[1];
 
-                            // return control to ModelPresenter passing required model data
+                            // return control to ModelPresenter passing required model data along the way
                             processNextViewModelCallback(viewModel, isLast);
                         }
 
                         function applyThisModelEventListenerBinderToNextModelMetadata_I_2L(viewModel, isLast) {
-                            // the last model has no following models, hence skip it
+                            // if the last model has no following models (next siblings), skip it
                             if(!isLast) {
-                                // the next model metadata index
+                                // get the next model metadata index
                                 var next = _CORE_OBJECT.Variables.model_metadata.model_index + 1;
 
                                 // fetch the next model metadata relative to this model metadata
@@ -326,28 +325,28 @@
                         }
 
                         function applyPreviousModelEventListenerBinderToThisModel_I_2L(viewModel) {
-                                // the previous model metadata index
-                                var previous = _CORE_OBJECT.Variables.model_metadata.model_index - 1;
-                                // the current model metadata index
-                                var current = _CORE_OBJECT.Variables.model_metadata.model_index;
+                            // get the previous model metadata index
+                            var previous = _CORE_OBJECT.Variables.model_metadata.model_index - 1;
+                            // get the current model metadata index
+                            var current = _CORE_OBJECT.Variables.model_metadata.model_index;
 
-                                // fetch the previous model metadata relative to this model metadata
-                                var relativelyPreviousViewModelMetadata = _CORE_OBJECT.Variables.model_metadata.models[previous];
-                                // fetch the current model metadata
-                                var currentViewModelMetadata = _CORE_OBJECT.Variables.model_metadata.models[current];
+                            // fetch the previous model metadata relative to this model metadata
+                            var relativelyPreviousViewModelMetadata = _CORE_OBJECT.Variables.model_metadata.models[previous];
+                            // fetch the current model metadata
+                            var currentViewModelMetadata = _CORE_OBJECT.Variables.model_metadata.models[current];
 
-                                // apply event listener rebinder of the previous model if it has phisical model available
-                                if(
-                                    relativelyPreviousViewModelMetadata && relativelyPreviousViewModelMetadata.isRequired &&
-                                    currentViewModelMetadata && currentViewModelMetadata.isRequired
-                                    ) {
+                            // apply event listener rebinder of the previous model if it has phisical model available
+                            if(
+                                relativelyPreviousViewModelMetadata && relativelyPreviousViewModelMetadata.isRequired &&
+                                currentViewModelMetadata && currentViewModelMetadata.isRequired
+                              ) {
                                     _debugger.count(
                                                 "Current model and previous one are both required" +
                                                 ", and previous model requires event listener binder stored in current model #" + current +
                                                 " with id = #" + (_CORE_OBJECT.Variables.model_metadata.elb_prefix + current)
                                     );
                                     viewModel.previousModelEventListenerBinder = _CORE_OBJECT.Variables.model_metadata.elbs[_CORE_OBJECT.Variables.model_metadata.elb_prefix + current];
-                                }
+                            }
                         }
                     }
                 }
@@ -369,12 +368,12 @@
                     function onResetCurrentViewModelMetadata_I_1L(eventObject) {
                         _debugger.count("ModelManager received an order to update current view model state... # ");
 
-                        // move the model's metadata index to the previous position
+                        // move the model metadata index to the previous position
                         _CORE_OBJECT.Variables.model_metadata.model_index--;
 
                         _debugger.count("ModelManager updated view model state !... # ");
 
-                        // reset current view, i.e. view's template metadata object internals as well as view's model metadata object internals
+                        // reset current view, i.e. internals of metadata object of view's template as well as internals of metadata object of view's model
                         _DISPATCHER_OBJECT.dispatchEvent(_EVENTS_OBJECT.statelessEvents.onResetCurrentViewModelMetadata.eventName, eventObject.detail);
                     }
                 }
