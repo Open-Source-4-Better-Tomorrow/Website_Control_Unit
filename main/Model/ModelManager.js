@@ -316,7 +316,7 @@
                                 if(relativelyNextViewModelMetadata && relativelyNextViewModelMetadata.isRequired) {
                                     if(!_CORE_OBJECT.Variables.model_metadata.elbs[_CORE_OBJECT.Variables.model_metadata.elb_prefix + next]) {
                                         _CORE_OBJECT.Variables.model_metadata.elbs[_CORE_OBJECT.Variables.model_metadata.elb_prefix + next] = viewModel.ListenerToEventBinder.get();
-                                        console.log(
+                                        _debugger.count(
                                                     "This model #" + _CORE_OBJECT.Variables.model_metadata.model_index +
                                                     " event listener was assigned to model #" + (_CORE_OBJECT.Variables.model_metadata.elb_prefix + next)
                                         );
@@ -341,7 +341,7 @@
                                     relativelyPreviousViewModelMetadata && relativelyPreviousViewModelMetadata.isRequired &&
                                     currentViewModelMetadata && currentViewModelMetadata.isRequired
                                     ) {
-                                    console.log(
+                                    _debugger.count(
                                                 "Current model and previous one are both required" +
                                                 ", and previous model requires event listener binder stored in current model #" + current +
                                                 " with id = #" + (_CORE_OBJECT.Variables.model_metadata.elb_prefix + current)
