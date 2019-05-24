@@ -16,10 +16,10 @@ var _debugger = {
                                                                 currentdate.getDate() +"/" +
                                                                 (currentdate.getMonth()+1)  + "/" +
                                                                 currentdate.getFullYear() + " @ " +
-                                                                currentdate.getHours() + ":" +
-                                                                currentdate.getMinutes() + ":" +
-                                                                currentdate.getSeconds() + ":" +
-                                                                formatMiliseconds_I_1L(currentdate.getMilliseconds());
+                                                                formatDatePart_I_1L(currentdate.getHours(), 2, "0") + ":" +
+                                                                formatDatePart_I_1L(currentdate.getMinutes(), 2, "0") + ":" +
+                                                                formatDatePart_I_1L(currentdate.getSeconds(), 2, "0") + ":" +
+                                                                formatDatePart_I_1L(currentdate.getMilliseconds(), 3, "0");
 
         console.log(log);
 
@@ -48,15 +48,15 @@ var _debugger = {
             return message_string + padding;
         }
 
-        function formatMiliseconds_I_1L(milliseconds) {
+        function formatDatePart_I_1L(datepart, datepartWidth, datepartFiller) {
             var milis = "";
 
-            if(milliseconds.toString().length < 3) {
-                for(var i = 0; i < 3 - milliseconds.toString().length; i++)
-                    milis += "0";
+            if(datepart.toString().length < datepartWidth) {
+                for(var i = 0; i < datepartWidth - datepart.toString().length; i++)
+                    milis += datepartFiller;
             }
 
-            milis += milliseconds;
+            milis += datepart;
 
             return milis;
         }
