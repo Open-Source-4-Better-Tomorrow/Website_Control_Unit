@@ -26,7 +26,7 @@
                      * Local helper functions
                     */
                     function createNew_I_1L(resource_type, resource_separator, notification_event, isJSON, isHTML, resilient_attempt_time_interval, secondLevelEventDetail_array) {
-                        // throw error if no notification event present
+                        // throw error if there is no notification event present
                         if(!notification_event)
                             throw Error("No valid notification event provided to dispatch upon successful loading of resources !");
 
@@ -100,7 +100,7 @@
                                                 }
                                             };
 
-                                            // return XmlHttpRequest object instance
+                                            // return request object
                                             return xhr;
                                         }
                                     }
@@ -119,6 +119,7 @@
                                         if(_CUSTOM_FLAT_FILE_LOAD_OBJECT.Loading._internals_.isJSON) {
                                             return handleJSONFormat_I_2L(resource_array_string);
                                         }
+                                        // check if we're dealing with HTML format
                                         else if(_CUSTOM_FLAT_FILE_LOAD_OBJECT.Loading._internals_.isHTML) {
                                             return handleHTMLFormat_I_2L(resource_array_string);
                                         }
@@ -149,7 +150,7 @@
                                             // create base array
                                             var resource_array = content.split(_CUSTOM_FLAT_FILE_LOAD_OBJECT.Loading._internals_.resource_separator_I);
 
-                                            // clean an array of resources
+                                            // clean the array of resources
                                             resource_array.forEach(function(item, index) {resource_array[index] = item.trim().replace('\r\n', '');});
 
                                             // load up resources

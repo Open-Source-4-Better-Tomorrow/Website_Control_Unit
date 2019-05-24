@@ -1,5 +1,5 @@
 /**
- * Module that provides backward compatibility in terms of new features.
+ * Module that provides cross-browser compatibility in terms of some of the new features.
  *
  *
  * Author: Łukasz Dąbrowski
@@ -11,6 +11,7 @@
 */
 
 (function () {
+
     // define CustomEvent constructor function
     function CustomEvent(event, params) {
         // define params
@@ -92,4 +93,5 @@
     if (!Object.prototype.forEach) {
         Object.defineProperty(Object.prototype, 'forEach', ObjectForEach);
     }
+
 })();
