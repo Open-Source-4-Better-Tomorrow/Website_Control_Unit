@@ -20,8 +20,7 @@
             _EVENTS_OBJECT.bindListenersWithEvents([_EVENTS_OBJECT.statefulEvents]);
         },
 
-        Functions: {
-        }
+        Functions: {}
     };
 
     var _EVENTS_OBJECT = {
@@ -133,7 +132,7 @@
                                         css_fonts_array.push.apply(css_fonts_array, fonts_external_array);
                                     }
 
-                                    // load up physical template's stylesheet given its physical location (load up CSS file)
+                                    // load up stylesheets given their physical location (load up CSS files)
                                     ral.GET_RAL_OBJECT.Loader.loadAsync(
                                         css_fonts_array,
                                         'css',
@@ -144,7 +143,7 @@
                                         onCSSLoad_I_4L
                                     );
                                 }
-                                // otherwise "mark" that loading of CSS stylesheets has been completed
+                                // otherwise mark that loading process of CSS stylesheets has been completed
                                 else {
                                     // notify that CSS load has logically completed
                                     pretendCssWasLoaded_I_4L();
@@ -156,7 +155,7 @@
                                  * Local helper functions
                                 */
                                 function pretendCssWasLoaded_I_4L() {
-                                    // mark that loading of all CSS stylesheets has logically been completed
+                                    // mark that loading process of all CSS stylesheets has logically been completed
                                     _EVENTS_OBJECT.statefulEvents.onCSSLoaded.hasCompleted = true;
                                 }
 
@@ -185,7 +184,7 @@
                                 }
 
                                 function onCSSLoad_I_4L() {
-                                    // if wait for all CSS to be fully loaded
+                                    // if wait for all CSS stylesheets to be fully loaded
                                     if(nextViewTemplateMetadata.css.waitForLoad) {
                                         _debugger.count("============================== Required CSS loaded ! ==============================");
                                         // notify that all CSS stylesheets have been loaded as well as external Google Fonts files
@@ -246,7 +245,7 @@
 
                             _debugger.count("ViewPresenter prepared html template... # ");
 
-                            // return control to PresenterManager with passing updated event object
+                            // return control to PresenterManager passing updated event object along the way
                             _DISPATCHER_OBJECT.dispatchEvent(_EVENTS_OBJECT.statelessEvents.onGotNextViewResources.eventName, getNextViewEventObject);
                         }
                     }
@@ -307,7 +306,7 @@
 
                             _debugger.count("ViewPresenter prepared html template... # ");
 
-                            // return control to PresenterManager with passing updated event object
+                            // return control to PresenterManager passing updated event object along the way
                             _DISPATCHER_OBJECT.dispatchEvent(_EVENTS_OBJECT.statelessEvents.onGotNextViewResources.eventName, getNextViewEventObject);
                         }
                     }

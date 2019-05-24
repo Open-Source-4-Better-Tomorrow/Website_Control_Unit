@@ -45,12 +45,12 @@
                 */
                 function run_I_1L() {
                     flatFileAPI.Factory.LoadObject.createNew(
-                                                            _CORE_OBJECT.Variables.resource_type,
-                                                            _CORE_OBJECT.Variables.resource_separator,
-                                                            _EVENTS_OBJECT.initEvents.onFlowControlUnitReady.eventName,
-                                                            _CORE_OBJECT.Variables.resource_isJSONFormat,
-                                                            _CORE_OBJECT.Variables.resource_isHTMLFormat,
-                                                            _CORE_OBJECT.Variables.resilient_attempt_time_interval
+                                                                _CORE_OBJECT.Variables.resource_type,
+                                                                _CORE_OBJECT.Variables.resource_separator,
+                                                                _EVENTS_OBJECT.initEvents.onFlowControlUnitReady.eventName,
+                                                                _CORE_OBJECT.Variables.resource_isJSONFormat,
+                                                                _CORE_OBJECT.Variables.resource_isHTMLFormat,
+                                                                _CORE_OBJECT.Variables.resilient_attempt_time_interval
                                                             )
                                                             .Functions.loadFlatFile(_CORE_OBJECT.Variables.resource_path);
                 }

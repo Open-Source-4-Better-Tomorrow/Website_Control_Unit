@@ -64,12 +64,12 @@
                 function run_I_1L() {
                     for(var i = 0, length = _CORE_OBJECT.Variables.resource_path_array.length; i < length; i++) {
                         flatFileAPI.Factory.LoadObject.createNew(
-                                                                _CORE_OBJECT.Variables.resource_type_array[i],
-                                                                _CORE_OBJECT.Variables.resource_separator_array[i],
-                                                                _CORE_OBJECT.Variables.resource_notification_array[i],
-                                                                _CORE_OBJECT.Variables.resource_isJSONFormat_array[i],
-                                                                _CORE_OBJECT.Variables.resource_isHTMLFormat_array[i],
-                                                                _CORE_OBJECT.Variables.resilient_attempt_time_interval
+                                                                    _CORE_OBJECT.Variables.resource_type_array[i],
+                                                                    _CORE_OBJECT.Variables.resource_separator_array[i],
+                                                                    _CORE_OBJECT.Variables.resource_notification_array[i],
+                                                                    _CORE_OBJECT.Variables.resource_isJSONFormat_array[i],
+                                                                    _CORE_OBJECT.Variables.resource_isHTMLFormat_array[i],
+                                                                    _CORE_OBJECT.Variables.resilient_attempt_time_interval
                                                                 )
                                                                 .Functions.loadFlatFile(_CORE_OBJECT.Variables.resource_path_array[i]);
                     }
@@ -178,7 +178,7 @@
                      * Local helper functions
                     */
                     function onPresenterViewMetadataReady_I_1L(self, eventObject) {
-                        // process event detial data
+                        // process event detail data
                         _CORE_OBJECT.Functions.processTemplatesMetadata(eventObject.detail[0]);
 
                         // update event completion state
@@ -282,7 +282,7 @@
                         // reference callback of these two-item array
                         var processNextViewTemplateCallback = details[1];
 
-                        // yield this template's metadata to ViewPresenter
+                        // yield this template metadata to ViewPresenter
                         processNextViewTemplateCallback(nextViewTemplateMetadata, isLast, flowNavigation, details[0]);
                     }
                 }
