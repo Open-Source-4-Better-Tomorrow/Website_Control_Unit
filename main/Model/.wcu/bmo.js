@@ -19,13 +19,12 @@
      *
      * It has to have these three "hard-coded" properites called [Data], [DataToViewBinder] and [ListenerToEventBinder].
      *
-     * Implementation of the aforementioned props is open to you, i.e. you have to provide valid stuff for these two properties !
+     * Implementation of the aforementioned props is open to you, i.e. you have to provide valid stuff for these three properties !
      *
      * - [Data] is a property that delivers final view data
-     * - [DataToViewBinder.get()] is function that knows the logic of how to "tie" data to html template
+     * - [DataToViewBinder.get()] is function that knows the logic of how to "tie" data to HTML template
      * - [ListenerToEventBinder.get()] is function that knows the logic of how to "tie" listeners to events
      *
-     * This object [_VIEW_MODEL_EXPOSER] should be considered as kind of pre-defined object ! (You just copy and paste it into your own Model's module and provide the aforementioned implementation)
     */
     var _VIEW_MODEL_EXPOSER = {
         __init__: function(userViewModel_GetData, userViewModel_GetBinder, userViewModel_GetListenerEventBinder) {
@@ -92,7 +91,6 @@
      *
      * Implementation of this event handler should not be changed !
      *
-     * This object [_EVENTS_OBJECT] should be considered as kind of pre-defined object ! (You just copy and paste it into your own Model's module and provide the aforementioned implementation)
     */
     var _EVENTS_OBJECT = {
         initEvents: {
@@ -188,7 +186,7 @@
                     // initialize model exposer
                     _VIEW_MODEL_EXPOSER.__init__(userViewModel_GetData, userViewModel_GetBinder, userViewModel_GetListenerEventBinder);
 
-                    // return your model exposer
+                    // return model exposer
                     return _VIEW_MODEL_EXPOSER;
                 }
             }
