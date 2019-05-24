@@ -96,7 +96,7 @@
                                     some_key_1: {
                                         tagPrefix:  ".",
                                         tagName: "div_h4",
-                                        content: "UAD Status: RC Update1 HotFix 1 <i class=\"material-icons\">priority_high</i>"
+                                        content: "UAD Status: RC Update1 HotFix 2 <i class=\"material-icons\">priority_high</i>"
                                     }
                                 }
                            };
