@@ -351,22 +351,6 @@
                         }
                     }
                 }
-            },
-
-            onNextViewModelHasArrived: {
-                eventName: 'NextViewModelHasArrived',
-
-                eventListener: function(event) {
-                    return onNextViewModelHasArrived_I_1L(event);
-
-
-
-                    /**
-                     * Local helper functions
-                    */
-                    function onNextViewModelHasArrived_I_1L(event) {
-                    }
-                },
             }
         },
 
