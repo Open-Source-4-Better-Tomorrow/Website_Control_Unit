@@ -20,8 +20,7 @@
             _EVENTS_OBJECT.bindListenersWithEvents([_EVENTS_OBJECT.statefulEvents]);
         },
 
-        Functions: {
-        }
+        Functions: {}
     };
 
     var _EVENTS_OBJECT = {
@@ -60,7 +59,7 @@
                          * Local helper functions
                         */
                         function processNextViewModel_I_2L(viewModel, isLast) {
-                            // if there is next view's model to process
+                            // if there is next view model to process
                             if(viewModel) {
                                 getNextViewEventObject.viewModel = {
                                     model:  {
@@ -80,7 +79,7 @@
                                         data: {},
 
                                         /**
-                                         * Arguments to bindFunc function are mandatory !
+                                         * Arguments to the templateDataBindFunc function are mandatory !
                                          * You cannot skip them in the function definition !
                                          * Third argument is callback that has to be invoked when all actions completed successfully, otherwise flow of the logic can be unpredictable.
                                         */
@@ -132,7 +131,7 @@
 
                             _debugger.count("ModelPresenter prepared model data... # ");
 
-                            // return control to PresenterManager with passing updated event object
+                            // return control to PresenterManager passing updated event object along the way
                             _DISPATCHER_OBJECT.dispatchEvent(_EVENTS_OBJECT.statelessEvents.onGotNextViewResources.eventName, getNextViewEventObject);
                         }
                     }
