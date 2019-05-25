@@ -60,7 +60,7 @@
 
     var _EVENTS_OBJECT = {
         initEvents: {
-            initFlowControlUnit: {
+            onInitFlowControlUnit: {
                 eventName: 'InitFlowControlUnit',
 
                 eventListener: function() {
