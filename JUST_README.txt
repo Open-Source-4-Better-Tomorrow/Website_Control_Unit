@@ -1,6 +1,7 @@
 Setting up && running !
 
-Go to [ WCU ] directory and fire up [ http-server ], provided that you have Node.js installed on your computer !
+Go to [ WCU ] base directory and fire up [ http-server ], provided that you have Node.js installed on your computer !
+Navigate to examplary_usage_module/View/ to kick-off the page load !
 
 
 Paths definition:
@@ -12,9 +13,4 @@ Paths definition:
 ==================================
  How it really works ?
 ==================================
-  1. Expect a couple of MP4s that will cover in detail everything important that relates to this Website Control Unit.
-
-  2. I will record a couple of tech clips that will explain all stuff from a very general point of view
-     through full workflow and to the tiny detail regarding some parts of the code.
-
-  3. Tech clips will be recorded when [ WCU GA R2U ] will be ready !
+  Go to OneDrive directory under this address [ https://1drv.ms/f/s!Av2ZrNqOVnWL9yW0tKXfC3v-oCxz ] for all on Website Control Unit !

@@ -10,10 +10,11 @@ This is a brand new mechanism powering internals of Progressive Website Concept 
 ## Status:&nbsp;UAD&nbsp;[ RC Update1 HotFix 2 ]&nbsp;:zap:
 ## Streamlined:&nbsp;YES
 ## GA Release: 2019-06-01 Local Time &nbsp;:pushpin:
+## Download&nbsp;(:x:):&nbsp;[GA.WebsiteControlUnit.R2U.WorkingExample](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/Open-Source-4-Better-Tomorrow/Website_Control_Unit/blob/master/downloads/GA.WebsiteControlUnit.R2U.WorkingExample.zip "Download GA R2U working example")&nbsp;&nbsp;|&nbsp;&nbsp;[GA.WebsiteControlUnit.R2U.BareMechanism](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/Open-Source-4-Better-Tomorrow/Website_Control_Unit/blob/master/downloads/GA.WebsiteControlUnit.R2U.BareMechanism.zip "Download GA R2U bare mechanism")
 ## OneDrive MP4s:&nbsp; [How it works ?](https://1drv.ms/f/s!Av2ZrNqOVnWL9yW0tKXfC3v-oCxz "Tech clips covering behind-the-scenes internals !")
 #
 #
-## Next version: [v1.1](/improvements/v1.1.md "Go to details covering next major improvement of WCU")
+## Next Version Overview: [v1.1](/improvements/v1.1.md "Go to details covering next major improvement of WCU")
 #
 #
 ## License:&nbsp;:free:&nbsp;:heavy_check_mark:
