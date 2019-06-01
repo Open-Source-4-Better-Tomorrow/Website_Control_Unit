@@ -7,7 +7,7 @@ This is a brand new mechanism, a.k.a Progressive Website Mechanism, powering int
 ## Version:&nbsp;:one:.:zero:
 ## Status:&nbsp;UAD&nbsp;[ GA R2U ]&nbsp;:pushpin:
 ## Streamlined:&nbsp;YES
-## GA Release: 2019-06-01 1:00 PM Local Time &nbsp;:zap:
+## GA Release: 2019-06-01 3:12 PM Local Time &nbsp;:zap:
 ## Download&nbsp;:round_pushpin:
 ### &nbsp;[GA.WebsiteControlUnit.R2U.WE](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/Open-Source-4-Better-Tomorrow/Website_Control_Unit/blob/master/downloads/GA.WebsiteControlUnit.R2U.WorkingExample.zip "Download GA R2U working example")&nbsp;&nbsp;|&nbsp;&nbsp;:heavy_check_mark:&nbsp;&nbsp;|&nbsp;&nbsp; ( Working Example )
 ### &nbsp;[GA.WebsiteControlUnit.R2U.BM](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/Open-Source-4-Better-Tomorrow/Website_Control_Unit/blob/master/downloads/GA.WebsiteControlUnit.R2U.BareMechanism.zip "Download GA R2U bare mechanism")&nbsp;&nbsp;|&nbsp;&nbsp;:heavy_check_mark:&nbsp;&nbsp;|&nbsp;&nbsp; ( Bare Mechanism )
