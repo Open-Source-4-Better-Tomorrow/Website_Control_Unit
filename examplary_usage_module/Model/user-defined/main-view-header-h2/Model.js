@@ -115,7 +115,7 @@
 
 
                     /**
-                     * At this point all data is already binded with template placeholders, hence notify that binding is completed !
+                     * At this point all data is already unbinded from template, hence notify that unbinding is completed !
                      * This method acting as a callback function has to be invoked as a last one !
                      * Otherwise results could be unpredictable !
                     */
@@ -195,7 +195,7 @@
 
                     function removeCurrentView_I_2L(doBind, unbinderCallback, previousModelEventListenerBinder) {
                         if(doBind) {
-                            // bind core data to callback that will remove the current view view
+                            // bind core data to callback that will remove the current view
                             var removeCurrentViewCallback = removeCurrentView_I_3L.bind(null, unbinderCallback, previousModelEventListenerBinder);
 
                             // handle get previous view
@@ -212,7 +212,7 @@
                          * Local helper functions
                         */
                         function removeCurrentView_I_3L(optionalUnbinderCallback, optionalPreviousModelEventListenerBinder) {
-                            // resume flow from this point (remove the current view view) !!!!
+                            // resume flow from this point (remove the current view) !!!!
                             if(optionalUnbinderCallback)
                                 document.dispatchEvent(new CustomEvent('RemoveCurrentView',{bubbles: false, cancelable: false, detail: [optionalUnbinderCallback, optionalPreviousModelEventListenerBinder]}));
                             else

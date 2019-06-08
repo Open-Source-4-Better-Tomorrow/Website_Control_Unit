@@ -390,7 +390,7 @@
                         _debugger.count("PresenterManager received an order to yield the previous view, i.e. remove the current view from DOM !... # ");
                         _debugger.count("PresenterManager disabled receiving GetNextView requests... # ");
                         // disable receiving GetNextView requests
-                        _EVENTS_OBJECT.bindListenersWithEvents([ {nextViewEvents: _EVENTS_OBJECT.nextViewEvents.onGetNextView}], true);
+                        _EVENTS_OBJECT.bindListenersWithEvents([{nextViewEvents: _EVENTS_OBJECT.nextViewEvents.onGetNextView}], true);
 
                         // reset current view i.e. view's template metadata object internals as well as view's model metadata object internals
                         _DISPATCHER_OBJECT.dispatchEvent(_EVENTS_OBJECT.statelessEvents.onResetCurrentView.eventName, event.detail);
@@ -431,13 +431,13 @@
 
                         // check if current view internals were updated
                         if(_EVENTS_OBJECT.rollbackEvents.onResetCurrentViewModelMetadata.hasCompleted) {
-                            // enable receiving GetNextView requests
-                            _EVENTS_OBJECT.bindListenersWithEvents([ {nextViewEvents: _EVENTS_OBJECT.nextViewEvents.onGetNextView}]);
-
                             // reference the previous view's event-listener-binder
                             var prevModelEventListenerBinderCallback = details[1];
                             // assign listeners to events of the previous view
                             prevModelEventListenerBinderCallback();
+
+                            // enable receiving GetNextView requests
+                            _EVENTS_OBJECT.bindListenersWithEvents([{nextViewEvents: _EVENTS_OBJECT.nextViewEvents.onGetNextView}]);
 
                             _debugger.count("PresenterManager enabled receiving GetNextView requests... # ");
                         }
@@ -466,15 +466,15 @@
 
                         // check if current view internals were updated
                         if(_EVENTS_OBJECT.rollbackEvents.onResetCurrentViewTemplateMetadata.hasCompleted) {
-                            // enable receiving GetNextView requests
-                            _EVENTS_OBJECT.bindListenersWithEvents([ {nextViewEvents: _EVENTS_OBJECT.nextViewEvents.onGetNextView}]);
-
                             // cache event details
                             var details = eventObject.detail;
                             // reference the previous view's event-listener-binder
                             var prevModelEventListenerBinderCallback = details[1];
                             // assign listeners to events of the previous view
                             prevModelEventListenerBinderCallback();
+
+                            // enable receiving GetNextView requests
+                            _EVENTS_OBJECT.bindListenersWithEvents([{nextViewEvents: _EVENTS_OBJECT.nextViewEvents.onGetNextView}]);
 
                             _debugger.count("PresenterManager enabled receiving GetNextView requests... # ");
                         }
